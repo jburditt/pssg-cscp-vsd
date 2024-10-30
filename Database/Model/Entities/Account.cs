@@ -887,6 +887,7 @@ namespace Database.Model
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
 			public const string StockExchange = "stockexchange";
+			public const string Team_Accounts = "team_accounts";
 			public const string TeamsFollowed = "teamsfollowed";
 			public const string Telephone1 = "telephone1";
 			public const string Telephone2 = "telephone2";
@@ -908,6 +909,7 @@ namespace Database.Model
 			public const string Vsd_Account_Vsd_Invoice_Customer = "Vsd_Account_Vsd_Invoice_Customer";
 			public const string Vsd_Account_Vsd_Invoice_Payee = "Vsd_Account_Vsd_Invoice_Payee";
 			public const string Vsd_Account_Vsd_Payment_Payee = "Vsd_Account_Vsd_Payment_Payee";
+			public const string Vsd_Account_Vsd_PaymentSchedule_Payee = "Vsd_Account_Vsd_PaymentSchedule_Payee";
 			public const string Vsd_Account_Vsd_Program = "Vsd_Account_Vsd_Program";
 			public const string Vsd_AccountNo = "vsd_accountno";
 			public const string Vsd_BcEId = "vsd_bceid";
@@ -5888,6 +5890,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N vsd_account_vsd_paymentschedule_Payee
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_account_vsd_paymentschedule_Payee")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_PaymentSchedule> Vsd_Account_Vsd_PaymentSchedule_Payee
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_PaymentSchedule>("vsd_account_vsd_paymentschedule_Payee", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_PaymentSchedule>("vsd_account_vsd_paymentschedule_Payee", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N vsd_account_vsd_program
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_account_vsd_program")]
@@ -5935,6 +5955,20 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Account>("account_parent_account", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 team_accounts
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_accounts")]
+		public Database.Model.Team Team_Accounts
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Team>("team_accounts", null);
 			}
 		}
 		

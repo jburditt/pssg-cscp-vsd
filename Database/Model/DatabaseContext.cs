@@ -41,6 +41,17 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Team"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Team> TeamSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Team>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.TransactionCurrency"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.TransactionCurrency> TransactionCurrencySet
@@ -59,6 +70,28 @@ namespace Database.Model
 			get
 			{
 				return this.CreateQuery<Database.Model.Vsd_Contract>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Entitlement"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_Entitlement> Vsd_EntitlementSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_Entitlement>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_IncomeSupportParameter"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_IncomeSupportParameter> Vsd_IncomeSupportParameterSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_IncomeSupportParameter>();
 			}
 		}
 		
@@ -96,6 +129,17 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_PaymentSchedule"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_PaymentSchedule> Vsd_PaymentScheduleSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_PaymentSchedule>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Program"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.Vsd_Program> Vsd_ProgramSet
@@ -103,6 +147,17 @@ namespace Database.Model
 			get
 			{
 				return this.CreateQuery<Database.Model.Vsd_Program>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Province"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_Province> Vsd_ProvinceSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_Province>();
 			}
 		}
 	}

@@ -309,6 +309,7 @@ namespace Database.Model
 			public const string StateCodename = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
+			public const string Team_Vsd_Invoice = "team_vsd_invoice";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string TransactionCurrency_Vsd_Invoice = "TransactionCurrency_vsd_invoice";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
@@ -447,10 +448,13 @@ namespace Database.Model
 			public const string Vsd_User3Name = "vsd_user3name";
 			public const string Vsd_User3YomiName = "vsd_user3yominame";
 			public const string Vsd_Vsd_Contract_Vsd_Invoice = "vsd_vsd_contract_vsd_invoice";
+			public const string Vsd_Vsd_Entitlement_Vsd_Invoice = "vsd_vsd_entitlement_vsd_invoice";
 			public const string Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail = "Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail";
 			public const string Vsd_Vsd_Invoice_Vsd_Payment = "Vsd_Vsd_Invoice_Vsd_Payment";
 			public const string Vsd_Vsd_Payment_Vsd_Invoice = "vsd_vsd_payment_vsd_invoice";
+			public const string Vsd_Vsd_PaymentSchedule_Vsd_Invoice = "vsd_vsd_paymentschedule_vsd_invoice";
 			public const string Vsd_Vsd_Program_Vsd_Invoice = "vsd_vsd_program_vsd_invoice";
+			public const string Vsd_Vsd_Province_Vsd_Invoice = "vsd_vsd_province_vsd_invoice";
 			public const string Vsd_Vsu_ClaimantBirthdate = "vsd_vsu_claimantbirthdate";
 			public const string Vsd_Vsu_ClaimantContactInfoChanged = "vsd_vsu_claimantcontactinfochanged";
 			public const string Vsd_Vsu_ClaimantContactInfoChangedName = "vsd_vsu_claimantcontactinfochangedname";
@@ -3366,6 +3370,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 team_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_invoice")]
+		public Database.Model.Team Team_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Team>("team_vsd_invoice", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 TransactionCurrency_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
@@ -3461,6 +3479,44 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 vsd_vsd_entitlement_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_entitlementid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_entitlement_vsd_invoice")]
+		public Database.Model.Vsd_Entitlement Vsd_Vsd_Entitlement_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_vsd_entitlement_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_vsd_entitlement_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_paymentschedule_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_paymentscheduleid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_paymentschedule_vsd_invoice")]
+		public Database.Model.Vsd_PaymentSchedule Vsd_Vsd_PaymentSchedule_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_PaymentSchedule>("vsd_vsd_paymentschedule_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_PaymentSchedule>("vsd_vsd_paymentschedule_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_vsd_program_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_programid")]
@@ -3476,6 +3532,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Program>("vsd_vsd_program_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_province_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_provincestateid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoice")]
+		public Database.Model.Vsd_Province Vsd_Vsd_Province_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_Province>("vsd_vsd_province_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_Province>("vsd_vsd_province_vsd_invoice", null, value);
 			}
 		}
 		

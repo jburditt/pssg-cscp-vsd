@@ -99,12 +99,17 @@
   "emitVirtualAttributes": true,
   "entityNamesFilter": [
     "account",
+    "team",
     "transactioncurrency",
     "vsd_contract",
+    "vsd_entitlement",
+    "vsd_incomesupportparameter",
     "vsd_invoice",
     "vsd_invoicelinedetail",
     "vsd_payment",
-    "vsd_program"
+    "vsd_paymentschedule",
+    "vsd_program",
+    "vsd_province"
   ],
   "entityTypesFolder": "Entities",
   "generateActions": true,

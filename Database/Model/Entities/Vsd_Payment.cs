@@ -174,6 +174,7 @@ namespace Database.Model
 			public const string StateCodename = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
+			public const string Team_Vsd_Payment = "team_vsd_payment";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string TransactionCurrency_Vsd_Payment = "TransactionCurrency_vsd_payment";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
@@ -240,6 +241,7 @@ namespace Database.Model
 			public const string Vsd_VoidedPaymentsId = "vsd_voidedpaymentsid";
 			public const string Vsd_VoidedPaymentsIdName = "vsd_voidedpaymentsidname";
 			public const string Vsd_Vsd_Contract_Vsd_Payment = "vsd_vsd_contract_vsd_payment";
+			public const string Vsd_Vsd_Entitlement_Vsd_Payment = "vsd_vsd_entitlement_vsd_payment";
 			public const string Vsd_Vsd_Invoice_Vsd_Payment = "vsd_vsd_invoice_vsd_payment";
 			public const string Vsd_Vsd_Payment_Vsd_Invoice = "vsd_vsd_payment_vsd_invoice";
 			public const string Vsd_Vsd_Program_Vsd_Payment = "vsd_vsd_program_vsd_payment";
@@ -1800,6 +1802,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 team_vsd_payment
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_payment")]
+		public Database.Model.Team Team_Vsd_Payment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Team>("team_vsd_payment", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 TransactionCurrency_vsd_payment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
@@ -1853,6 +1869,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Contract>("vsd_vsd_contract_vsd_payment", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_entitlement_vsd_payment
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_entitlementid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_entitlement_vsd_payment")]
+		public Database.Model.Vsd_Entitlement Vsd_Vsd_Entitlement_Vsd_Payment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_vsd_entitlement_vsd_payment", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_vsd_entitlement_vsd_payment", null, value);
 			}
 		}
 		

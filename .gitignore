@@ -4,3 +4,7 @@ vsd-app/vsd-app\.sln\.DotSettings
 .env
 /Database/obj
 /Database/bin
+/Shared.Contract/bin
+/Shared.Contract/obj
+/Shared.Database/bin
+/Shared.Database/obj

@@ -32,12 +32,17 @@ vsu</CamelCaseCustomWords>
     <DeleteFilesFromOutputFolders>true</DeleteFilesFromOutputFolders>
     <EntitiesToSkip />
     <EntitiesWhitelist>account|
+team|
 transactioncurrency|
 vsd_contract|
+vsd_entitlement|
+vsd_incomesupportparameter|
 vsd_invoice|
 vsd_invoicelinedetail|
 vsd_payment|
-vsd_program</EntitiesWhitelist>
+vsd_paymentschedule|
+vsd_program|
+vsd_province</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />
@@ -128,7 +133,7 @@ VoiceMail</TokenCapitalizationOverrides>
   <Namespace>Database.Model</Namespace>
   <ServiceContextName>DatabaseContext</ServiceContextName>
   <SuppressGeneratedCodeAttribute>true</SuppressGeneratedCodeAttribute>
-  <SettingsVersion>2.2024.9.11</SettingsVersion>
+  <SettingsVersion>2.2024.10.16</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
   <Version>2.2024.10.16</Version>
 </Config>

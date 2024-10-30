@@ -163,6 +163,7 @@ namespace Database.Model
 			public const string StateCodename = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
+			public const string Team_Vsd_InvoiceLineDetail = "team_vsd_invoicelinedetail";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string TransactionCurrency_Vsd_InvoiceLineDetail = "TransactionCurrency_vsd_invoicelinedetail";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
@@ -189,6 +190,7 @@ namespace Database.Model
 			public const string Vsd_Cvap_SessionDuration = "vsd_cvap_sessionduration";
 			public const string Vsd_DisbursementTransactionDetailId = "vsd_disbursementtransactiondetailid";
 			public const string Vsd_DisbursementTransactionDetailIdName = "vsd_disbursementtransactiondetailidname";
+			public const string Vsd_Entitlement_Vsd_InvoiceLineDetail = "vsd_entitlement_vsd_invoicelinedetail";
 			public const string Vsd_EntitlementId = "vsd_entitlementid";
 			public const string Vsd_EntitlementIdName = "vsd_entitlementidname";
 			public const string Vsd_Gst = "vsd_gst";
@@ -220,6 +222,7 @@ namespace Database.Model
 			public const string Vsd_TaxRate = "vsd_taxrate";
 			public const string Vsd_TaxRate2 = "vsd_taxrate2";
 			public const string Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail = "vsd_vsd_invoice_vsd_invoicelinedetail";
+			public const string Vsd_Vsd_Province_Vsd_InvoiceLineDetail_ProvinceStateId = "vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId";
 			public const string Vsd_Vsu_ChildAge = "vsd_vsu_childage";
 			public const string Vsd_Vsu_ChildCareEndDate = "vsd_vsu_childcareenddate";
 			public const string Vsd_Vsu_ChildCareProviderCity = "vsd_vsu_childcareprovidercity";
@@ -1959,6 +1962,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 team_vsd_invoicelinedetail
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_invoicelinedetail")]
+		public Database.Model.Team Team_Vsd_InvoiceLineDetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Team>("team_vsd_invoicelinedetail", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 TransactionCurrency_vsd_invoicelinedetail
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
@@ -1978,6 +1995,25 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 vsd_entitlement_vsd_invoicelinedetail
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_entitlementid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_entitlement_vsd_invoicelinedetail")]
+		public Database.Model.Vsd_Entitlement Vsd_Entitlement_Vsd_InvoiceLineDetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_entitlement_vsd_invoicelinedetail", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_Entitlement>("vsd_entitlement_vsd_invoicelinedetail", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_vsd_invoice_vsd_invoicelinedetail
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_invoiceid")]
@@ -1993,6 +2029,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Invoice>("vsd_vsd_invoice_vsd_invoicelinedetail", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_provincestateid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId")]
+		public Database.Model.Vsd_Province Vsd_Vsd_Province_Vsd_InvoiceLineDetail_ProvinceStateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_Province>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_Province>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null, value);
 			}
 		}
 		
