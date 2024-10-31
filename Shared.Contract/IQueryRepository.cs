@@ -1,11 +1,11 @@
 ﻿namespace Shared.Contract;
 
-public interface IFindRepository<FQuery, FResult>
+public interface IFindRepository<TQuery, TDto>
 {
-    FResult FirstOrDefault(FQuery query);
+    TDto FirstOrDefault(TQuery query);
 }
 
-public interface IQueryRepository<TQuery, TResult>
+public interface IQueryRepository<TQuery, TDto>
 {
-    TResult Query(TQuery query);
+    IEnumerable<TDto> Query(TQuery query);
 }

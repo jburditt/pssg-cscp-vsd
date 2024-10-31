@@ -27,4 +27,7 @@ public record Team : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
+    public string Name { get; set; }    // Dynamics System Required
+    // Foreign Keys
+    public Guid? QueueId { get; set; }  // Dynamics Optional
 }

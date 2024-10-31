@@ -1,4 +1,4 @@
-﻿namespace Shared.Database;
+﻿using AutoMapper;
 
 public class GlobalMapper : Profile
 {
