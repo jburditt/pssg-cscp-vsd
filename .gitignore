@@ -8,3 +8,9 @@ vsd-app/vsd-app\.sln\.DotSettings
 /Shared.Contract/obj
 /Shared.Database/bin
 /Shared.Database/obj
+/Manager.Contract/bin
+/Manager.Contract/obj
+/Resources/bin
+/Resources/obj
+/Tests/bin
+/Tests/obj
