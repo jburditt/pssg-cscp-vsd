@@ -21,10 +21,13 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
             .WhereIf(paymentScheduleQuery.BeforeStartDate != null, c => c.PaymentSchedule.Vsd_StartDate <= paymentScheduleQuery.BeforeStartDate)
             .WhereIf(paymentScheduleQuery.BeforeNextRunDate != null, c => c.PaymentSchedule.Vsd_NextRUndate <= paymentScheduleQuery.BeforeNextRunDate)
             .WhereIf(paymentScheduleQuery.NotNullCaseId != null, c => c.PaymentSchedule.Vsd_CaseId != null)
-             select new { paymentSchedule, entitlement });
+             select new { PaymentSchedule = paymentSchedule, Entitlement = entitlement });
         var queryResults = queryResults2.Where(c => c.paymentSchedule.StateCode == (Vsd_PaymentSchedule_StateCode)paymentScheduleQuery.StateCode);
+        var test = queryResults2.ToList();
+        var queryResults = queryResults2.Where(c => c.PaymentSchedule.StateCode == (Vsd_PaymentSchedule_StateCode)paymentScheduleQuery.StateCode);
+        var test2 = queryResults.Select(x => new PaymentScheduleComposite(x.PaymentSchedule, x.Entitlement)).ToList();
 
-        return _mapper.Map<IEnumerable<PaymentScheduleResult>>(queryResults);
+        return _mapper.Map<IEnumerable<PaymentScheduleResult>>(test2);
     }
 
     public class PaymentScheduleComposite
