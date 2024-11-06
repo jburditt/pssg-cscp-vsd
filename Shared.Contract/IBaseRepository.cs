@@ -4,6 +4,7 @@ public interface IBaseRepository<TDto> where TDto : IDto
 {
     Guid Insert(TDto dto);
     Guid Upsert(TDto dto);
+    bool Update(TDto dto);
     bool TryDelete(Guid id);
     bool TryDelete(TDto dto, bool isRecursive = false);
     bool TryDeleteRange(IEnumerable<TDto> invoices, bool isRecursive = false);

@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<ICurrencyRepository, CurrencyRepository>();
 
         //services.AddTransient<InvoiceHandlers>();
-        //services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+        services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
         //services.AddTransient<InvoiceLineDetailHandlers>();
         //services.AddTransient<IInvoiceLineDetailRepository, InvoiceLineDetailRepository>();
@@ -25,7 +25,10 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<PaymentHandlers>();
         //services.AddTransient<IPaymentRepository, PaymentRepository>();
 
+        services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
+
         services.AddTransient<ITeamRepository, TeamRepository>();
+
         return services;
     }
 
@@ -33,8 +36,8 @@ public static class ServiceCollectionExtensions
     {
         // NOTE global and shared mapper should be first, since it has the prefix configurations and shared mappings
         var mapperTypes = new[] {
-            typeof(GlobalMapper), typeof(SharedMapper), typeof(TeamMapper)//, typeof(CurrencyRepositoryMapper), typeof(PaymentRepositoryMapper), typeof(ProgramRepositoryMapper), typeof(ContractRepositoryMapper),
-            //typeof(InvoiceRepositoryMapper), typeof(InvoiceLineDetailRepositoryMapper), typeof(ScheduleGRepositoryMapper)
+            typeof(GlobalMapper), typeof(SharedMapper), typeof(TeamMapper), typeof(PaymentScheduleMapper), typeof(EntitlementMapper), //typeof(CurrencyRepositoryMapper), typeof(PaymentRepositoryMapper), typeof(ProgramRepositoryMapper), typeof(ContractRepositoryMapper),
+            typeof(InvoiceMapper), //typeof(InvoiceLineDetailRepositoryMapper), typeof(ScheduleGRepositoryMapper)
         };
         services.AddAutoMapper(cfg => cfg.ShouldUseConstructor = constructor => constructor.IsPublic, mapperTypes);
         return services;
