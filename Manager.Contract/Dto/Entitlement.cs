@@ -1,5 +1,13 @@
 ﻿namespace Manager.Contract;
 
+public enum PaymentScheduleStatus
+{
+    Active = 100000000,
+    Cancelled = 100000002,
+    Modified = 100000003,
+    Pause = 100000001,
+}
+
 public record Entitlement : IDto
 {
     public Guid Id { get; set; }

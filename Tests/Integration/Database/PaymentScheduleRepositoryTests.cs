@@ -14,6 +14,7 @@ public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repositor
         command.BeforeNextRunDate = DateTime.Now.AddYears(-1);
         command.NotNullCaseId = true;
         command.NotNullPayeeId = true;
+        command.Status = PaymentScheduleStatus.Active;
 
         // Act
         var result = repository.Query(command);

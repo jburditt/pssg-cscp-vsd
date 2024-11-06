@@ -8,6 +8,7 @@ public record PaymentScheduleQuery : IRequest<IEnumerable<PaymentSchedule>>
     public DateTime? BeforeNextRunDate { get; set; }
     public bool? NotNullCaseId { get; set; }
     public bool? NotNullPayeeId { get; set; }
+    public PaymentScheduleStatus? Status { get; set; }
 }
 
 public record PaymentScheduleResult(PaymentSchedule PaymentSchedule, Entitlement Entitlement);

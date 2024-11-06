@@ -20,6 +20,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
             .WhereIf(paymentScheduleQuery.BeforeNextRunDate != null, c => c.PaymentSchedule.Vsd_NextRUndate <= paymentScheduleQuery.BeforeNextRunDate)
             .WhereIf(paymentScheduleQuery.NotNullCaseId != null, c => c.PaymentSchedule.Vsd_CaseId != null)
             .WhereIf(paymentScheduleQuery.NotNullPayeeId != null, c => c.PaymentSchedule.Vsd_Payee != null)
+            .WhereIf(paymentScheduleQuery.Status != null, c => c.Entitlement.Vsd_PaymentScheduleStatus == (Vsd_Entitlement_Vsd_PaymentScheduleStatus)paymentScheduleQuery.Status)
             .Select(x => new PaymentScheduleComposite(x.PaymentSchedule, x.Entitlement))
             .ToList();
         return _mapper.Map<IEnumerable<PaymentScheduleResult>>(queryResults);
