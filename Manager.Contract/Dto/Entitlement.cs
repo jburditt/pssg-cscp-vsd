@@ -8,6 +8,37 @@ public enum PaymentScheduleStatus
     Pause = 100000001,
 }
 
+public enum EntitlementStatusCode
+{
+    [Description("Approved")]
+    Approved = 100000000,
+
+    [Description("Created in Error")]
+    CreatedInError = 100000003,
+
+    [Description("Denied")]
+    Denied = 2,
+
+    [Description("Paid")]
+    Paid = 100000004,
+
+    [Description("Pending")]
+    Pending = 100000001,
+
+    [Description("Requested")]
+    Requested = 1,
+
+    [Description("Suspended")]
+    Suspended = 100000005,
+
+    [Description("Terminated")]
+    Terminated = 100000006,
+
+    [Description("Withdrawn")]
+    Withdrawn = 100000002,
+}
+
+
 public record Entitlement : IDto
 {
     public Guid Id { get; set; }

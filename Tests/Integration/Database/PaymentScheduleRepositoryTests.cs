@@ -15,6 +15,7 @@ public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repositor
         command.NotNullCaseId = true;
         command.NotNullPayeeId = true;
         command.Status = PaymentScheduleStatus.Active;
+        command.StatusCode = EntitlementStatusCode.Requested;
 
         // Act
         var result = repository.Query(command);
