@@ -42,8 +42,22 @@ public abstract class BaseRepository<TEntity, TDto>
         return entity.Id;
     }
 
+    public virtual bool Update(TDto dto)
+    {
+        if (dto.Id == Guid.Empty)
+        {
+            throw new ArgumentException("Id cannot be empty");
+        }
+        var entity = Map(dto);
+        return Update(entity);
+    }
+
     public virtual bool Update(TEntity entity)
     {
+        if (entity.Id == Guid.Empty)
+        {
+            throw new ArgumentException("Id cannot be empty");
+        }
         if (!_databaseContext.IsAttached(entity))
         {
             _databaseContext.Attach(entity);

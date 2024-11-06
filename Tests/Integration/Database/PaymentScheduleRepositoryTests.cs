@@ -10,6 +10,11 @@ public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repositor
         // Arrange
         var command = new PaymentScheduleQuery();
         command.StateCode = StateCode.Active;
+        command.BeforeStartDate = DateTime.Now.AddYears(-1);
+        command.BeforeNextRunDate = DateTime.Now.AddYears(-1);
+        command.NotNullCaseId = true;
+        command.NotNullPayeeId = true;
+
         // Act
         var result = repository.Query(command);
 
