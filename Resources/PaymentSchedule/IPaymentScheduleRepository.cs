@@ -1,6 +1,6 @@
 ﻿namespace Resources;
 
-public interface IPaymentScheduleRepository : IQueryRepository<PaymentScheduleQuery, PaymentScheduleResult>, IBaseRepository<PaymentSchedule>
+public interface IPaymentScheduleRepository : IQueryRepository<PaymentScheduleEntitlementQuery, PaymentScheduleResult>, IBaseRepository<PaymentSchedule>
 {
 
 }

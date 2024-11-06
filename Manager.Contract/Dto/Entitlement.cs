@@ -38,6 +38,12 @@ public enum EntitlementStatusCode
     Withdrawn = 100000002,
 }
 
+public record EntitlementQuery : IRequest<IEnumerable<Entitlement>>
+{
+    public PaymentScheduleStatus? PaymentScheduleStatus { get; set; }
+    public bool? IsRecurring { get; set; }
+    public EntitlementStatusCode? StatusCode { get; set; }
+}
 
 public record Entitlement : IDto
 {
@@ -54,4 +60,5 @@ public record Entitlement : IDto
     public Guid BenefitCategoryId { get; set; }             // Dynamics Business Required
     public Guid? BenefitTypeId { get; set; }                // Dynamics Business Recommended
     public Guid? BenefitSubTypeId { get; set; }             // Dynamics Optional
+    public string? BenefitSubTypeName { get; set; }
 }

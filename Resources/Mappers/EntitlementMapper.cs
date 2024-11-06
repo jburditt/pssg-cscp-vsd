@@ -10,6 +10,7 @@ public class EntitlementMapper : Profile
             .ForMember(dest => dest.SetCap, opts => opts.MapFrom(src => src.Vsd_SetCap))
             .ForMember(dest => dest.BenefitCategoryId, opts => opts.MapFrom(src => src.Vsd_BenefitCategoryId.Id))
             .ForMember(dest => dest.BenefitSubTypeId, opts => opts.MapFrom(src => src.Vsd_BenefitSubtypeId.Id))
+            .ForMember(dest => dest.BenefitSubTypeName, opts => opts.MapFrom(src => src.Vsd_BenefitSubtypeIdName))
             .ForMember(dest => dest.BenefitTypeId, opts => opts.MapFrom(src => src.Vsd_BenefitTypeId.Id))
             .ForMember(dest => dest.TaxExemptFlag, opts => opts.MapFrom(src => src.Vsd_TaxExemptFlag))
             .ForMember(dest => dest.CvapAvailableEntitilement, opts => opts.MapFrom(src => src.Vsd_Cvap_Available_Entitlement))

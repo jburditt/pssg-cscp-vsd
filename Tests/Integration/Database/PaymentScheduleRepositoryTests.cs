@@ -8,14 +8,16 @@ public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repositor
     public void Query()
     {
         // Arrange
-        var command = new PaymentScheduleQuery();
-        command.StateCode = StateCode.Active;
-        command.BeforeStartDate = DateTime.Now.AddYears(-1);
-        command.BeforeNextRunDate = DateTime.Now.AddYears(-1);
-        command.NotNullCaseId = true;
-        command.NotNullPayeeId = true;
-        command.Status = PaymentScheduleStatus.Active;
-        command.StatusCode = EntitlementStatusCode.Requested;
+        var command = new PaymentScheduleEntitlementQuery();
+        //command.StateCode = StateCode.Active;
+        //command.BeforeStartDate = DateTime.Now.AddYears(-1);
+        //command.BeforeNextRunDate = DateTime.Now.AddYears(-1);
+        //command.NotNullCaseId = true;
+        //command.NotNullPayeeId = true;
+        //command.Status = PaymentScheduleStatus.Active;
+        //command.IsRecurring = true;
+        command.EntitlementQuery = new EntitlementQuery();
+        command.EntitlementQuery.StatusCode = EntitlementStatusCode.Requested;
 
         // Act
         var result = repository.Query(command);
