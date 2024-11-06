@@ -11,8 +11,8 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
 
     public IEnumerable<PaymentScheduleResult> Query(PaymentScheduleQuery paymentScheduleQuery)
     {
-        var queryResults =
-            (from paymentSchedule in _databaseContext.Vsd_PaymentScheduleSet
+        var queryResults = _databaseContext.Vsd_PaymentScheduleSet
+            .Join(_databaseContext.Vsd_EntitlementSet, paymentSchedule => paymentSchedule.Vsd_EntitlementId.Id, entitlement => entitlement.Id, (paymentSchedule, entitlement) => new { PaymentSchedule = paymentSchedule, Entitlement = entitlement })
         var queryResults2 = (
              from paymentSchedule in _databaseContext.Vsd_PaymentScheduleSet
              join entitlement in _databaseContext.Vsd_EntitlementSet on paymentSchedule.Vsd_EntitlementId.Id equals entitlement.Id
