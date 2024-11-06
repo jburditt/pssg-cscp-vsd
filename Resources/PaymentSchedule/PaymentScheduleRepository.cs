@@ -13,13 +13,16 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
     {
         var queryResults =
             (from paymentSchedule in _databaseContext.Vsd_PaymentScheduleSet
+        var queryResults2 = (
+             from paymentSchedule in _databaseContext.Vsd_PaymentScheduleSet
              join entitlement in _databaseContext.Vsd_EntitlementSet on paymentSchedule.Vsd_EntitlementId.Id equals entitlement.Id
              select new PaymentScheduleComposite(paymentSchedule, entitlement))
             .WhereIf(paymentScheduleQuery.StateCode != null, c => c.PaymentSchedule.StateCode == (Vsd_PaymentSchedule_StateCode)paymentScheduleQuery.StateCode)
             .WhereIf(paymentScheduleQuery.BeforeStartDate != null, c => c.PaymentSchedule.Vsd_StartDate <= paymentScheduleQuery.BeforeStartDate)
             .WhereIf(paymentScheduleQuery.BeforeNextRunDate != null, c => c.PaymentSchedule.Vsd_NextRUndate <= paymentScheduleQuery.BeforeNextRunDate)
             .WhereIf(paymentScheduleQuery.NotNullCaseId != null, c => c.PaymentSchedule.Vsd_CaseId != null)
-            .WhereIf(paymentScheduleQuery.NotNullPayeeId != null, c => c.PaymentSchedule.Vsd_Payee != null);
+             select new { paymentSchedule, entitlement });
+        var queryResults = queryResults2.Where(c => c.paymentSchedule.StateCode == (Vsd_PaymentSchedule_StateCode)paymentScheduleQuery.StateCode);
 
         return _mapper.Map<IEnumerable<PaymentScheduleResult>>(queryResults);
     }
