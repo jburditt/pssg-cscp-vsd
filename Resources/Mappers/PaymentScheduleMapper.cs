@@ -13,7 +13,11 @@ public class PaymentScheduleMapper : Profile
             .ForMember(dest => dest.XValue, opts => opts.MapFrom(src => src.Vsd_XValue))
             .ForMember(dest => dest.PercentageDeduction, opts => opts.MapFrom(src => src.Vsd_PercentagedEduction))
             .ForMember(dest => dest.ShareOptions, opts => opts.MapFrom(src => src.Vsd_ShareOptions))
-            .ForMember(dest => dest.ShareValue, opts => opts.MapFrom(src => src.Vsd_ShareValue));
+            .ForMember(dest => dest.ShareValue, opts => opts.MapFrom(src => src.Vsd_ShareValue))
+            .ForMember(dest => dest.CppDeduction, opts => opts.MapFrom(src => src.Vsd_CPpDeduction))
+            .ForMember(dest => dest.OtherDeduction, opts => opts.MapFrom(src => src.Vsd_OtherDeduction))
+            .ForMember(dest => dest.OverPaymentEmi, opts => opts.MapFrom(src => src.Vsd_OverpayMenteMi))
+            .ForMember(dest => dest.OverPaymentAmount, opts => opts.MapFrom(src => src.Vsd_OverpaymentAmount));
 
         CreateMap<PaymentScheduleComposite, PaymentScheduleResult>();
     }

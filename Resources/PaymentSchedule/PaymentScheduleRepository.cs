@@ -127,60 +127,59 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
                     }
                 }
 
-        //        if (paymentSchedule.Contains("vsd_cppdeduction") && paymentSchedule["vsd_cppdeduction"] != null)
-        //        {
-        //            result1 = result1 - ((Money)paymentSchedule["vsd_cppdeduction"]).Value;
-        //        }
+                if (paymentSchedule.CppDeduction != null)
+                {
+                    result1 = result1 - (decimal)paymentSchedule.CppDeduction;
+                }
 
-        //        if (paymentSchedule.Contains("vsd_otherdeduction") && paymentSchedule["vsd_otherdeduction"] != null)
-        //        {
-        //            result1 = result1 - ((Money)paymentSchedule["vsd_otherdeduction"]).Value;
-        //        }
+                if (paymentSchedule.OtherDeduction != null)
+                {
+                    result1 = result1 - (decimal)paymentSchedule.OtherDeduction;
+                }
 
-        //        if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
-        //        {
-        //            var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
-        //            var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
+                if (paymentSchedule.OverPaymentEmi != null && paymentSchedule.OverPaymentAmount != null)
+                {
+                    var emi = (decimal)paymentSchedule.OverPaymentEmi;
 
-        //            if ((overPayment - emi) >= 0)
-        //            {
-        //                result1 = result1 - emi;
-        //            }
-        //        }
+                    if ((paymentSchedule.OverPaymentAmount - emi) >= 0)
+                    {
+                        result1 = result1 - emi;
+                    }
+                }
 
-        //        if (frequency == 100000002) //Monthly
-        //        {
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000000) //Weekly
-        //        {
-        //            result1 = ((result1 * 12) / 52);
-        //            actualAmount = ((actualAmount * 12) / 52);
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000001) //Daily
-        //        {
-        //            result1 = ((result1 * 12) / 365);
-        //            actualAmount = ((actualAmount * 12) / 365);
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000003) //Annual
-        //        {
-        //            result1 = result1 * 12;
-        //            actualAmount = actualAmount * 12;
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
+                if (paymentSchedule.Frequency == Frequency.Monthly) //Monthly
+                {
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Weekly) //Weekly
+                {
+                    result1 = ((result1 * 12) / 52);
+                    actualAmount = ((actualAmount * 12) / 52);
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Daily) //Daily
+                {
+                    result1 = ((result1 * 12) / 365);
+                    actualAmount = ((actualAmount * 12) / 365);
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Annually) //Annual
+                {
+                    result1 = result1 * 12;
+                    actualAmount = actualAmount * 12;
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
 
-        //        amount = new Money(result1);
-        //    }
+                amount = new Money(result1);
+            }
         //    else if (benefitSubType.Name.Equals("COLA", StringComparison.InvariantCultureIgnoreCase))
         //    {
         //        if (!entitlement.Contains("vsd_effectivedate"))
@@ -337,7 +336,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         //        }
         //        else
         //            amount = new Money(setCap);
-            }
+        //    }
         //    else
         //        amount = new Money(setCap);
         }
