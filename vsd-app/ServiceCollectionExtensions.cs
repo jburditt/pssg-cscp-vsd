@@ -29,6 +29,8 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<ITeamRepository, TeamRepository>();
 
+        services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
+
         return services;
     }
 

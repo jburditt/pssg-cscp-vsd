@@ -49,6 +49,10 @@ public record PaymentSchedule : IDto
     public decimal? PercentageDeduction { get; set; }       // Dynamics Optional
     public ShareOptions? ShareOptions { get; set; }         // Dynamics Optional
     public decimal? ShareValue { get; set; }                // Dynamics Optional
+    public decimal? CppDeduction { get; set; }              // Dynamics Optional
+    public decimal? OtherDeduction { get; set; }            // Dynamics Optional
+    public decimal? OverPaymentEmi { get; set; }            // Dynamics Optional
+    public decimal? OverPaymentAmount { get; set; }         // Dynamics Optional
 
     // Foreign Keys
     public Guid EntitlementId { get; set; }                 // Dynamics Business Required

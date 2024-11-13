@@ -3,10 +3,12 @@
 public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, PaymentSchedule>, IPaymentScheduleRepository
 {
     private readonly DatabaseContext _databaseContext;
+    private readonly IIncomeSupportParameterRepository _incomeSupportParameterRepository;
 
-    public PaymentScheduleRepository(DatabaseContext databaseContext, IMapper mapper) : base(databaseContext, mapper)
+    public PaymentScheduleRepository(DatabaseContext databaseContext, IMapper mapper, IIncomeSupportParameterRepository incomeSupportParameterRepository) : base(databaseContext, mapper)
     {
         _databaseContext = databaseContext;
+        _incomeSupportParameterRepository = incomeSupportParameterRepository;
     }
 
     public IEnumerable<PaymentScheduleResult> Query(PaymentScheduleEntitlementQuery query)
@@ -38,7 +40,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         }
     }
 
-    public static Tuple<Money, decimal> GetDollarAmounts(PaymentSchedule paymentSchedule, Entitlement entitlement, decimal minimumWage)
+    public Tuple<Money, decimal> GetDollarAmounts(PaymentSchedule paymentSchedule, Entitlement entitlement, decimal minimumWage)
     {
         var amount = new Money(0);
         decimal actualAmount = 0;
@@ -180,132 +182,130 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
 
                 amount = new Money(result1);
             }
-        //    else if (benefitSubType.Name.Equals("COLA", StringComparison.InvariantCultureIgnoreCase))
-        //    {
-        //        if (!entitlement.Contains("vsd_effectivedate"))
-        //        {
-        //            throw new InvalidPluginExecutionException("COLA Effective Date is empty..");
-        //        }
+            else if (entitlement.BenefitSubTypeName.Equals("COLA", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (entitlement.EffectiveDate == DateTime.MinValue)
+                {
+                    throw new Exception("COLA Effective Date is missing.");
+                }
 
-        //        var result1 = GetCOLA(service, (DateTime)entitlement["vsd_effectivedate"], setCap);
+                var result1 = _incomeSupportParameterRepository.GetCOLA(entitlement.EffectiveDate, setCap);
 
-        //        if (paymentSchedule.Contains("vsd_percentagededuction") && paymentSchedule["vsd_percentagededuction"] != null)
-        //        {
-        //            var deductionAmount = result1 * ((decimal)paymentSchedule["vsd_percentagededuction"] / 100);
-        //            result1 = result1 - deductionAmount;
-        //        }
+                if (paymentSchedule.PercentageDeduction != null)
+                {
+                    var deductionAmount = result1 * ((decimal)paymentSchedule.PercentageDeduction / 100);
+                    result1 = result1 - deductionAmount;
+                }
 
-        //        actualAmount = result1;
+                actualAmount = result1;
 
-        //        if (paymentSchedule.Contains("vsd_shareoptions") && paymentSchedule["vsd_shareoptions"] != null)
-        //        {
-        //            if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000001) //% Share
-        //            {
-        //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //                {
-        //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
+                if (paymentSchedule.ShareOptions != null)
+                {
+                    if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000001) //% Share
+                    {
+                        if (paymentSchedule.ShareValue != null)
+                        {
+                            var shareValue = (decimal)paymentSchedule.ShareValue;
+                            result1 = result1 * (shareValue / 100);
+                        }
+                        else
+                            throw new Exception("Share Value is missing.");
+                    }
+                    else if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000002) //$ Share
+                    {
+                        if (paymentSchedule.ShareValue != null)
+                        {
+                            var shareValue = (decimal)paymentSchedule.ShareValue;
+                            result1 = shareValue;
+                        }
+                        else
+                            throw new Exception("Share Value is missing.");
+                    }
+                }
 
-        //                    result1 = result1 * (shareValue / 100);
-        //                }
-        //                else
-        //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-        //            }
-        //            else if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000002) //$ Share
-        //            {
-        //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //                {
-        //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
+                //        if (paymentSchedule.Contains("vsd_cppdeduction") && paymentSchedule["vsd_cppdeduction"] != null)
+                //        {
+                //            result1 = result1 - ((Money)paymentSchedule["vsd_cppdeduction"]).Value;
+                //        }
 
-        //                    result1 = shareValue;
-        //                }
-        //                else
-        //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-        //            }
-        //        }
+                //        if (paymentSchedule.Contains("vsd_otherdeduction") && paymentSchedule["vsd_otherdeduction"] != null)
+                //        {
+                //            result1 = result1 - ((Money)paymentSchedule["vsd_otherdeduction"]).Value;
+                //        }
 
-        //        if (paymentSchedule.Contains("vsd_cppdeduction") && paymentSchedule["vsd_cppdeduction"] != null)
-        //        {
-        //            result1 = result1 - ((Money)paymentSchedule["vsd_cppdeduction"]).Value;
-        //        }
+                //        if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
+                //        {
+                //            var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
+                //            var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
 
-        //        if (paymentSchedule.Contains("vsd_otherdeduction") && paymentSchedule["vsd_otherdeduction"] != null)
-        //        {
-        //            result1 = result1 - ((Money)paymentSchedule["vsd_otherdeduction"]).Value;
-        //        }
+                //            if ((overPayment - emi) >= 0)
+                //            {
+                //                result1 = result1 - emi;
+                //            }
+                //        }
 
-        //        if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
-        //        {
-        //            var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
-        //            var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
+                //        if (frequency == 100000002) //Monthly
+                //        {
+                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
+                //            result1 = result1 * xValue;
+                //            actualAmount = actualAmount * xValue;
+                //        }
+                //        else if (frequency == 100000000) //Weekly
+                //        {
+                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
+                //            result1 = result1 * xValue;
+                //            actualAmount = actualAmount * xValue;
+                //        }
+                //        else if (frequency == 100000001) //Daily
+                //        {
+                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
+                //            result1 = result1 * xValue;
+                //            actualAmount = actualAmount * xValue;
+                //        }
+                //        else if (frequency == 100000003) //Annual
+                //        {
+                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
+                //            result1 = result1 * xValue;
+                //            actualAmount = actualAmount * xValue;
+                //        }
 
-        //            if ((overPayment - emi) >= 0)
-        //            {
-        //                result1 = result1 - emi;
-        //            }
-        //        }
+                //        amount = new Money(result1);
+                //    }
+                //    else
+                //    {
+                //        actualAmount = setCap;
 
-        //        if (frequency == 100000002) //Monthly
-        //        {
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000000) //Weekly
-        //        {
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000001) //Daily
-        //        {
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
-        //        else if (frequency == 100000003) //Annual
-        //        {
-        //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-        //            result1 = result1 * xValue;
-        //            actualAmount = actualAmount * xValue;
-        //        }
+                //        if (paymentSchedule.Contains("vsd_shareoptions") && paymentSchedule["vsd_shareoptions"] != null)
+                //        {
+                //            if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000001) //% Share
+                //            {
+                //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
+                //                {
+                //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
 
-        //        amount = new Money(result1);
-        //    }
-        //    else
-        //    {
-        //        actualAmount = setCap;
+                //                    amount = new Money(setCap * (shareValue / 100));
+                //                }
+                //                else
+                //                    throw new InvalidPluginExecutionException("Share Value is empty..");
+                //            }
+                //            else if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000002) //$ Share
+                //            {
+                //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
+                //                {
+                //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
 
-        //        if (paymentSchedule.Contains("vsd_shareoptions") && paymentSchedule["vsd_shareoptions"] != null)
-        //        {
-        //            if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000001) //% Share
-        //            {
-        //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //                {
-        //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
-
-        //                    amount = new Money(setCap * (shareValue / 100));
-        //                }
-        //                else
-        //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-        //            }
-        //            else if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000002) //$ Share
-        //            {
-        //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //                {
-        //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
-
-        //                    amount = new Money(shareValue);
-        //                }
-        //                else
-        //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-        //            }
-        //            else
-        //                amount = new Money(setCap);
-        //        }
-        //        else
-        //            amount = new Money(setCap);
-        //    }
-        //}
+                //                    amount = new Money(shareValue);
+                //                }
+                //                else
+                //                    throw new InvalidPluginExecutionException("Share Value is empty..");
+                //            }
+                //            else
+                //                amount = new Money(setCap);
+                //        }
+                //        else
+                //            amount = new Money(setCap);
+                //    }
+            }
         //else
         //{
         //    actualAmount = setCap;
