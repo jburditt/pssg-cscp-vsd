@@ -269,75 +269,75 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
                 }
 
                 amount = new Money(result1);
-                //    }
-                //    else
-                //    {
-                //        actualAmount = setCap;
-
-                //        if (paymentSchedule.Contains("vsd_shareoptions") && paymentSchedule["vsd_shareoptions"] != null)
-                //        {
-                //            if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000001) //% Share
-                //            {
-                //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-                //                {
-                //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
-
-                //                    amount = new Money(setCap * (shareValue / 100));
-                //                }
-                //                else
-                //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-                //            }
-                //            else if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000002) //$ Share
-                //            {
-                //                if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-                //                {
-                //                    var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
-
-                //                    amount = new Money(shareValue);
-                //                }
-                //                else
-                //                    throw new InvalidPluginExecutionException("Share Value is empty..");
-                //            }
-                //            else
-                //                amount = new Money(setCap);
-                //        }
-                //        else
-                //            amount = new Money(setCap);
-                //    }
             }
-        //else
-        //{
-        //    actualAmount = setCap;
+            else
+            {
+                actualAmount = setCap;
 
-        //    if (paymentSchedule.Contains("vsd_shareoptions") && paymentSchedule["vsd_shareoptions"] != null)
-        //    {
-        //        if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000001) //% Share
-        //        {
-        //            if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //            {
-        //                var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
+                if (paymentSchedule.ShareOptions != null)
+                {
+                    if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000001) //% Share
+                    {
+                        if (paymentSchedule.ShareValue != null)
+                        {
+                            var shareValue = (decimal)paymentSchedule.ShareValue;
 
-        //                amount = new Money(setCap * (shareValue / 100));
-        //            }
-        //            else
-        //                throw new InvalidPluginExecutionException("Share Value is empty..");
-        //        }
-        //        else if (((OptionSetValue)paymentSchedule["vsd_shareoptions"]).Value == 100000002) //$ Share
-        //        {
-        //            if (paymentSchedule.Contains("vsd_sharevalue") && paymentSchedule["vsd_sharevalue"] != null)
-        //            {
-        //                var shareValue = (decimal)paymentSchedule["vsd_sharevalue"];
+                            amount = new Money(setCap * (shareValue / 100));
+                        }
+                        else
+                            throw new Exception("Share Value is missing.");
+                    }
+                    else if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000002) //$ Share
+                    {
+                        if (paymentSchedule.ShareValue != null)
+                        {
+                            var shareValue = (decimal)paymentSchedule.ShareValue;
 
-        //                amount = new Money(shareValue);
-        //            }
-        //            else
-        //                throw new InvalidPluginExecutionException("Share Value is empty..");
-        //        }
-        //        else
-        //            amount = new Money(setCap);
-        //    }
-        //    else
-        //        amount = new Money(setCap);
+                            amount = new Money(shareValue);
+                        }
+                        else
+                            throw new Exception("Share Value is missing.");
+                    }
+                    else
+                        amount = new Money(setCap);
+                }
+                else
+                    amount = new Money(setCap);
+            }
+        }
+        else
+        {
+            actualAmount = setCap;
+
+            if (paymentSchedule.ShareOptions != null)
+            {
+                if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000001) //% Share
+                {
+                    if (paymentSchedule.ShareValue != null)
+                    {
+                        var shareValue = (decimal)paymentSchedule.ShareValue;
+
+                        amount = new Money(setCap * (shareValue / 100));
+                    }
+                    else
+                        throw new Exception("Share Value is missing.");
+                }
+                else if (paymentSchedule.ShareOptions == ShareOptions.AllocatedToCurrentSchedule_100000002) //$ Share
+                {
+                    if (paymentSchedule.ShareValue != null)
+                    {
+                        var shareValue = (decimal)paymentSchedule.ShareValue;
+
+                        amount = new Money(shareValue);
+                    }
+                    else
+                        throw new Exception("Share Value is missing.");
+                }
+                else
+                    amount = new Money(setCap);
+            }
+            else
+                amount = new Money(setCap);
         }
 
         return new Tuple<Money, decimal>(amount, actualAmount);
