@@ -19,7 +19,7 @@ public class IncomeSupportParameterRepository(DatabaseContext databaseContext) :
             // NOTE this below line would probably work but in an effort to cut corners, use the below code which is a tested version that works
             //return queryResults.Sum(x => (colaValue += colaValue * (decimal)x.Vsd_Value) / 100);
 
-            foreach (var  ent in queryResults)
+            foreach (var ent in queryResults)
             {
                 colaValue = colaValue + ((colaValue * (decimal)ent.Vsd_Value) / 100);
             }

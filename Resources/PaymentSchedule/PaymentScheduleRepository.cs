@@ -66,7 +66,6 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         //var benefitCategory = entitlement["vsd_benefitcategoryid"] as EntityReference;
         //var benefitType = entitlement["vsd_benefittypeid"] as EntityReference;
         var setCap = (decimal)entitlement.SetCap;
-        //var frequency = ((OptionSetValue)paymentSchedule["vsd_frequency"]).Value;
 
         if (entitlement.BenefitTypeId.Equals(new Guid("16127869-ec45-e911-a987-000d3af49373"))) //Child 1
         {
@@ -223,53 +222,53 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
                     }
                 }
 
-                //        if (paymentSchedule.Contains("vsd_cppdeduction") && paymentSchedule["vsd_cppdeduction"] != null)
-                //        {
-                //            result1 = result1 - ((Money)paymentSchedule["vsd_cppdeduction"]).Value;
-                //        }
+                if (paymentSchedule.CppDeduction != null)
+                {
+                    result1 = result1 - (decimal)paymentSchedule.CppDeduction;
+                }
 
-                //        if (paymentSchedule.Contains("vsd_otherdeduction") && paymentSchedule["vsd_otherdeduction"] != null)
-                //        {
-                //            result1 = result1 - ((Money)paymentSchedule["vsd_otherdeduction"]).Value;
-                //        }
+                if (paymentSchedule.OtherDeduction != null)
+                {
+                    result1 = result1 - (decimal)paymentSchedule.OtherDeduction;
+                }
 
-                //        if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
-                //        {
-                //            var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
-                //            var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
+                if (paymentSchedule.OverPaymentEmi != null && paymentSchedule.OverPaymentAmount != null)
+                {
+                    var overPayment = (decimal)paymentSchedule.OverPaymentAmount;
+                    var emi = (decimal)paymentSchedule.OverPaymentEmi;
 
-                //            if ((overPayment - emi) >= 0)
-                //            {
-                //                result1 = result1 - emi;
-                //            }
-                //        }
+                    if ((overPayment - emi) >= 0)
+                    {
+                        result1 = result1 - emi;
+                    }
+                }
 
-                //        if (frequency == 100000002) //Monthly
-                //        {
-                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-                //            result1 = result1 * xValue;
-                //            actualAmount = actualAmount * xValue;
-                //        }
-                //        else if (frequency == 100000000) //Weekly
-                //        {
-                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-                //            result1 = result1 * xValue;
-                //            actualAmount = actualAmount * xValue;
-                //        }
-                //        else if (frequency == 100000001) //Daily
-                //        {
-                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-                //            result1 = result1 * xValue;
-                //            actualAmount = actualAmount * xValue;
-                //        }
-                //        else if (frequency == 100000003) //Annual
-                //        {
-                //            var xValue = (int)paymentSchedule["vsd_xvalue"];
-                //            result1 = result1 * xValue;
-                //            actualAmount = actualAmount * xValue;
-                //        }
+                if (paymentSchedule.Frequency == Frequency.Monthly) //Monthly
+                {
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Weekly) //Weekly
+                {
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Daily) //Daily
+                {
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
+                else if (paymentSchedule.Frequency == Frequency.Annually) //Annual
+                {
+                    var xValue = (int)paymentSchedule.XValue;
+                    result1 = result1 * xValue;
+                    actualAmount = actualAmount * xValue;
+                }
 
-                //        amount = new Money(result1);
+                amount = new Money(result1);
                 //    }
                 //    else
                 //    {
