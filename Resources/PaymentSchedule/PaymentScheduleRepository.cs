@@ -342,4 +342,80 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
 
         return new Tuple<Money, decimal>(amount, actualAmount);
     }
+
+    public DateTime GetNextRuntime(PaymentSchedule paymentSchedule)
+    {
+        var result = ((DateTime)paymentSchedule.NextRunDate).ToLocalTime();
+        if (paymentSchedule.FirstRunDate != null)
+            result = ((DateTime)paymentSchedule.FirstRunDate).ToLocalTime();
+
+        if (paymentSchedule.Frequency == Frequency.Weekly) //Weekly
+        {
+            do
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddDays(7 * xValue);
+            } while (result < DateTime.Now);
+
+            if (result.Day == DateTime.Now.Day && result.Month == DateTime.Now.Month && result.Year == DateTime.Now.Year)
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddDays(7 * xValue);
+            }
+        }
+        else if (paymentSchedule.Frequency == Frequency.Daily) //Daily
+        {
+            do
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddDays(xValue);
+            } while (result < DateTime.Now);
+
+            if (result.Day == DateTime.Now.Day && result.Month == DateTime.Now.Month && result.Year == DateTime.Now.Year)
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddDays(xValue);
+            }
+        }
+        else if (paymentSchedule.Frequency == Frequency.Annually) //Annually
+        {
+            do
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddYears(xValue);
+            } while (result < DateTime.Now);
+
+            if (result.Year == DateTime.Now.Year)
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddYears(xValue);
+            }
+        }
+        else //Monthly
+        {
+            do
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddMonths(xValue);
+            } while (result < DateTime.Now);
+
+            if (result.Month == DateTime.Now.Month)
+            {
+                var xValue = (int)paymentSchedule.XValue;
+                result = result.AddMonths(xValue);
+            }
+
+            if ((result.Month == 2 || result.Month == 12) && result.Day >= 20) //Short Months and date to the end of the month VS-2170
+            {
+                //result = result.AddDays(15 - result.Day);
+                result = new DateTime(result.Year, result.Month, 15);
+            }
+        }
+
+        if (result.DayOfWeek == DayOfWeek.Saturday)
+            result = result.AddDays(-1);
+        else if (result.DayOfWeek == DayOfWeek.Sunday)
+            result = result.AddDays(-2);
+        return result;
+    }
 }

@@ -40,6 +40,7 @@ public enum EntitlementStatusCode
 
 public record EntitlementQuery : IRequest<IEnumerable<Entitlement>>
 {
+    public Guid? Id { get; set; }
     public PaymentScheduleStatus? PaymentScheduleStatus { get; set; }
     public bool? IsRecurring { get; set; }
     public EntitlementStatusCode? StatusCode { get; set; }
@@ -55,6 +56,7 @@ public record Entitlement : IDto
     public bool? TaxExemptFlag { get; set; }                // Dynamics Optional
     public decimal? FinanciallyDependentIfmWage { get; set; }   // Dynamics Optional
     public decimal? CvapAvailableEntitilement { get; set; }     // Dynamics Optional
+    public PaymentScheduleStatus? PaymentScheduleStatus { get; set; }    // Dynamics Optional
 
     // Foreign Keys
     public Guid BenefitCategoryId { get; set; }             // Dynamics Business Required

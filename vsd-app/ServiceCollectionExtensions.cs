@@ -25,9 +25,13 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<PaymentHandlers>();
         //services.AddTransient<IPaymentRepository, PaymentRepository>();
 
+        services.AddTransient<IEntitlementRepository, EntitlementRepository>();
+
         services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
 
         services.AddTransient<ITeamRepository, TeamRepository>();
+
+        services.AddTransient<IProvinceRepository, ProvinceRepository>();
 
         services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
 

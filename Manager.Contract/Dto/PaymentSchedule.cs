@@ -44,6 +44,7 @@ public record PaymentSchedule : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public DateTime? FirstRunDate { get; set; }             // Dynamics Optional
+    public DateTime? NextRunDate { get; set; }              // Dynamics Optional
     public Frequency? Frequency { get; set; }               // Dynamics Optional
     public int? XValue { get; set; }                        // Dynamics Optional
     public decimal? PercentageDeduction { get; set; }       // Dynamics Optional
