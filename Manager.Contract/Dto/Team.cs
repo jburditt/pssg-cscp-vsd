@@ -15,6 +15,8 @@ public enum TeamType
     Owner = 0,
 }
 
+public record SingleTeamQuery : BaseTeamQuery, IRequest<Team> { }
+
 public record FindTeamQuery : BaseTeamQuery, IRequest<Team> { }
 
 public record TeamQuery : BaseTeamQuery, IRequest<IEnumerable<Team>> { }
