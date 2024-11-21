@@ -9,21 +9,21 @@ public class TeamRepository : BaseRepository<Database.Model.Team, Manager.Contra
         _databaseContext = databaseContext;
     }
 
-    public Manager.Contract.Team Single(BaseTeamQuery query)
+    public Manager.Contract.Team Single(SingleTeamQuery query)
     {
         var entity = BuildQueryable(query)
             .Single();
         return _mapper.Map<Manager.Contract.Team>(entity);
     }
 
-    public Manager.Contract.Team FirstOrDefault(BaseTeamQuery query)
+    public Manager.Contract.Team FirstOrDefault(FindTeamQuery query)
     {
         var entity = BuildQueryable(query)
             .FirstOrDefault();
         return _mapper.Map<Manager.Contract.Team>(entity);
     }
 
-    public IEnumerable<Manager.Contract.Team> Query(BaseTeamQuery query)
+    public IEnumerable<Manager.Contract.Team> Query(TeamQuery query)
     {
         var entities = BuildQueryable(query)
             .ToList();

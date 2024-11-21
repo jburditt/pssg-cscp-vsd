@@ -17,6 +17,7 @@ public class Startup
         services.AddAutoMapperMappings();
 
         services.AddHandlers();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<InvoiceHandlers>());
 
         //services.AddTransient<FakeHandlers>();
         //services.AddTransient<IFakeRepository, FakeRepository>();

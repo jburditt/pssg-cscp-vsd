@@ -1,7 +1,14 @@
 ﻿namespace Resources;
 
-public class IncomeSupportParameterRepository(DatabaseContext databaseContext) : IIncomeSupportParameterRepository
+public class IncomeSupportParameterRepository(DatabaseContext databaseContext, IMapper mapper) : IIncomeSupportParameterRepository
 {
+    public IncomeSupportParameter Single(BaseIncomeSupportParameterQuery query)
+    {
+        var entity = BuildQueryable(query)
+            .Single();
+        return mapper.Map<IncomeSupportParameter>(entity);
+    }
+
     public decimal GetCOLA(DateTime effectiveDate, decimal cap)
     {
         var queryResults = databaseContext.Vsd_IncomeSupportParameterSet
@@ -29,5 +36,15 @@ public class IncomeSupportParameterRepository(DatabaseContext databaseContext) :
         {
             return cap;
         }
+    }
+
+    private IQueryable<Vsd_IncomeSupportParameter> BuildQueryable(BaseIncomeSupportParameterQuery query)
+    {
+        return databaseContext.Vsd_IncomeSupportParameterSet
+            .WhereIf(query.Type != null, x => x.Vsd_Type == (Vsd_IncomeSupportParameter_Vsd_Type?)query.Type)
+            .WhereIf(query.EffectiveDate != null, x => x.Vsd_EffectiveDate == query.EffectiveDate)
+            .WhereIf(query.StateCode != null, x => x.StateCode == (Vsd_IncomeSupportParameter_StateCode?)query.StateCode)
+            .WhereIf(query.StatusCode != null, x => x.StatusCode == (Vsd_IncomeSupportParameter_StatusCode?)query.StatusCode)
+            .WhereIf(query.Validated != null, x => x.Vsd_IncomeSupportParameterValidated == (Vsd_YesNo?)query.Validated);
     }
 }

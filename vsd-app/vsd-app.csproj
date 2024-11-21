@@ -119,6 +119,7 @@
 		<Folder Include="Authentication\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\Manager\Manager.csproj" />
 	  <ProjectReference Include="..\Resources\Resources.csproj" />
 	  <ProjectReference Include="..\Shared.Database\Shared.Database.csproj" />
 	</ItemGroup>

@@ -1,21 +1,26 @@
 ﻿namespace Manager.Contract;
 
-public record SingleIncomeSupportParamterQuery : BaseIncomeSupportParameterQuery, IRequest<IncomeSupportParameter> { }
+public record SingleIncomeSupportParameterQuery : BaseIncomeSupportParameterQuery, IRequest<IncomeSupportParameter> { }
 
 public record BaseIncomeSupportParameterQuery
 {
-    public IncomeSupportParameter.Type? Type { get; set; }
+    public IncomeSupportParameter.IncomeSupportParameterType? Type { get; set; }
     public DateTime? EffectiveDate { get; set; }
     public StateCode? StateCode { get; set; }
-    public IncomeSupportParameter.StatusCode? StatusCode { get; set; }
-    public YesNo Validated { get; set; }
+    public IncomeSupportParameter.IncomeSupportParameterStatusCode? StatusCode { get; set; }
+    public YesNo? Validated { get; set; }
 }
 
 public record IncomeSupportParameter
 {
     public decimal? Value { get; set; }
+    public IncomeSupportParameterType Type { get; set; }
+    public DateTime EffectiveDate { get; set; }
+    public StateCode StateCode { get; set; }
+    public IncomeSupportParameterStatusCode StatusCode { get; set; }
+    public YesNo Validated { get; set; }
 
-    public enum StatusCode
+    public enum IncomeSupportParameterStatusCode
     {
         //[OptionSetMetadataAttribute("Active", 1, "#0000ff")]
         Active = 1,
@@ -27,7 +32,7 @@ public record IncomeSupportParameter
         Inactive = 2,
     }
 
-    public enum Type
+    public enum IncomeSupportParameterType
     {
         //[OptionSetMetadataAttribute("COLA", 0, "#0000ff")]
         Cola = 100000000,

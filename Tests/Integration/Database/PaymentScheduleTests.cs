@@ -7,7 +7,7 @@ public class PaymentScheduleTests(IMediator mediator, ITeamRepository teamReposi
     public async Task Schedule_Payment()
     {
         var teamQuery = new SingleTeamQuery();
-        teamQuery.Name = "queueid";
+        teamQuery.Name = "CVAP Administrative Team";
         teamQuery.TeamType = TeamType.Owner;
         var team = await mediator.Send(teamQuery);
         if (team == null)
@@ -15,8 +15,7 @@ public class PaymentScheduleTests(IMediator mediator, ITeamRepository teamReposi
             throw new Exception("CVAP Admin Team not found.");
         }
 
-        var incomeSupportParamterQuery = new SingleIncomeSupportParamterQuery();
-        //var minimumWage = incomeSupportParameterRepository.Single(incomeSupportParamterQuery);
+        var incomeSupportParamterQuery = new SingleIncomeSupportParameterQuery();
         var minimumWage = await mediator.Send(incomeSupportParamterQuery);
     }
 }
