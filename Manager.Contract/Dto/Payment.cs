@@ -23,14 +23,12 @@ public enum EftAdvice
     Mail = 100000001,
 }
 
-public record PaymentQuery : IRequest<PaymentResult>
+public record PaymentQuery : IRequest<IEnumerable<Payment>>
 {
     public Guid? ProgramId { get; set; }
     public Guid? ContractId { get; set; }
     public List<PaymentStatusCode>? ExcludeStatusCodes { get; set; }
 }
-
-public record PaymentResult(IEnumerable<Payment> Payments);
 
 public record Payment : IDto
 {

@@ -15,13 +15,15 @@ public enum TeamType
     Owner = 0,
 }
 
-public record TeamQuery : IRequest<TeamResult>
+public record FindTeamQuery : BaseTeamQuery, IRequest<Team> { }
+
+public record TeamQuery : BaseTeamQuery, IRequest<IEnumerable<Team>> { }
+
+public record BaseTeamQuery
 {
     public string? Name { get; set; }
     public TeamType? TeamType { get; set; }
 }
-
-public record TeamResult(IEnumerable<Team> Teams);
 
 public record Team : IDto
 {

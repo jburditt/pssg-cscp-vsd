@@ -1,18 +1,13 @@
 ﻿namespace Shared.Contract;
 
 // Query, Find, and Base Handler
-public class FindQueryBaseHandlers<TRepository, TDto, TFindQuery, TFindResult, TQuery, TResult> : QueryBaseHandlers<TRepository, TDto, TQuery, TResult>
-    where TRepository : IFindRepository<TFindQuery, TFindResult>, IQueryRepository<TQuery, TResult>, IBaseRepository<TDto>
+public class FindQueryBaseHandlers<TRepository, TDto, TFindQuery, TQuery> : QueryBaseHandlers<TRepository, TDto, TQuery>
+    where TRepository : IFindRepository<TFindQuery, TDto>, IQueryRepository<TQuery, TDto>, IBaseRepository<TDto>
     where TDto : IDto
 {
-    protected readonly TRepository _repository;
+    public FindQueryBaseHandlers(TRepository repository) : base(repository) { }
 
-    public FindQueryBaseHandlers(TRepository repository) : base(repository)
-    {
-        _repository = repository;
-    }
-
-    public async Task<TFindResult> Handle(TFindQuery query, CancellationToken cancellationToken)
+    public async Task<TDto> Handle(TFindQuery query, CancellationToken cancellationToken)
     {
         var results = _repository.FirstOrDefault(query);
         return await Task.FromResult(results);
@@ -20,18 +15,13 @@ public class FindQueryBaseHandlers<TRepository, TDto, TFindQuery, TFindResult, T
 }
 
 // Query and Base Handler
-public class QueryBaseHandlers<TRepository, TDto, TQuery, TResult> : BaseHandlers<TRepository, TDto>
-    where TRepository : IQueryRepository<TQuery, TResult>, IBaseRepository<TDto>
+public class QueryBaseHandlers<TRepository, TDto, TQuery> : BaseHandlers<TRepository, TDto>
+    where TRepository : IQueryRepository<TQuery, TDto>, IBaseRepository<TDto>
     where TDto : IDto
 {
-    protected readonly TRepository _repository;
+    public QueryBaseHandlers(TRepository repository) : base(repository) { }
 
-    public QueryBaseHandlers(TRepository repository) : base(repository) 
-    {
-        _repository = repository;
-    }
-
-    public async Task<TResult> Handle(TQuery query, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TDto>> Handle(TQuery query, CancellationToken cancellationToken)
     {
         var results = _repository.Query(query);
         return await Task.FromResult(results);
@@ -39,37 +29,44 @@ public class QueryBaseHandlers<TRepository, TDto, TQuery, TResult> : BaseHandler
 }
 
 // Only Base Handler
-public class BaseHandlers<TRepository, TDto>(TRepository repository)
+public class BaseHandlers<TRepository, TDto>
     where TRepository : IBaseRepository<TDto>
     where TDto : IDto
 {
+    protected readonly TRepository _repository;
+
+    public BaseHandlers(TRepository repository)
+    {
+        _repository = repository;
+    }
+
     public async Task<Guid> Handle(InsertCommand<TDto> command, CancellationToken cancellationToken)
     {
-        var results = repository.Insert(command.Payload);
+        var results = _repository.Insert(command.Payload);
         return await Task.FromResult(results);
     }
 
     public async Task<Guid> Handle(UpsertCommand<TDto> command, CancellationToken cancellationToken)
     {
-        var results = repository.Upsert(command.Payload);
+        var results = _repository.Upsert(command.Payload);
         return await Task.FromResult(results);
     }
 
     public async Task<bool> Handle(TryDeleteCommand<TDto> command, CancellationToken cancellationToken)
     {
-        var results = repository.TryDelete(command.Id);
+        var results = _repository.TryDelete(command.Id);
         return await Task.FromResult(results);
     }
 
     public async Task<bool> Handle(TryDeleteByDtoCommand<TDto> command, CancellationToken cancellationToken)
     {
-        var results = repository.TryDelete(command.Payload);
+        var results = _repository.TryDelete(command.Payload);
         return await Task.FromResult(results);
     }
 
     public async Task<bool> Handle(DeleteCommand<TDto> command, CancellationToken cancellationToken)
     {
-        var results = repository.Delete(command.Id);
+        var results = _repository.Delete(command.Id);
         return await Task.FromResult(results);
     }
 }

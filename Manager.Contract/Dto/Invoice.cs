@@ -34,7 +34,7 @@ public enum TaxExemption
     PstOnly = 100000000,
 }
 
-public record InvoiceQuery : IRequest<InvoiceResult>
+public record InvoiceQuery : IRequest<IEnumerable<Invoice>>
 {
     public Guid? ProgramId { get; set; }
     public Origin? Origin { get; set; }

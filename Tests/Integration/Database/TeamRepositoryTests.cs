@@ -5,7 +5,7 @@ public class TeamRepositoryTests(ITeamRepository repository)
     [Fact]
     public void Find()
     {
-        var query = new TeamQuery();
+        var query = new FindTeamQuery();
         
         var result = repository.FirstOrDefault(query);
 

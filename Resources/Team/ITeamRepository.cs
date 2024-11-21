@@ -1,5 +1,5 @@
 ﻿namespace Resources;
 
-public interface ITeamRepository : IBaseRepository<Manager.Contract.Team>, IFindRepository<TeamQuery, Manager.Contract.Team>
+public interface ITeamRepository : IBaseRepository<Manager.Contract.Team>, IQueryRepository<TeamQuery, Manager.Contract.Team>, IFindRepository<FindTeamQuery, Manager.Contract.Team>
 {
 }
