@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Resources;
 using Shared.Database;
+using Xunit.Abstractions;
 
 namespace Gov.Cscp.VictimServices.Public;
 
@@ -23,7 +24,7 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<IInvoiceLineDetailRepository, InvoiceLineDetailRepository>();
 
         //services.AddTransient<PaymentHandlers>();
-        //services.AddTransient<IPaymentRepository, PaymentRepository>();
+        services.AddTransient<IPaymentRepository, PaymentRepository>();
 
         services.AddTransient<IEntitlementRepository, EntitlementRepository>();
 
@@ -34,6 +35,8 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IProvinceRepository, ProvinceRepository>();
 
         services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
+
+        services.AddTransient<IMessageRequests, MessageRequests>();
 
         return services;
     }

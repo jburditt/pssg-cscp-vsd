@@ -14,6 +14,15 @@ public enum PaymentStatusCode
     Waiting = 100000000,
 }
 
+public enum EftAdvice
+{
+    [Description("Email")]
+    Email = 100000000,
+
+    [Description("Mail")]
+    Mail = 100000001,
+}
+
 public record PaymentQuery : IRequest<PaymentResult>
 {
     public Guid? ProgramId { get; set; }
@@ -27,5 +36,29 @@ public record Payment : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public decimal? PaymentTotal { get; set; }
+    public DateTime Date { get; set; }                  // Dynamics Business Required
+    public decimal? SubTotal { get; set; }              // Dynamics Optional
+    public decimal? Total { get; set; }                 // Dynamics Optional
+    public decimal Gst { get; set; }                    // Dynamics Optional
+    public DateTime GlDate { get; set; }                // Dynamics Business Required
+    public PaymentTerms Terms { get; set; }             // Dynamics Optional
+    public EftAdvice? EftAdvice { get; set; }           // Dynamics Optional
+    public string RemittanceMessage1 { get; set; }      // Dynamics Optional
+    public string RemittanceMessage2 { get; set; }      // Dynamics Optional
+    public string RemittanceMessage3 { get; set; }      // Dynamics Optional
+
+    // Foreign Keys
+    public Guid? CaseId { get; set; }                   // Dynamics Optional
+    public Guid? EntitlementId { get; set; }            // Dynamics Optional
+    public Guid? Payee { get; set; }                    // Dynamics Optional
+    public Guid? TransactionCurrencyId { get; set; }    // Dynamics Optional
+
+    public enum PaymentTerms
+    {
+        [Description("20 Days")]
+        _20Days = 100000000,
+
+        [Description("Immediate")]
+        Immediate = 100000001,
+    }
 }
