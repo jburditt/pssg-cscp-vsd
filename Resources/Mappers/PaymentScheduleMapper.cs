@@ -35,6 +35,6 @@ public class PaymentScheduleMapper : Profile
             .ForMember(dest => dest.Vsd_OverpaymentAmount, opts => opts.MapFrom(src => src.OverPaymentAmount));
 
 
-        CreateMap<PaymentScheduleComposite, PaymentScheduleResult>();
+        CreateMap<PaymentScheduleComposite, PaymentScheduleEntitlement>();
     }
 }

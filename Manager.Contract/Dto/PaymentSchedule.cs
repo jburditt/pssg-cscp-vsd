@@ -20,7 +20,7 @@ public enum ShareOptions
     NoShare = 100000000,
 }
 
-public record PaymentScheduleEntitlementQuery : IRequest<PaymentScheduleResult>
+public record PaymentScheduleEntitlementQuery : IRequest<IEnumerable<PaymentScheduleEntitlement>>
 {
     public PaymentScheduleQuery? PaymentScheduleQuery { get; set; }
     public EntitlementQuery? EntitlementQuery { get; set; }
@@ -37,7 +37,7 @@ public record PaymentScheduleQuery : IRequest<IEnumerable<PaymentSchedule>>
     public bool? NotNullPayeeId { get; set; }
 }
 
-public record PaymentScheduleResult(PaymentSchedule PaymentSchedule, Entitlement Entitlement);
+public record PaymentScheduleEntitlement(PaymentSchedule PaymentSchedule, Entitlement Entitlement);
 
 public record PaymentSchedule : IDto
 {
@@ -54,6 +54,7 @@ public record PaymentSchedule : IDto
     public decimal? OtherDeduction { get; set; }            // Dynamics Optional
     public decimal? OverPaymentEmi { get; set; }            // Dynamics Optional
     public decimal? OverPaymentAmount { get; set; }         // Dynamics Optional
+    public DateTime? EndDate { get; set; }                  // Dynamics Optional
 
     // Foreign Keys
     public Guid EntitlementId { get; set; }                 // Dynamics Business Required

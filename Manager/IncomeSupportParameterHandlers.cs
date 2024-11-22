@@ -1,6 +1,4 @@
-﻿using Manager.Contract;
-
-namespace Manager;
+﻿namespace Manager;
 
 public class IncomeSupportParameterHandlers(IIncomeSupportParameterRepository repository, IMapper mapper) :
     IRequestHandler<SingleIncomeSupportParameterQuery, IncomeSupportParameter>

@@ -11,7 +11,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         _incomeSupportParameterRepository = incomeSupportParameterRepository;
     }
 
-    public IEnumerable<PaymentScheduleResult> Query(PaymentScheduleEntitlementQuery query)
+    public IEnumerable<PaymentScheduleEntitlement> Query(PaymentScheduleEntitlementQuery query)
     {
         var queryResults = _databaseContext.Vsd_PaymentScheduleSet
             .Join(_databaseContext.Vsd_EntitlementSet, paymentSchedule => paymentSchedule.Vsd_EntitlementId.Id, entitlement => entitlement.Id, (paymentSchedule, entitlement) => new { PaymentSchedule = paymentSchedule, Entitlement = entitlement })
@@ -25,7 +25,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
             .WhereIf(query.EntitlementQuery?.StatusCode != null, c => c.Entitlement.StatusCode == (Vsd_Entitlement_StatusCode)query.EntitlementQuery.StatusCode)
             .Select(x => new PaymentScheduleComposite(x.PaymentSchedule, x.Entitlement))
             .ToList();
-        return _mapper.Map<IEnumerable<PaymentScheduleResult>>(queryResults);
+        return _mapper.Map<IEnumerable<PaymentScheduleEntitlement>>(queryResults);
     }
 
     public class PaymentScheduleComposite
