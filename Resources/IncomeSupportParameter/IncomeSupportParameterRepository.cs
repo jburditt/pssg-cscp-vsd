@@ -42,7 +42,7 @@ public class IncomeSupportParameterRepository(DatabaseContext databaseContext, I
     {
         return databaseContext.Vsd_IncomeSupportParameterSet
             .WhereIf(query.Type != null, x => x.Vsd_Type == (Vsd_IncomeSupportParameter_Vsd_Type?)query.Type)
-            .WhereIf(query.EffectiveDate != null, x => x.Vsd_EffectiveDate == query.EffectiveDate)
+            .WhereIf(query.BeforeEffectiveDate != null, x => x.Vsd_EffectiveDate <= query.BeforeEffectiveDate)
             .WhereIf(query.StateCode != null, x => x.StateCode == (Vsd_IncomeSupportParameter_StateCode?)query.StateCode)
             .WhereIf(query.StatusCode != null, x => x.StatusCode == (Vsd_IncomeSupportParameter_StatusCode?)query.StatusCode)
             .WhereIf(query.Validated != null, x => x.Vsd_IncomeSupportParameterValidated == (Vsd_YesNo?)query.Validated);

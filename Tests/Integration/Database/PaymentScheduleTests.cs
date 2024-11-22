@@ -1,6 +1,4 @@
-﻿
-
-public class PaymentScheduleTests(IMediator mediator, ITeamRepository teamRepository, IIncomeSupportParameterRepository incomeSupportParameterRepository, IPaymentRepository paymentRepository)
+﻿public class PaymentScheduleTests(IMediator mediator, ITeamRepository teamRepository, IIncomeSupportParameterRepository incomeSupportParameterRepository, IPaymentRepository paymentRepository)
 {
     // NOTE not a practical integration test, used to speed up the development of PaymentController.SchedulePayment service
     [Fact]
@@ -16,6 +14,11 @@ public class PaymentScheduleTests(IMediator mediator, ITeamRepository teamReposi
         }
 
         var incomeSupportParamterQuery = new SingleIncomeSupportParameterQuery();
+        incomeSupportParamterQuery.Type = IncomeSupportParameterType.MinimumWage;
+        incomeSupportParamterQuery.BeforeEffectiveDate = DateTime.Today;
+        incomeSupportParamterQuery.StateCode = StateCode.Active;
+        incomeSupportParamterQuery.StatusCode = IncomeSupportParameterStatusCode.Active;
+        incomeSupportParamterQuery.Validated = YesNo.Yes;
         var minimumWage = await mediator.Send(incomeSupportParamterQuery);
     }
 }
