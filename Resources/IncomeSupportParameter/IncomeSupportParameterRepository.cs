@@ -9,6 +9,8 @@ public class IncomeSupportParameterRepository(DatabaseContext databaseContext, I
         return mapper.Map<IncomeSupportParameter>(entity);
     }
 
+    // TODO refactor to use Query method
+    // TODO consider decomposing business logic
     public decimal GetCOLA(DateTime effectiveDate, decimal cap)
     {
         var queryResults = databaseContext.Vsd_IncomeSupportParameterSet

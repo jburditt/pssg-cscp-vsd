@@ -49,6 +49,7 @@ public record Invoice : IDto
     public StateCode StateCode { get; set; }
     public InvoiceStatusCode StatusCode { get; set; } = InvoiceStatusCode.Draft;
     public Origin Origin { get; set; }
+    // TODO rename to Date
     public DateTime InvoiceDate { get; set; }
     public Guid? ContractId { get; set; }
     public Guid? OwnerId { get; set; }

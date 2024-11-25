@@ -40,6 +40,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         }
     }
 
+    // TODO this is business logic in the database layer
     public Tuple<Money, decimal> GetDollarAmounts(PaymentSchedule paymentSchedule, Entitlement entitlement, decimal minimumWage)
     {
         var amount = new Money(0);
@@ -343,6 +344,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         return new Tuple<Money, decimal>(amount, actualAmount);
     }
 
+    // TODO this is business logic in the database layer
     public DateTime GetNextRuntime(PaymentSchedule paymentSchedule)
     {
         var result = ((DateTime)paymentSchedule.NextRunDate).ToLocalTime();

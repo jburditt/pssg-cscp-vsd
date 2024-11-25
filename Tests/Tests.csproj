@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
+    <ProjectReference Include="..\Manager.Contract\Manager.Contract.csproj" />
     <ProjectReference Include="..\vsd-app\vsd-app.csproj" />
   </ItemGroup>
 

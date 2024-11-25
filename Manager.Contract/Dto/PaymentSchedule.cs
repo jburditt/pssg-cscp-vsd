@@ -58,4 +58,6 @@ public record PaymentSchedule : IDto
 
     // Foreign Keys
     public Guid EntitlementId { get; set; }                 // Dynamics Business Required
+    public Guid CaseId { get; set; }                        // Dynamics Business Required
+    public Guid PayeeId { get; set; }                       // Dynamics Business Required
 }
