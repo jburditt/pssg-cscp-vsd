@@ -6,22 +6,17 @@ public enum IsoCurrencyCode
 }
 
 // TODO consolidate all FindXQuery and XQuery records
-public record FindCurrencyQuery : IRequest<FindCurrencyResult>
+public record FindCurrencyQuery : IRequest<Currency>
 {
     public StateCode? StateCode { get; set; }
     public string? IsoCurrencyCode { get; set; }
 }
 
-public record FindCurrencyResult(Currency Currency);
-
-
-public record CurrencyQuery : IRequest<CurrencyResult>
+public record CurrencyQuery : IRequest<IEnumerable<Currency>>
 {
     public StateCode? StateCode { get; set; }
     public string? IsoCurrencyCode { get; set; }
 }
-
-public record CurrencyResult(IEnumerable<Currency> Currencies);
 
 public record Currency : IDto
 {

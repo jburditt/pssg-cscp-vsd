@@ -34,6 +34,67 @@ public enum TaxExemption
     PstOnly = 100000000,
 }
 
+public enum CvapAuthorizationStatus
+{
+    //[OptionSetMetadataAttribute("Approved by Leadership", 2, "#0000ff")]
+    ApprovedByLeadership = 100000002,
+
+    //[OptionSetMetadataAttribute("Approved by QR", 1, "#0000ff")]
+    ApprovedByQr = 100000001,
+
+    //[OptionSetMetadataAttribute("Declined", 4, "#0000ff")]
+    Declined = 100000003,
+
+    //[OptionSetMetadataAttribute("Invoice Correction", 3, "#0000ff")]
+    InvoiceCorrection = 100000004,
+
+    //[OptionSetMetadataAttribute("Ready for Review", 0, "#0000ff")]
+    ReadyForReview = 100000000,
+}
+
+public enum CvapPaymentType
+{
+    //[OptionSetMetadataAttribute("Post-Adjudication", 1, "#0000ff")]
+    PostAdjudication = 100000001,
+
+    //[OptionSetMetadataAttribute("Pre-Adjudication", 0, "#0000ff")]
+    PreAdjudication = 100000000,
+}
+
+// TODO change to short with validation range 1-10
+public enum CvapNumberOfLineItems
+{
+    //[OptionSetMetadataAttribute("1", 0, "#0000ff")]
+    _1 = 100000000,
+
+    //[OptionSetMetadataAttribute("10", 9, "#0000ff")]
+    _10 = 100000009,
+
+    //[OptionSetMetadataAttribute("2", 1, "#0000ff")]
+    _2 = 100000001,
+
+    //[OptionSetMetadataAttribute("3", 2, "#0000ff")]
+    _3 = 100000002,
+
+    //[OptionSetMetadataAttribute("4", 3, "#0000ff")]
+    _4 = 100000003,
+
+    //[OptionSetMetadataAttribute("5", 4, "#0000ff")]
+    _5 = 100000004,
+
+    //[OptionSetMetadataAttribute("6", 5, "#0000ff")]
+    _6 = 100000005,
+
+    //[OptionSetMetadataAttribute("7", 6, "#0000ff")]
+    _7 = 100000006,
+
+    //[OptionSetMetadataAttribute("8", 7, "#0000ff")]
+    _8 = 100000007,
+
+    //[OptionSetMetadataAttribute("9", 8, "#0000ff")]
+    _9 = 100000008,
+}
+
 public record InvoiceQuery : IRequest<IEnumerable<Invoice>>
 {
     public Guid? ProgramId { get; set; }
@@ -51,17 +112,29 @@ public record Invoice : IDto
     public Origin Origin { get; set; }
     // TODO rename to Date
     public DateTime InvoiceDate { get; set; }
-    public Guid? ContractId { get; set; }
-    public Guid? OwnerId { get; set; }
-    public Guid? PayeeId { get; set; }
-    public Guid? ProgramId { get; set; }
-    public Guid? CurrencyId { get; set; }
+
     public ProgramUnit ProgramUnit { get; set; }
     public InvoiceType CvapInvoiceType { get; set; }
     public TaxExemption TaxExemption { get; set; }
     public DateTime CpuScheduledPaymentDate { get; set; }
     public MethodOfPayment? MethodOfPayment { get; set; }
     public CpuInvoiceType CpuInvoiceType { get; set; }
-    public Guid? ProvinceStateId { get; set; }
     public string PaymentAdviceComments { get; set; } = string.Empty;
+
+    // Foreign Keys
+    public Guid? ContractId { get; set; }
+    public Guid? OwnerId { get; set; }
+    public Guid? PayeeId { get; set; }
+    public Guid? ProgramId { get; set; }
+    public Guid? CurrencyId { get; set; }
+    public Guid? ProvinceStateId { get; set; }
+    public Guid? CaseId { get; set; }
+    public Guid? EntitlementId { get; set; }
+    public CvapAuthorizationStatus CvapAuthorizationStatus { get; set; }
+    public DateTime AuthorizationDate { get; set; }
+    public CvapPaymentType CvapPaymentType { get; set; }
+    public CvapNumberOfLineItems CvapNumberOfLineItems { get; set; }
+    public Guid? CvapStobId { get; set; }
+    public Guid? ProcessId { get; set; }
+    public Guid? PaymentScheduleId { get; set; }
 }

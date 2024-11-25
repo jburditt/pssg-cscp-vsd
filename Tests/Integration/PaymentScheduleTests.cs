@@ -6,6 +6,9 @@
     [Fact]
     public async Task Schedule_Payment()
     {
+        var cadCurrencyCommand = new GetCurrencyLookupCommand();
+        var cadCurrency = await mediator.Send(cadCurrencyCommand);
+
         var teamQuery = new SingleTeamQuery();
         teamQuery.Name = "CVAP Administrative Team";
         teamQuery.TeamType = TeamType.Owner;
@@ -72,25 +75,25 @@
             invoiceEntity.CvapInvoiceType = InvoiceType.OtherPayments;
             invoiceEntity.InvoiceDate = DateTime.Now;
             invoiceEntity.PayeeId = paymentSchedule.PayeeId;
-            //invoiceEntity.CaseId = paymentSchedule.CaseId;
-            //invoiceEntity.OwnerId = adminTeam.Id;
-            //invoiceEntity.EntitlementId = paymentSchedule.EntitlementId;
-            //invoiceEntity.CvapAuthorizationStatus = CvapAuthorizationStatus.Approved; //Approved by QR
-            //invoiceEntity.AuthorizationDate = DateTime.Now;
-            //invoiceEntity.ProgramUnit = ProgramUnit.Cvap;
-            //invoiceEntity.TransactionCurrencyId = currencyLookup;
-            //invoiceEntity.CvapPaymentType = CvapPaymentType.PostAdjudication; // 100000001
-            //invoiceEntity.StatusCode = InvoiceStatusCode.Submitted;
-            //invoiceEntity.MethodOfPayment = MethodOfPayment.Cheque;
-            //invoiceEntity.CvapNumberOfLineItems = CvapNumberOfLineItems._1; //100000000 //1
-            //invoiceEntity.CvapStobId = Constant.CvapStobId; //7902 - Entitlements
-            //invoiceEntity.ProcessId = Guid.Empty;
-            //invoiceEntity.ProvinceStateId = Constant.ProvinceBc;
-            //invoiceEntity.PaymentScheduleId = paymentSchedule.Id;
-            //if (paymentSchedule.TaxExemptFlag)
-            //    invoiceEntity.TaxExemption = TaxExemption.NoTax;
-            //else
-            //    invoiceEntity.TaxExemption = TaxExemption.GstOnly;
+            invoiceEntity.CaseId = paymentSchedule.CaseId;
+            invoiceEntity.OwnerId = adminTeam.Id;
+            invoiceEntity.EntitlementId = paymentSchedule.EntitlementId;
+            invoiceEntity.CvapAuthorizationStatus = CvapAuthorizationStatus.ApprovedByQr;
+            invoiceEntity.AuthorizationDate = DateTime.Now;
+            invoiceEntity.ProgramUnit = ProgramUnit.Cvap;
+            invoiceEntity.CurrencyId = cadCurrency.Id;
+            invoiceEntity.CvapPaymentType = CvapPaymentType.PostAdjudication; // 100000001
+            invoiceEntity.StatusCode = InvoiceStatusCode.Submitted;
+            invoiceEntity.MethodOfPayment = MethodOfPayment.Cheque;
+            invoiceEntity.CvapNumberOfLineItems = CvapNumberOfLineItems._1; //100000000 //1
+            invoiceEntity.CvapStobId = Constant.CvapStobId; //7902 - Entitlements
+            invoiceEntity.ProcessId = Guid.Empty;
+            invoiceEntity.ProvinceStateId = Constant.ProvinceBc;
+            invoiceEntity.PaymentScheduleId = paymentSchedule.Id;
+            if (entitlement.TaxExemptFlag ?? false)
+                invoiceEntity.TaxExemption = TaxExemption.NoTax;
+            else
+                invoiceEntity.TaxExemption = TaxExemption.GstOnly;
 
             //var paymentAmounts = GetPaymentTotal(paymentScheduleEntity, entitlementEntity, minimumWage);
 
