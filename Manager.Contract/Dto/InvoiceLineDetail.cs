@@ -12,14 +12,17 @@ public record InvoiceLineDetail : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public InvoiceType? InvoiceType { get; set; }
-    public ProgramUnit? ProgramUnit { get; set; }
-    public YesNo? Approved { get; set; }
-    public decimal? AmountSimple { get; set; }
-    public TaxExemption? TaxExemption { get; set; }
+    public InvoiceType? InvoiceType { get; set; }   // Dynamics Optional
+    public ProgramUnit? ProgramUnit { get; set; }   // Dynamics Optional
+    public YesNo? Approved { get; set; }            // Dynamics Optional
+    public decimal? AmountSimple { get; set; }      // Dynamics Optional
+    public TaxExemption? TaxExemption { get; set; } // Dynamics Optional
 
     // References
-    public Guid InvoiceId { get; set; }
-    public Guid OwnerId { get; set; }
-    public Guid? ProvinceStateId { get; set; }
+    public Guid InvoiceId { get; set; }         // Dynamics Business Required
+    public Guid OwnerId { get; set; }           // Dynamics System Required
+    public Guid? ProvinceStateId { get; set; }  // Dynamics Optional
+    public Guid? CaseId { get; set; }           // Dynamics Optional
+    public Guid? EntitlementId { get; set; }    // Dynamics Optional
+    public Guid CurrencyId { get; set; }        // Dynamics System Required
 }

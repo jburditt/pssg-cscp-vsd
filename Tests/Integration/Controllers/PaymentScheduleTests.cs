@@ -1,6 +1,4 @@
-﻿using Resources;
-
-public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRequests, IEntitlementRepository entitlementRepository, ILoggerFactory loggingFactory)
+﻿public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRequests, IEntitlementRepository entitlementRepository, ILoggerFactory loggingFactory)
 {
     private readonly ILogger _logger = loggingFactory.CreateLogger<PaymentScheduleTests>();
 
@@ -97,6 +95,7 @@ public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRe
             else
                 invoice.TaxExemption = TaxExemption.GstOnly;
             var insertInvoiceCommand = new InsertCommand<Invoice>(invoice);
+            // TODO
             await mediator.Send(insertInvoiceCommand);
 
             var getPaymentTotalCommand = new GetPaymentTotalCommand
@@ -136,28 +135,26 @@ public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRe
             payment.EftAdvice = EftAdvice.Mail;
 
             //VS-5752
-            payment.RemittanceMessage1 = paymentSchedule.CaseName;// ((EntityReference)paymentScheduleEntity["vsd_caseid"]).Name;
-            //payment.RemittanceMessage2 = ((EntityReference)invoiceEntity["vsd_entitlementid"]).Name;
-            //payment.RemittanceMessage3 = "Crime Victim Assistance Program";
+            payment.RemittanceMessage1 = paymentSchedule.CaseName;
+            payment.RemittanceMessage2 = invoice.EntitlementName;
+            payment.RemittanceMessage3 = "Crime Victim Assistance Program";
 
-            ////****Add Line Item
-            //Entity lineEntity = new Entity("vsd_invoiceid");
-            ////lineEntity["vsd_name"] = ((EntityReference)paymentScheduleEntity["vsd_entitlementid"]).Name;
-            //lineEntity["vsd_caseid"] = invoiceEntity["vsd_caseid"];
-            //lineEntity["vsd_entitlementid"] = invoiceEntity["vsd_entitlementid"];
-            //lineEntity["vsd_invoiceid"] = invoiceEntity.ToEntityReference();
-            ////lineEntity["ownerid"] = adminTeam;
-            //lineEntity["vsd_amountsimple"] = payment["vsd_paymentsubtotal"];
-            //lineEntity["vsd_invoicetype"] = new OptionSetValue(100000001); //Other Payments
-            //lineEntity["vsd_lineitemapproved"] = new OptionSetValue(100000001); //Yes
-            //lineEntity["vsd_provincestateid"] = new EntityReference("vsd_province", new Guid("FDE4DBCA-989A-E811-8155-480FCFF4F6A1")); //BC
-            //lineEntity["vsd_taxexemption"] = (OptionSetValue)invoiceEntity["vsd_taxexemption"];
-            //lineEntity["vsd_programunit"] = new OptionSetValue(100000000); //CVAP
-            //lineEntity["transactioncurrencyid"] = currencyLookup;
+            //****Add Line Item
+            var invoiceLineDetail = new InvoiceLineDetail();
+            invoiceLineDetail.CaseId = invoice.CaseId;
+            invoiceLineDetail.EntitlementId = invoice.EntitlementId;
+            invoiceLineDetail.InvoiceId = invoice.Id;
+            invoiceLineDetail.AmountSimple = payment.SubTotal;
+            invoiceLineDetail.InvoiceType = InvoiceType.OtherPayments;
+            invoiceLineDetail.Approved = YesNo.Yes;
+            invoiceLineDetail.ProvinceStateId = Constant.ProvinceBc;
+            invoiceLineDetail.TaxExemption = invoice.TaxExemption;
+            invoiceLineDetail.ProgramUnit = ProgramUnit.Cvap;
+            invoiceLineDetail.CurrencyId = cadCurrency.Id;
 
             //EntityCollection lineCollection = new EntityCollection();
             //lineCollection.EntityName = "vsd_invoicelinedetail";
-            //lineCollection.Entities.Add(lineEntity);
+            //lineCollection.Entities.Add(invoiceLineDetail);
             //Relationship lineRelationship = new Relationship("vsd_vsd_invoice_vsd_invoicelinedetail");
             //invoiceEntity.RelatedEntities.Add(lineRelationship, lineCollection);
 
@@ -176,27 +173,31 @@ public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRe
 
             #endregion
 
-            //#region Update Next Run Time
-            ////****Check for weekdays
-            //var nextRunDate = GetNextRuntime(paymentScheduleEntity);
+            #region Update Next Run Time
+            //****Check for weekdays
+            var getNextRuntimeCommand = new GetNextRuntimeCommand
+            {
+                PaymentSchedule = paymentSchedule
+            };
+            var nextRunDate = await mediator.Send(getNextRuntimeCommand);
 
-            //bool deactivateNextRun = false;
-            //if (paymentScheduleEntity.Contains("vsd_enddate") && paymentScheduleEntity["vsd_enddate"] != null)
-            //{
-            //    var endDate = ((DateTime)paymentScheduleEntity["vsd_enddate"]).ToLocalTime();
-            //    if (endDate <= nextRunDate)
-            //    {
-            //        Log.AppendLine("Deactivating payment schedule due to end date is earlier than next run date");
-            //        deactivateNextRun = true;   //VS-6245: if enddate is earlier or equals to next run date then deactivate the schedule 
-            //                                    //  continue;   //removed due to VS-6245
-            //    }
-            //}
+            bool deactivateNextRun = false;
+            if (paymentSchedule.EndDate != null)
+            {
+                var endDate = ((DateTime)paymentSchedule.EndDate).ToLocalTime();
+                if (endDate <= nextRunDate)
+                {
+                    _logger.LogInformation("Deactivating payment schedule due to end date is earlier than next run date");
+                    deactivateNextRun = true;   //VS-6245: if enddate is earlier or equals to next run date then deactivate the schedule 
+                                                //  continue;   //removed due to VS-6245
+                }
+            }
 
-            //Log.AppendLine("Updating the Next Run Date and total income support amount..");
+            _logger.LogInformation("Updating the Next Run Date and total income support amount..");
             //Entity updatePaymentSchedule = new Entity("vsd_paymentschedule");
-            //updatePaymentSchedule.Id = paymentScheduleEntity.Id;
-            //if (!paymentScheduleEntity.Contains("vsd_firstrundate"))
-            //    updatePaymentSchedule["vsd_firstrundate"] = paymentScheduleEntity["vsd_nextrundate"];
+            //updatePaymentSchedule.Id = paymentSchedule.Id;
+            //if (!paymentSchedule.Contains("vsd_firstrundate"))
+            //    updatePaymentSchedule["vsd_firstrundate"] = paymentSchedule["vsd_nextrundate"];
             //updatePaymentSchedule["vsd_totalamountofincomesupport"] = paymentAmounts.Item1;
 
             //if (deactivateNextRun == true)    //VS-6245
@@ -212,10 +213,10 @@ public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRe
             //updatePaymentSchedule["vsd_actualvalue"] = paymentAmounts.Item2;
 
             ////Added new logic//VS-4531.
-            //if (paymentScheduleEntity.Contains("vsd_overpaymentemi") && paymentScheduleEntity["vsd_overpaymentemi"] != null && paymentScheduleEntity.Contains("vsd_overpaymentamount") && paymentScheduleEntity["vsd_overpaymentamount"] != null)
+            //if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
             //{
-            //    var overPayment = ((Money)paymentScheduleEntity["vsd_overpaymentamount"]).Value;
-            //    var emi = ((Money)paymentScheduleEntity["vsd_overpaymentemi"]).Value;
+            //    var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
+            //    var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
 
             //    if ((overPayment - emi) >= 0)
             //    {
@@ -227,6 +228,7 @@ public class PaymentScheduleTests(IMediator mediator, IMessageRequests messageRe
             //    }
             //}
             //OrgService.Update(updatePaymentSchedule);
+            #endregion
         }
     }
 }

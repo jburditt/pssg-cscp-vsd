@@ -3,7 +3,9 @@
 namespace Manager;
 
 public class PaymentScheduleHandlers : BaseHandlers<IPaymentScheduleRepository, PaymentSchedule>,
-    IRequestHandler<PaymentScheduleEntitlementQuery, IEnumerable<PaymentScheduleEntitlement>>
+    IRequestHandler<PaymentScheduleEntitlementQuery, IEnumerable<PaymentScheduleEntitlement>>,
+    IRequestHandler<GetPaymentTotalCommand, PaymentTotalResult>,
+    IRequestHandler<GetNextRuntimeCommand, DateTime>
 {
     private readonly IPaymentScheduleService _service;
     private readonly IMapper _mapper;
@@ -26,6 +28,12 @@ public class PaymentScheduleHandlers : BaseHandlers<IPaymentScheduleRepository, 
         var paymentTotal = _service.GetPaymentTotal(command.PaymentSchedule, command.Entitlement, command.MinimumWage);
         return await Task.FromResult(paymentTotal);
     }
+
+    public async Task<DateTime> Handle(GetNextRuntimeCommand command, CancellationToken cancellationToken)
+    {
+        var nextPaymentDate = _service.GetNextRuntime(command.PaymentSchedule);
+        return await Task.FromResult(nextPaymentDate);
+    }
 }
 
 public class GetPaymentTotalCommand : IRequest<PaymentTotalResult> 
@@ -33,4 +41,9 @@ public class GetPaymentTotalCommand : IRequest<PaymentTotalResult>
     public required PaymentSchedule PaymentSchedule { get; set; }
     public required Entitlement Entitlement { get; set; }
     public decimal MinimumWage { get; set; }
+}
+
+public class GetNextRuntimeCommand : IRequest<DateTime>
+{
+    public required PaymentSchedule PaymentSchedule { get; set; }
 }

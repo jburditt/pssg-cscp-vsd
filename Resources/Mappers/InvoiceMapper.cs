@@ -9,7 +9,9 @@ public class InvoiceMapper : Profile
             .ForMember(dest => dest.CpuScheduledPaymentDate, opts => opts.MapFrom(src => src.Vsd_Cpu_ScheduledPaymentDate))
             .ForMember(dest => dest.CurrencyId, opts => opts.MapFrom(src => src.TransactionCurrencyId.Id))
             .ForMember(dest => dest.CvapInvoiceType, opts => opts.MapFrom(src => src.Vsd_Cvap_InvoiceType))
-            .ForMember(dest => dest.InvoiceDate, opts => opts.MapFrom(src => src.Vsd_InvoicedAte));
+            .ForMember(dest => dest.InvoiceDate, opts => opts.MapFrom(src => src.Vsd_InvoicedAte))
+            .ForMember(dest => dest.EntitlementId, opts => opts.MapFrom(src => src.Vsd_EntitlementId))
+            .ForMember(dest => dest.EntitlementName, opts => opts.MapFrom(src => src.Vsd_EntitlementIdName));
 
         CreateMap<Invoice, Vsd_Invoice>()
             .ForMember(dest => dest.Vsd_Cpu_InvoiceType, opts => opts.MapFrom(src => src.CpuInvoiceType))
@@ -17,9 +19,11 @@ public class InvoiceMapper : Profile
             .ForMember(dest => dest.Vsd_Cvap_InvoiceType, opts => opts.MapFrom(src => src.CvapInvoiceType))
             .ForMember(dest => dest.Vsd_InvoicedAte, opts => opts.MapFrom(src => src.InvoiceDate))
             .ForMember(dest => dest.Vsd_ContractId, opts => opts.MapFrom(src => src.ContractId != null ? new EntityReference(Vsd_Contract.EntityLogicalName, src.ContractId.Value) : null))
-            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => src.OwnerId != null ? new EntityReference("systemuser", src.OwnerId.Value) : null))
+            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => new EntityReference("systemuser", src.OwnerId)))
             .ForMember(dest => dest.Vsd_ProgramId, opts => opts.MapFrom(src => src.ProgramId != null ? new EntityReference(Vsd_Program.EntityLogicalName, src.ProgramId.Value) : null))
             .ForMember(dest => dest.Vsd_ProvinceStateId, opts => opts.MapFrom(src => src.ProvinceStateId != null ? new EntityReference(Vsd_Province.EntityLogicalName, src.ProvinceStateId.Value) : null))
-            .ForMember(dest => dest.TransactionCurrencyId, opts => opts.MapFrom(src => src.CurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.CurrencyId.Value) : null));
+            .ForMember(dest => dest.TransactionCurrencyId, opts => opts.MapFrom(src => src.CurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.CurrencyId.Value) : null))
+            .ForMember(dest => dest.Vsd_EntitlementId, opts => opts.MapFrom(src => src.EntitlementId))
+            .ForMember(dest => dest.Vsd_EntitlementIdName, opts => opts.MapFrom(src => src.EntitlementName));
     }
 }
