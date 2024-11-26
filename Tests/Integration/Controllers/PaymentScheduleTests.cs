@@ -194,40 +194,43 @@
             }
 
             _logger.LogInformation("Updating the Next Run Date and total income support amount..");
-            //Entity updatePaymentSchedule = new Entity("vsd_paymentschedule");
+            //var updatePaymentSchedule = new PaymentSchedule();
             //updatePaymentSchedule.Id = paymentSchedule.Id;
-            //if (!paymentSchedule.Contains("vsd_firstrundate"))
-            //    updatePaymentSchedule["vsd_firstrundate"] = paymentSchedule["vsd_nextrundate"];
-            //updatePaymentSchedule["vsd_totalamountofincomesupport"] = paymentAmounts.Item1;
+            if (paymentSchedule.FirstRunDate == null)
+                paymentSchedule.FirstRunDate = paymentSchedule.NextRunDate;
+            paymentSchedule.TotalAmountOfIncomeSupport = paymentAmounts.Amount;
 
-            //if (deactivateNextRun == true)    //VS-6245
-            //{
-            //    updatePaymentSchedule["statecode"] = new OptionSetValue(1); //Inactive
-            //    updatePaymentSchedule["statuscode"] = new OptionSetValue(2);
-            //}
-            //else
-            //{
-            //    updatePaymentSchedule["vsd_nextrundate"] = nextRunDate;
-            //}
+            if (deactivateNextRun == true)    //VS-6245
+            {
+                paymentSchedule.StateCode = StateCode.Inactive;
+                paymentSchedule.StatusCode = PaymentScheduleStatusCode.Inactive;
+            }
+            else
+            {
+                paymentSchedule.NextRunDate = nextRunDate;
+            }
 
-            //updatePaymentSchedule["vsd_actualvalue"] = paymentAmounts.Item2;
+            paymentSchedule.ActualValue = paymentAmounts.ActualAmount;
 
-            ////Added new logic//VS-4531.
-            //if (paymentSchedule.Contains("vsd_overpaymentemi") && paymentSchedule["vsd_overpaymentemi"] != null && paymentSchedule.Contains("vsd_overpaymentamount") && paymentSchedule["vsd_overpaymentamount"] != null)
-            //{
-            //    var overPayment = ((Money)paymentSchedule["vsd_overpaymentamount"]).Value;
-            //    var emi = ((Money)paymentSchedule["vsd_overpaymentemi"]).Value;
+            //Added new logic//VS-4531.
+            if (paymentSchedule.OverPaymentEmi != null && paymentSchedule.OverPaymentAmount != null)
+            {
+                var overPayment = paymentSchedule.OverPaymentAmount;
+                var emi = paymentSchedule.OverPaymentEmi;
 
-            //    if ((overPayment - emi) >= 0)
-            //    {
-            //        updatePaymentSchedule["vsd_remainingpaymentamount"] = overPayment - emi;
-            //    }
-            //    else if ((overPayment - emi) < 0)
-            //    {
-            //        updatePaymentSchedule["vsd_remainingpaymentamount"] = 0;
-            //    }
-            //}
-            //OrgService.Update(updatePaymentSchedule);
+                if ((overPayment - emi) >= 0)
+                {
+                    paymentSchedule.RemainingPaymentAmount = overPayment - emi;
+                }
+                else if ((overPayment - emi) < 0)
+                {
+                    paymentSchedule.RemainingPaymentAmount = 0;
+                }
+            }
+
+            var updatePaymentScheduleCommand = new UpdateCommand<PaymentSchedule>(paymentSchedule);
+            await mediator.Send(updatePaymentScheduleCommand);
+
             #endregion
         }
     }

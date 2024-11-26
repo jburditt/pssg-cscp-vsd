@@ -20,6 +20,15 @@ public enum ShareOptions
     NoShare = 100000000,
 }
 
+public enum PaymentScheduleStatusCode
+{
+    //[OptionSetMetadataAttribute("Active", 0)]
+    Active = 1,
+
+    //[OptionSetMetadataAttribute("Inactive", 1)]
+    Inactive = 2,
+}
+
 public record PaymentScheduleEntitlementQuery : IRequest<IEnumerable<PaymentScheduleEntitlement>>
 {
     public PaymentScheduleQuery? PaymentScheduleQuery { get; set; }
@@ -43,23 +52,27 @@ public record PaymentSchedule : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public DateTime? FirstRunDate { get; set; }             // Dynamics Optional
-    public DateTime? NextRunDate { get; set; }              // Dynamics Optional
-    public Frequency? Frequency { get; set; }               // Dynamics Optional
-    public int? XValue { get; set; }                        // Dynamics Optional
-    public decimal? PercentageDeduction { get; set; }       // Dynamics Optional
-    public ShareOptions? ShareOptions { get; set; }         // Dynamics Optional
-    public decimal? ShareValue { get; set; }                // Dynamics Optional
-    public decimal? CppDeduction { get; set; }              // Dynamics Optional
-    public decimal? OtherDeduction { get; set; }            // Dynamics Optional
-    public decimal? OverPaymentEmi { get; set; }            // Dynamics Optional
-    public decimal? OverPaymentAmount { get; set; }         // Dynamics Optional
-    public DateTime? EndDate { get; set; }                  // Dynamics Optional
+    public PaymentScheduleStatusCode StatusCode { get; set; }   // Dynamics Optional
+    public DateTime? FirstRunDate { get; set; }                 // Dynamics Optional
+    public DateTime? NextRunDate { get; set; }                  // Dynamics Optional
+    public Frequency? Frequency { get; set; }                   // Dynamics Optional
+    public int? XValue { get; set; }                            // Dynamics Optional
+    public decimal? PercentageDeduction { get; set; }           // Dynamics Optional
+    public ShareOptions? ShareOptions { get; set; }             // Dynamics Optional
+    public decimal? ShareValue { get; set; }                    // Dynamics Optional
+    public decimal? CppDeduction { get; set; }                  // Dynamics Optional
+    public decimal? OtherDeduction { get; set; }                // Dynamics Optional
+    public decimal? OverPaymentEmi { get; set; }                // Dynamics Optional
+    public decimal? OverPaymentAmount { get; set; }             // Dynamics Optional
+    public DateTime? EndDate { get; set; }                      // Dynamics Optional
+    public decimal? TotalAmountOfIncomeSupport { get; set; }    // Dynamics Optional
+    public decimal? ActualValue { get; set; }                   // Dynamics Optional
+    public decimal? RemainingPaymentAmount { get; set; }        // Dynamics Optional
 
     // Foreign Keys
     public Guid EntitlementId { get; set; }                 // Dynamics Business Required
     public Guid CaseId { get; set; }                        // Dynamics Business Required
-    public required string CaseName { get; set; }                    // Inherently Business Required from CaseId
+    public required string CaseName { get; set; }           // Inherently Business Required from CaseId
     public Guid PayeeId { get; set; }                       // Dynamics Business Required
     public Guid? PrimaryScheduleId { get; set; }            // Dynamics Optional
 }

@@ -52,6 +52,12 @@ public class BaseHandlers<TRepository, TDto>
         return await Task.FromResult(results);
     }
 
+    public async Task<bool> Handle(UpdateCommand<TDto> command, CancellationToken cancellationToken)
+    {
+        var results = _repository.Update(command.Payload);
+        return await Task.FromResult(results);
+    }
+
     public async Task<bool> Handle(TryDeleteCommand<TDto> command, CancellationToken cancellationToken)
     {
         var results = _repository.TryDelete(command.Id);
@@ -73,6 +79,8 @@ public class BaseHandlers<TRepository, TDto>
 
 public record InsertCommand<TDto>(TDto dto) : PayloadCommand<TDto, Guid>(dto) { }
 public record UpsertCommand<TDto>(TDto dto) : PayloadCommand<TDto, Guid>(dto) { }
+public record UpdateCommand<TDto>(TDto dto) : PayloadCommand<TDto, bool>(dto) { }
+
 public record TryDeleteByDtoCommand<TDto>(TDto dto) : PayloadCommand<TDto, bool>(dto) { }
 public record TryDeleteCommand<TDto>(Guid Id) : IdCommand<bool>(Id) { }
 public record DeleteCommand<TDto>(Guid Id) : IdCommand<bool>(Id) { }
