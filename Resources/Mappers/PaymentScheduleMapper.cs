@@ -20,6 +20,7 @@ public class PaymentScheduleMapper : Profile
             .ForMember(dest => dest.OverPaymentEmi, opts => opts.MapFrom(src => src.Vsd_OverpayMenteMi))
             .ForMember(dest => dest.OverPaymentAmount, opts => opts.MapFrom(src => src.Vsd_OverpaymentAmount))
             .ForMember(dest => dest.CaseId, opts => opts.MapFrom(src => src.Vsd_CaseId.Id))
+            .ForMember(dest => dest.CaseName, opts => opts.MapFrom(src => src.Vsd_CaseiDnaMe))
             .ForMember(dest => dest.PayeeId, opts => opts.MapFrom(src => src.Vsd_Payee.Id));
 
         CreateMap<PaymentSchedule, Vsd_PaymentSchedule>()
@@ -36,6 +37,7 @@ public class PaymentScheduleMapper : Profile
             .ForMember(dest => dest.Vsd_OverpayMenteMi, opts => opts.MapFrom(src => src.OverPaymentEmi))
             .ForMember(dest => dest.Vsd_OverpaymentAmount, opts => opts.MapFrom(src => src.OverPaymentAmount))
             .ForMember(dest => dest.Vsd_CaseId, opts => opts.MapFrom(src => new EntityReference("incident", src.CaseId)))
+            .ForMember(dest => dest.Vsd_CaseiDnaMe, opts => opts.MapFrom(src => src.CaseName))
             .ForMember(dest => dest.Vsd_Payee, opts => opts.MapFrom(src => new EntityReference(Account.EntityLogicalName, src.PayeeId)));
 
         CreateMap<PaymentScheduleComposite, PaymentScheduleEntitlement>();

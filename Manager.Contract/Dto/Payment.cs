@@ -14,6 +14,15 @@ public enum PaymentStatusCode
     Waiting = 100000000,
 }
 
+public enum PaymentTerms
+{
+    [Description("20 Days")]
+    _20Days = 100000000,
+
+    [Description("Immediate")]
+    Immediate = 100000001,
+}
+
 public enum EftAdvice
 {
     [Description("Email")]
@@ -23,7 +32,9 @@ public enum EftAdvice
     Mail = 100000001,
 }
 
-public record PaymentQuery : IRequest<IEnumerable<Payment>>
+public record FindPaymentQuery : BasePaymentQuery, IRequest<Payment> { }
+public record PaymentQuery : BasePaymentQuery, IRequest<IEnumerable<Payment>> { }
+public record BasePaymentQuery
 {
     public Guid? ProgramId { get; set; }
     public Guid? ContractId { get; set; }
@@ -48,15 +59,8 @@ public record Payment : IDto
     // Foreign Keys
     public Guid? CaseId { get; set; }                   // Dynamics Optional
     public Guid? EntitlementId { get; set; }            // Dynamics Optional
+    // TODO rename to PayeeId
     public Guid? Payee { get; set; }                    // Dynamics Optional
+    // TODO rename to CurrencyId
     public Guid? TransactionCurrencyId { get; set; }    // Dynamics Optional
-
-    public enum PaymentTerms
-    {
-        [Description("20 Days")]
-        _20Days = 100000000,
-
-        [Description("Immediate")]
-        Immediate = 100000001,
-    }
 }

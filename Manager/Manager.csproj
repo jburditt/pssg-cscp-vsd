@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Manager.Contract\Manager.Contract.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
 </Project>

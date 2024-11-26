@@ -14,5 +14,7 @@ vsd-app/vsd-app\.sln\.DotSettings
 /Resources/obj
 /Tests/bin
 /Tests/obj
-/Manager/bin/Debug/net8.0
+/Manager/bin
 /Manager/obj
+/Utilities/bin
+/Utilities/obj

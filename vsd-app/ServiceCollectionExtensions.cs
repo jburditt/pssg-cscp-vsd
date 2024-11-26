@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Resources;
 using Shared.Database;
+using Utilities;
 using Xunit.Abstractions;
 
 namespace Gov.Cscp.VictimServices.Public;
@@ -29,6 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IEntitlementRepository, EntitlementRepository>();
 
         services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
+        services.AddTransient<IPaymentScheduleService, PaymentScheduleService>();
 
         services.AddTransient<ITeamRepository, TeamRepository>();
 

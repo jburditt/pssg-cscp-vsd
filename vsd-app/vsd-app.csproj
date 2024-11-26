@@ -122,6 +122,7 @@
 	  <ProjectReference Include="..\Manager\Manager.csproj" />
 	  <ProjectReference Include="..\Resources\Resources.csproj" />
 	  <ProjectReference Include="..\Shared.Database\Shared.Database.csproj" />
+	  <ProjectReference Include="..\Utilities\Utilities.csproj" />
 	</ItemGroup>
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
 		<!-- Ensure Node.js is installed -->

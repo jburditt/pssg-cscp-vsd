@@ -9,7 +9,7 @@
         payment.Total = 3.33m;
         payment.Gst = 0.11m;
         payment.GlDate = new DateTime(2024, 1, 1);
-        payment.Terms = Payment.PaymentTerms._20Days;
+        payment.Terms = PaymentTerms._20Days;
         payment.EftAdvice = EftAdvice.Email;
         payment.RemittanceMessage1 = "RemittanceMessage1";
         payment.RemittanceMessage2 = "RemittanceMessage2";

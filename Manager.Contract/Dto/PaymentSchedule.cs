@@ -59,5 +59,7 @@ public record PaymentSchedule : IDto
     // Foreign Keys
     public Guid EntitlementId { get; set; }                 // Dynamics Business Required
     public Guid CaseId { get; set; }                        // Dynamics Business Required
+    public required string CaseName { get; set; }                    // Inherently Business Required from CaseId
     public Guid PayeeId { get; set; }                       // Dynamics Business Required
+    public Guid? PrimaryScheduleId { get; set; }            // Dynamics Optional
 }
