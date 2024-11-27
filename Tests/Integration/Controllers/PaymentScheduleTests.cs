@@ -94,9 +94,6 @@
                 invoice.TaxExemption = TaxExemption.NoTax;
             else
                 invoice.TaxExemption = TaxExemption.GstOnly;
-            var insertInvoiceCommand = new InsertCommand<Invoice>(invoice);
-            // TODO
-            await mediator.Send(insertInvoiceCommand);
 
             var getPaymentTotalCommand = new GetPaymentTotalCommand
             {
@@ -152,6 +149,10 @@
             invoiceLineDetail.ProgramUnit = ProgramUnit.Cvap;
             invoiceLineDetail.CurrencyId = cadCurrency.Id;
 
+            var insertInvoiceCommand = new InsertCommand<Invoice>(invoice);
+            // TODO
+            await mediator.Send(insertInvoiceCommand);
+
             //EntityCollection lineCollection = new EntityCollection();
             //lineCollection.EntityName = "vsd_invoicelinedetail";
             //lineCollection.Entities.Add(invoiceLineDetail);
@@ -164,12 +165,13 @@
             //Relationship invoiceRelationship = new Relationship("vsd_vsd_payment_vsd_invoice");
             //payment.RelatedEntities.Add(invoiceRelationship, invoiceCollection);
 
-            //payment.Id = OrgService.Create(payment);
+            var insertPaymentCommand = new InsertCommand<Payment>(payment);
+            payment.Id = await mediator.Send(insertPaymentCommand);
 
-            //Entity updateInvoice = new Entity("vsd_invoice");
-            //updateInvoice.Id = invoiceEntity.Id;
-            //updateInvoice["vsd_paymentid"] = payment.ToEntityReference();
-            //OrgService.Update(updateInvoice);
+            // TODO try adding payment before invoice and then no update required
+            invoice.PaymentId = payment.Id;
+            var updateInvoiceCommand = new UpdateCommand<Invoice>(invoice);
+            await mediator.Send(updateInvoiceCommand);
 
             #endregion
 

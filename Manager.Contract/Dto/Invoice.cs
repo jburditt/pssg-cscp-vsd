@@ -129,6 +129,7 @@ public record Invoice : IDto
     public Guid? ContractId { get; set; }           // Dynamics Optional
     public Guid OwnerId { get; set; }               // Dynamics System Required
     public Guid? PayeeId { get; set; }              // Dynamics Optional
+    public string? PayeeLogicalName { get; set; }   // Inherently Optional from PayeeId
     public Guid? ProgramId { get; set; }            // Dynamics Optional
     public Guid? CurrencyId { get; set; }           // Dynamics Optional
     public Guid? ProvinceStateId { get; set; }      // Dynamics Optional
@@ -138,6 +139,7 @@ public record Invoice : IDto
     public Guid? CvapStobId { get; set; }           // Dynamics Optional
     public Guid? ProcessId { get; set; }            // Dynamics Optional
     public Guid? PaymentScheduleId { get; set; }    // Dynamics Optional
+    public Guid? PaymentId { get; set; }            // Dynamics Optional
 
     // Related Entities
     public IEnumerable<InvoiceLineDetail>? InvoiceLineDetails { get; set; }

@@ -1,5 +1,5 @@
 ﻿//using Database;
-//using Manager;
+using Manager;
 using Microsoft.Extensions.DependencyInjection;
 using Resources;
 using Shared.Database;
@@ -15,8 +15,8 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<ContractHandlers>();
         //services.AddTransient<IContractRepository, ContractRepository>();
 
-        //services.AddTransient<CurrencyHandlers>();
-        //services.AddTransient<ICurrencyRepository, CurrencyRepository>();
+        services.AddTransient<CurrencyHandlers>();
+        services.AddTransient<ICurrencyRepository, CurrencyRepository>();
 
         //services.AddTransient<InvoiceHandlers>();
         services.AddTransient<IInvoiceRepository, InvoiceRepository>();

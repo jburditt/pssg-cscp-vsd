@@ -22,13 +22,13 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.ProgramUnit = ProgramUnit.Cvap;
         invoice.StateCode = StateCode.Active;
         invoice.TaxExemption = TaxExemption.NoTax;
-        invoice.OwnerId = new Guid("386c8d9c-0a4c-e911-b80c-00505683fbf4");
-        invoice.CaseId = new Guid("7b1d36eb-0a3c-4893-b3db-0008d1316cfc");
+        invoice.OwnerId = TestData.OwnerId;
+        invoice.CaseId = TestData.CaseId;
 
         //invoice.Id = Guid.NewGuid();
-        //invoice.PayeeId = paymentSchedule.PayeeId;
+        invoice.PayeeId = TestData.AccountId;
         //invoice.EntitlementId = paymentSchedule.EntitlementId;
-        //invoice.CurrencyId = cadCurrency.Id;
+        invoice.CurrencyId = Constant.CadCurrency;
         invoice.CvapPaymentType = CvapPaymentType.PostAdjudication; // 100000001
         invoice.StatusCode = InvoiceStatusCode.Submitted;
         invoice.CvapNumberOfLineItems = CvapNumberOfLineItems._1; //100000000 //1
@@ -36,10 +36,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.ProcessId = Guid.Empty;
         invoice.ProvinceStateId = Constant.ProvinceBc;
         //invoice.PaymentScheduleId = paymentSchedule.Id;
-        //if (entitlement.TaxExemptFlag ?? false)
-        //    invoice.TaxExemption = TaxExemption.NoTax;
-        //else
-        //    invoice.TaxExemption = TaxExemption.GstOnly;
+        invoice.TaxExemption = TaxExemption.NoTax;
 
         invoice.InvoiceLineDetails = new List<InvoiceLineDetail>
         {
