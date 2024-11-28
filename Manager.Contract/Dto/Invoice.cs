@@ -97,6 +97,7 @@ public enum CvapNumberOfLineItems
 
 public record InvoiceQuery : IRequest<IEnumerable<Invoice>>
 {
+    public Guid? Id { get; set; }
     public Guid? ProgramId { get; set; }
     public Origin? Origin { get; set; }
     public DateTime? InvoiceDate { get; set; }
@@ -129,6 +130,7 @@ public record Invoice : IDto
     public Guid? ContractId { get; set; }           // Dynamics Optional
     public Guid OwnerId { get; set; }               // Dynamics System Required
     public Guid? PayeeId { get; set; }              // Dynamics Optional
+    // PayId can be a reference key to Account or Contact, use values Account.EntityLogicalName or Contact.EntityLogicalName
     public string? PayeeLogicalName { get; set; }   // Inherently Optional from PayeeId
     public Guid? ProgramId { get; set; }            // Dynamics Optional
     public Guid? CurrencyId { get; set; }           // Dynamics Optional

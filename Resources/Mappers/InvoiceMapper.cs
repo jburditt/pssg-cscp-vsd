@@ -14,7 +14,9 @@ public class InvoiceMapper : Profile
             .ForMember(dest => dest.EntitlementName, opts => opts.MapFrom(src => src.Vsd_EntitlementIdName))
             .ForMember(dest => dest.PayeeId, opts => opts.MapFrom(src => src.Vsd_Payee.Id))
             .ForMember(dest => dest.PayeeLogicalName, opts => opts.MapFrom(src => src.Vsd_Payee.LogicalName))
-            .ForMember(dest => dest.PaymentId, opts => opts.MapFrom(src => src.Vsd_PaymentId.Id));
+            .ForMember(dest => dest.PaymentId, opts => opts.MapFrom(src => src.Vsd_PaymentId.Id))
+            .ForMember(dest => dest.EntitlementId, opts => opts.MapFrom(src => src.Vsd_EntitlementId.Id))
+            .ForMember(dest => dest.PaymentScheduleId, opts => opts.MapFrom(src => src.Vsd_PaymentScheduleId.Id));
 
         CreateMap<Invoice, Vsd_Invoice>()
             .ForMember(dest => dest.Vsd_Cpu_InvoiceType, opts => opts.MapFrom(src => src.CpuInvoiceType))
@@ -28,7 +30,9 @@ public class InvoiceMapper : Profile
             .ForMember(dest => dest.TransactionCurrencyId, opts => opts.MapFrom(src => src.CurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.CurrencyId.Value) : null))
             .ForMember(dest => dest.Vsd_EntitlementId, opts => opts.MapFrom(src => src.EntitlementId))
             .ForMember(dest => dest.Vsd_EntitlementIdName, opts => opts.MapFrom(src => src.EntitlementName))
-            .ForMember(dest => dest.Vsd_Payee, opts => opts.MapFrom(src => src.PayeeId != null ? new EntityReference(src.PayeeLogicalName, src.PayeeId.Value) : null))
-            .ForMember(dest => dest.Vsd_PaymentId, opts => opts.MapFrom(src => src.PaymentId != null ? new EntityReference(Vsd_Payment.EntityLogicalName, src.PaymentId.Value) : null));
+            .ForMember(dest => dest.Vsd_Payee, opts => opts.MapFrom(src => src.PayeeId != null && src.PayeeLogicalName != null ? new EntityReference(src.PayeeLogicalName, src.PayeeId.Value) : null))
+            .ForMember(dest => dest.Vsd_PaymentId, opts => opts.MapFrom(src => src.PaymentId != null ? new EntityReference(Vsd_Payment.EntityLogicalName, src.PaymentId.Value) : null))
+            .ForMember(dest => dest.Vsd_EntitlementId, opts => opts.MapFrom(src => src.EntitlementId != null ? new EntityReference(Vsd_Entitlement.EntityLogicalName, src.EntitlementId.Value) : null))
+            .ForMember(dest => dest.Vsd_PaymentScheduleId, opts => opts.MapFrom(src => src.PaymentScheduleId != null ? new EntityReference(Vsd_PaymentSchedule.EntityLogicalName, src.PaymentScheduleId.Value) : null));
     }
 }

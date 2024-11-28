@@ -19,7 +19,7 @@ public class InvoiceRepository : BaseRepository<Vsd_Invoice, Invoice>, IInvoiceR
             foreach (var invoiceLineDetailDto in invoice.InvoiceLineDetails)
             {
                 var invoiceLineDetail = _mapper.Map<Vsd_InvoiceLineDetail>(invoiceLineDetailDto);
-                invoiceLineDetail.Vsd_InvoiceId = null;     // let Dynamics generate the invoice id and use it to link the entities
+                invoiceLineDetail.Vsd_InvoiceId = entity.ToEntityReference();
                 _databaseContext.AddRelatedObject(entity, Vsd_Invoice.Fields.Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail.ToLower(), invoiceLineDetail);
             }
         }
@@ -37,6 +37,20 @@ public class InvoiceRepository : BaseRepository<Vsd_Invoice, Invoice>, IInvoiceR
         return _mapper.Map<IEnumerable<Invoice>>(queryResults);
     }
 
+
+    public override bool Delete(Guid id)
+    {
+        var invoiceLineDetails = _databaseContext.Vsd_InvoiceLineDetailSet
+            .Where(x => x.Vsd_InvoiceId.Id == id)
+            .ToList();
+        foreach (var invoiceLineDetail in invoiceLineDetails)
+        {
+            _databaseContext.DeleteObject(invoiceLineDetail);
+            _databaseContext.SaveChanges();
+            _databaseContext.Detach(invoiceLineDetail);
+        }
+        return base.Delete(id);
+    }
     public override bool TryDeleteRange(IEnumerable<Invoice> invoices, bool isRecursive = false)
     {
         // NOTE you can optimize these by removing the foreach queries and using Invoice.InvoiceLineDetailId instead but you will need to map InvoiceLineDetailId first on Query method

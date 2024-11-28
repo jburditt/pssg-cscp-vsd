@@ -25,17 +25,18 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.OwnerId = TestData.OwnerId;
         invoice.CaseId = TestData.CaseId;
 
-        //invoice.Id = Guid.NewGuid();
+        invoice.Id = Guid.NewGuid();
         invoice.PayeeId = TestData.AccountId;
-        //invoice.EntitlementId = paymentSchedule.EntitlementId;
+        invoice.PayeeLogicalName = Account.EntityLogicalName;
+        invoice.EntitlementId = TestData.EntitlementId;
         invoice.CurrencyId = Constant.CadCurrency;
-        invoice.CvapPaymentType = CvapPaymentType.PostAdjudication; // 100000001
+        invoice.CvapPaymentType = CvapPaymentType.PostAdjudication;
         invoice.StatusCode = InvoiceStatusCode.Submitted;
-        invoice.CvapNumberOfLineItems = CvapNumberOfLineItems._1; //100000000 //1
+        invoice.CvapNumberOfLineItems = CvapNumberOfLineItems._1;
         invoice.CvapStobId = Constant.CvapStobId; //7902 - Entitlements
         invoice.ProcessId = Guid.Empty;
         invoice.ProvinceStateId = Constant.ProvinceBc;
-        //invoice.PaymentScheduleId = paymentSchedule.Id;
+        invoice.PaymentScheduleId = TestData.PaymentScheduleId;
         invoice.TaxExemption = TaxExemption.NoTax;
 
         invoice.InvoiceLineDetails = new List<InvoiceLineDetail>
