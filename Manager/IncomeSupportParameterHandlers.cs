@@ -5,8 +5,7 @@ public class IncomeSupportParameterHandlers(IIncomeSupportParameterRepository re
 {
     public async Task<IncomeSupportParameter> Handle(SingleIncomeSupportParameterQuery query, CancellationToken cancellationToken)
     {
-        var entity = repository.Single(query);
-        var dto = mapper.Map<IncomeSupportParameter>(entity);
+        var dto = repository.Single(query);
         return await Task.FromResult(dto);
     }
 }

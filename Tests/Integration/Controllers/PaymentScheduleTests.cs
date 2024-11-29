@@ -18,13 +18,13 @@
             throw new Exception("CVAP Admin Team not found.");
         }
 
-        var incomeSupportParamterQuery = new SingleIncomeSupportParameterQuery();
-        incomeSupportParamterQuery.Type = IncomeSupportParameterType.MinimumWage;
-        incomeSupportParamterQuery.BeforeEffectiveDate = DateTime.Today;
-        incomeSupportParamterQuery.StateCode = StateCode.Active;
-        incomeSupportParamterQuery.StatusCode = IncomeSupportParameterStatusCode.Active;
-        incomeSupportParamterQuery.Validated = YesNo.Yes;
-        var minimumWage = await mediator.Send(incomeSupportParamterQuery);
+        var incomeSupportParameterQuery = new SingleIncomeSupportParameterQuery();
+        incomeSupportParameterQuery.Type = IncomeSupportParameterType.MinimumWage;
+        incomeSupportParameterQuery.BeforeEffectiveDate = DateTime.Today;
+        incomeSupportParameterQuery.StateCode = StateCode.Active;
+        incomeSupportParameterQuery.StatusCode = IncomeSupportParameterStatusCode.Active;
+        incomeSupportParameterQuery.Validated = YesNo.Yes;
+        var minimumWage = await mediator.Send(incomeSupportParameterQuery);
 
         var paymentScheduleQuery = new PaymentScheduleEntitlementQuery();
         paymentScheduleQuery.PaymentScheduleQuery = new PaymentScheduleQuery();
