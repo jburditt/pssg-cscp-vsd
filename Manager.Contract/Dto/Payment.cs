@@ -36,9 +36,12 @@ public record FindPaymentQuery : BasePaymentQuery, IRequest<Payment> { }
 public record PaymentQuery : BasePaymentQuery, IRequest<IEnumerable<Payment>> { }
 public record BasePaymentQuery
 {
+    public StateCode? StateCode { get; set; }
+    public PaymentStatusCode? StatusCode { get; set; }
+    public List<PaymentStatusCode>? ExcludeStatusCodes { get; set; }
+    public DateTime? Date { get; set; }
     public Guid? ProgramId { get; set; }
     public Guid? ContractId { get; set; }
-    public List<PaymentStatusCode>? ExcludeStatusCodes { get; set; }
 }
 
 public record Payment : IDto
@@ -48,13 +51,13 @@ public record Payment : IDto
     public DateTime Date { get; set; }                  // Dynamics Business Required
     public decimal? SubTotal { get; set; }              // Dynamics Optional
     public decimal? Total { get; set; }                 // Dynamics Optional
-    public decimal Gst { get; set; }                    // Dynamics Optional
+    public decimal? Gst { get; set; }                   // Dynamics Optional
     public DateTime GlDate { get; set; }                // Dynamics Business Required
-    public PaymentTerms Terms { get; set; }             // Dynamics Optional
+    public PaymentTerms? Terms { get; set; }            // Dynamics Optional
     public EftAdvice? EftAdvice { get; set; }           // Dynamics Optional
-    public string RemittanceMessage1 { get; set; }      // Dynamics Optional
-    public string RemittanceMessage2 { get; set; }      // Dynamics Optional
-    public string RemittanceMessage3 { get; set; }      // Dynamics Optional
+    public string? RemittanceMessage1 { get; set; }     // Dynamics Optional
+    public string? RemittanceMessage2 { get; set; }     // Dynamics Optional
+    public string? RemittanceMessage3 { get; set; }     // Dynamics Optional
 
     // Foreign Keys
     public Guid? CaseId { get; set; }                   // Dynamics Optional

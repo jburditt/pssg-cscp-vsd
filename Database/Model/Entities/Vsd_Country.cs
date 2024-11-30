@@ -13,10 +13,10 @@ namespace Database.Model
 	
 	
 	/// <summary>
-	/// Status of the Province/State
+	/// Status of the Country
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum Vsd_Province_StateCode
+	public enum Vsd_Country_StateCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -29,10 +29,10 @@ namespace Database.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Province/State
+	/// Reason for the status of the Country
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum Vsd_Province_StatusCode
+	public enum Vsd_Country_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,35 +45,15 @@ namespace Database.Model
 	}
 	
 	/// <summary>
-	/// The type of tax used in the province.
+	/// Country Look-up entity for application forms.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum Vsd_Province_Vsd_TaxType
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("GST", 0, "#0000ff")]
-		Gst = 100000000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("GST/PST", 2, "#0000ff")]
-		GstPst = 100000002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("HST", 1, "#0000ff")]
-		Hst = 100000001,
-	}
-	
-	/// <summary>
-	/// Province Look-up entity for application forms.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("vsd_province")]
-	public partial class Vsd_Province : Microsoft.Xrm.Sdk.Entity
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("vsd_country")]
+	public partial class Vsd_Country : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the vsd_province entity
+		/// Available fields, a the time of codegen, for the vsd_country entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -84,7 +64,6 @@ namespace Database.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -101,40 +80,29 @@ namespace Database.Model
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string TransactionCurrency_Vsd_Province = "TransactionCurrency_vsd_province";
-			public const string TransactionCurrencyId = "transactioncurrencyid";
-			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_Code = "vsd_code";
 			public const string Vsd_CountryId = "vsd_countryid";
-			public const string Vsd_CountryIdName = "vsd_countryidname";
+			public const string Id = "vsd_countryid";
 			public const string Vsd_Name = "vsd_name";
-			public const string Vsd_ProvinceId = "vsd_provinceid";
-			public const string Id = "vsd_provinceid";
-			public const string Vsd_TakerAte2 = "vsd_takerate2";
-			public const string Vsd_TaxRate = "vsd_taxrate";
-			public const string Vsd_TaxType = "vsd_taxtype";
-			public const string Vsd_TaxTypeName = "vsd_taxtypename";
-			public const string Vsd_Vsd_Country_Vsd_Province = "vsd_vsd_country_vsd_province";
-			public const string Vsd_Vsd_Province_Vsd_Invoice = "Vsd_Vsd_Province_Vsd_Invoice";
-			public const string Vsd_Vsd_Province_Vsd_InvoiceLineDetail_ProvinceStateId = "Vsd_Vsd_Province_Vsd_InvoiceLineDetail_ProvinceStateId";
+			public const string Vsd_Vsd_Country_Vsd_Province = "Vsd_Vsd_Country_Vsd_Province";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Vsd_Province(System.Guid id) : 
+		public Vsd_Country(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Vsd_Province(string keyName, object keyValue) : 
+		public Vsd_Country(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Vsd_Province(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public Vsd_Country(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -143,22 +111,22 @@ namespace Database.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Vsd_Province() : 
+		public Vsd_Country() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "vsd_provinceid";
+		public const string PrimaryIdAttribute = "vsd_countryid";
 		
 		public const string PrimaryNameAttribute = "vsd_name";
 		
-		public const string EntitySchemaName = "vsd_province";
+		public const string EntitySchemaName = "vsd_country";
 		
-		public const string EntityLogicalName = "vsd_province";
+		public const string EntityLogicalName = "vsd_country";
 		
-		public const string EntityLogicalCollectionName = "vsd_provinces";
+		public const string EntityLogicalCollectionName = "vsd_countries";
 		
-		public const string EntitySetName = "vsd_provinces";
+		public const string EntitySetName = "vsd_countries";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -269,19 +237,6 @@ namespace Database.Model
 				{
 					return default(string);
 				}
-			}
-		}
-		
-		/// <summary>
-		/// Exchange rate for the currency associated with the entity with respect to the base currency.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("exchangerate")]
-		public System.Nullable<decimal> ExchangerAte
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<decimal>>("exchangerate");
 			}
 		}
 		
@@ -464,15 +419,15 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// Status of the Province/State
+		/// Status of the Country
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual Vsd_Province_StateCode? StateCode
+		public virtual Vsd_Country_StateCode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((Vsd_Province_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((Vsd_Country_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -499,15 +454,15 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Province/State
+		/// Reason for the status of the Country
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual Vsd_Province_StatusCode? StatusCode
+		public virtual Vsd_Country_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((Vsd_Province_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((Vsd_Country_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -552,41 +507,6 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the currency associated with the entity.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
-		public Microsoft.Xrm.Sdk.EntityReference TransactionCurrencyId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("transactioncurrencyid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("transactioncurrencyid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyidname")]
-		public string TransactionCurrencyIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("transactioncurrencyid"))
-				{
-					return this.FormattedValues["transactioncurrencyid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
@@ -618,7 +538,7 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// The Province code for the Province.
+		/// The country code for the country.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_code")]
 		public string Vsd_Code
@@ -636,42 +556,48 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// Country Look-up entity for this Province.
+		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_countryid")]
-		public Microsoft.Xrm.Sdk.EntityReference Vsd_CountryId
+		public System.Nullable<System.Guid> Vsd_CountryId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("vsd_countryid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("vsd_countryid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
 				this.SetAttributeValue("vsd_countryid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_countryidname")]
-		public string Vsd_CountryIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_countryid")]
+		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("vsd_countryid"))
-				{
-					return this.FormattedValues["vsd_countryid"];
-				}
-				else
-				{
-					return default(string);
-				}
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.Vsd_CountryId = value;
 			}
 		}
 		
 		/// <summary>
-		/// The name of the province/state.
+		/// The name of the country.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_name")]
 		public string Vsd_Name
@@ -689,185 +615,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier for entity instances
+		/// 1:N vsd_vsd_country_vsd_province
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_provinceid")]
-		public System.Nullable<System.Guid> Vsd_ProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("vsd_provinceid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("vsd_provinceid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_provinceid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.Vsd_ProvinceId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_takerate2")]
-		public System.Nullable<decimal> Vsd_TakerAte2
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<decimal>>("vsd_takerate2");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("vsd_takerate2", value);
-			}
-		}
-		
-		/// <summary>
-		/// The current tax rate.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_taxrate")]
-		public System.Nullable<decimal> Vsd_TaxRate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<decimal>>("vsd_taxrate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("vsd_taxrate", value);
-			}
-		}
-		
-		/// <summary>
-		/// The type of tax used in the province.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_taxtype")]
-		public virtual Vsd_Province_Vsd_TaxType? Vsd_TaxType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((Vsd_Province_Vsd_TaxType?)(EntityOptionSetEnum.GetEnum(this, "vsd_taxtype")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("vsd_taxtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_taxtypename")]
-		public string Vsd_TaxTypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("vsd_taxtype"))
-				{
-					return this.FormattedValues["vsd_taxtype"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
-		/// 1:N vsd_vsd_province_vsd_invoice
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoice")]
-		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_Invoice> Vsd_Vsd_Province_Vsd_Invoice
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<Database.Model.Vsd_Invoice>("vsd_vsd_province_vsd_invoice", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<Database.Model.Vsd_Invoice>("vsd_vsd_province_vsd_invoice", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId")]
-		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_InvoiceLineDetail> Vsd_Vsd_Province_Vsd_InvoiceLineDetail_ProvinceStateId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<Database.Model.Vsd_InvoiceLineDetail>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<Database.Model.Vsd_InvoiceLineDetail>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 TransactionCurrency_vsd_province
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_vsd_province")]
-		public Database.Model.TransactionCurrency TransactionCurrency_Vsd_Province
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<Database.Model.TransactionCurrency>("TransactionCurrency_vsd_province", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<Database.Model.TransactionCurrency>("TransactionCurrency_vsd_province", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 vsd_vsd_country_vsd_province
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_countryid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_country_vsd_province")]
-		public Database.Model.Vsd_Country Vsd_Vsd_Country_Vsd_Province
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_Province> Vsd_Vsd_Country_Vsd_Province
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<Database.Model.Vsd_Country>("vsd_vsd_country_vsd_province", null);
+				return this.GetRelatedEntities<Database.Model.Vsd_Province>("vsd_vsd_country_vsd_province", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<Database.Model.Vsd_Country>("vsd_vsd_country_vsd_province", null, value);
+				this.SetRelatedEntities<Database.Model.Vsd_Province>("vsd_vsd_country_vsd_province", null, value);
 			}
 		}
 		
@@ -876,7 +637,7 @@ namespace Database.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Vsd_Province(object anonymousType) : 
+		public Vsd_Country(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -894,9 +655,9 @@ namespace Database.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["vsd_provinceid"] = base.Id;
+                        Attributes["vsd_countryid"] = base.Id;
                         break;
-                    case "vsd_provinceid":
+                    case "vsd_countryid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

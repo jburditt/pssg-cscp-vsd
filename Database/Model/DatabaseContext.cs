@@ -63,6 +63,28 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_CasPaymentType"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_CasPaymentType> Vsd_CasPaymentTypeSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_CasPaymentType>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Config"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_Config> Vsd_ConfigSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_Config>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Contract"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.Vsd_Contract> Vsd_ContractSet
@@ -70,6 +92,28 @@ namespace Database.Model
 			get
 			{
 				return this.CreateQuery<Database.Model.Vsd_Contract>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Country"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_Country> Vsd_CountrySet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_Country>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_CvapStOB"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_CvapStOB> Vsd_CvapStOBSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_CvapStOB>();
 			}
 		}
 		

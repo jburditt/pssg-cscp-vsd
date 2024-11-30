@@ -34,7 +34,11 @@ vsu</CamelCaseCustomWords>
     <EntitiesWhitelist>account|
 team|
 transactioncurrency|
+vsd_caspaymenttype|
+vsd_config|
 vsd_contract|
+vsd_country|
+vsd_cvapstob|
 vsd_entitlement|
 vsd_incomesupportparameter|
 vsd_invoice|
@@ -135,5 +139,5 @@ VoiceMail</TokenCapitalizationOverrides>
   <SuppressGeneratedCodeAttribute>true</SuppressGeneratedCodeAttribute>
   <SettingsVersion>2.2024.10.16</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
-  <Version>2.2024.10.16</Version>
+  <Version>2.2024.11.8</Version>
 </Config>

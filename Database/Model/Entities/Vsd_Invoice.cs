@@ -447,7 +447,9 @@ namespace Database.Model
 			public const string Vsd_User3 = "vsd_user3";
 			public const string Vsd_User3Name = "vsd_user3name";
 			public const string Vsd_User3YomiName = "vsd_user3yominame";
+			public const string Vsd_Vsd_CasPaymentType_Vsd_Invoice_CasPaymentType = "vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType";
 			public const string Vsd_Vsd_Contract_Vsd_Invoice = "vsd_vsd_contract_vsd_invoice";
+			public const string Vsd_Vsd_CvapStOB_Vsd_Invoice = "vsd_vsd_cvapstob_vsd_invoice";
 			public const string Vsd_Vsd_Entitlement_Vsd_Invoice = "vsd_vsd_entitlement_vsd_invoice";
 			public const string Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail = "Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail";
 			public const string Vsd_Vsd_Invoice_Vsd_Payment = "Vsd_Vsd_Invoice_Vsd_Payment";
@@ -3460,6 +3462,25 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_caspaymenttype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType")]
+		public Database.Model.Vsd_CasPaymentType Vsd_Vsd_CasPaymentType_Vsd_Invoice_CasPaymentType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_CasPaymentType>("vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_CasPaymentType>("vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_vsd_contract_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_contractid")]
@@ -3475,6 +3496,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Contract>("vsd_vsd_contract_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_cvapstob_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_cvap_stobid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_cvapstob_vsd_invoice")]
+		public Database.Model.Vsd_CvapStOB Vsd_Vsd_CvapStOB_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_CvapStOB>("vsd_vsd_cvapstob_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_CvapStOB>("vsd_vsd_cvapstob_vsd_invoice", null, value);
 			}
 		}
 		

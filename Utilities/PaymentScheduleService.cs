@@ -111,16 +111,16 @@ public class PaymentScheduleService(IPaymentScheduleRepository paymentScheduleRe
         {
             throw new Exception("Frequency is missing.");
         }
-        if (paymentSchedule.XValue != null)
+        if (paymentSchedule.XValue == null)
         {
             throw new Exception("Recurrence Value Within Frequency is missing.");
         }
 
-        if (entitlement.BenefitTypeId != null)
+        if (entitlement.BenefitTypeId == null)
         {
             throw new Exception("Benefit Type is missing.");
         }
-        if (entitlement.SetCap != null)
+        if (entitlement.SetCap == null)
         {
             throw new Exception("Set Cap is missing.");
         }
@@ -243,7 +243,7 @@ public class PaymentScheduleService(IPaymentScheduleRepository paymentScheduleRe
 
                 amount = new Money(result1);
             }
-            else if (entitlement.BenefitSubTypeName.Equals("COLA", StringComparison.InvariantCultureIgnoreCase))
+            else if (entitlement.BenefitSubTypeName != null && entitlement.BenefitSubTypeName.Equals("COLA", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (entitlement.EffectiveDate == DateTime.MinValue)
                 {
