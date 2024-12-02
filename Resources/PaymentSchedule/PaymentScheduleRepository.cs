@@ -50,15 +50,4 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
     }
 
     public record PaymentScheduleComposite(Vsd_PaymentSchedule paymentSchedule, Vsd_Entitlement entitlement);
-    //public class PaymentScheduleComposite
-    //{
-    //    public Vsd_PaymentSchedule PaymentSchedule { get; set; }
-    //    public Vsd_Entitlement Entitlement { get; set; }
-
-        public PaymentScheduleComposite(Vsd_PaymentSchedule paymentSchedule, Vsd_Entitlement entitlement)
-        {
-            PaymentSchedule = paymentSchedule;
-            Entitlement = entitlement;
-        }
-    }
 }

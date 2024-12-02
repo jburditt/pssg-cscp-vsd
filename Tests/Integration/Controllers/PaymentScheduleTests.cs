@@ -136,7 +136,10 @@
             payment.RemittanceMessage3 = "Crime Victim Assistance Program";
 
             //****Add Line Item
-            var invoiceLineDetail = new InvoiceLineDetail();
+            var invoiceLineDetail = new InvoiceLineDetail()
+            {
+                Owner = invoice.Owner
+            };
             invoiceLineDetail.CaseId = invoice.CaseId;
             invoiceLineDetail.EntitlementId = invoice.EntitlementId;
             invoiceLineDetail.InvoiceId = invoice.Id;
@@ -161,9 +164,6 @@
 
             //EntityCollection invoiceCollection = new EntityCollection();
             payment.Invoices = new List<Invoice>() { invoice };
-            //invoiceCollection.Entities.Add(invoiceEntity);
-            //Relationship invoiceRelationship = new Relationship("vsd_vsd_payment_vsd_invoice");
-            //payment.RelatedEntities.Add(invoiceRelationship, invoiceCollection);
 
             var insertPaymentCommand = new InsertCommand<Payment>(payment);
             payment.Id = await mediator.Send(insertPaymentCommand);

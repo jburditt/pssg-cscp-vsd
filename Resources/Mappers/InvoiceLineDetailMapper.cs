@@ -11,7 +11,7 @@ public class InvoiceLineDetailMapper : Profile
             .ForMember(dest => dest.ProgramUnit, opts => opts.MapFrom(src => src.Vsd_ProgramUnit))
             .ForMember(dest => dest.TaxExemption, opts => opts.MapFrom(src => src.Vsd_TaxExemption))
             .ForMember(dest => dest.InvoiceId, opts => opts.MapFrom(src => src.Vsd_InvoiceId.Id))
-            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => src.OwnerId.Id))
+            .ForMember(dest => dest.Owner, opts => opts.MapFrom(src => src.OwnerId))
             .ForMember(dest => dest.ProvinceStateId, opts => opts.MapFrom(src => src.Vsd_ProvinceStateId.Id))
             .ForMember(dest => dest.CurrencyId, opts => opts.MapFrom(src => src.TransactionCurrencyId.Id));
 
@@ -22,8 +22,7 @@ public class InvoiceLineDetailMapper : Profile
             .ForMember(dest => dest.Vsd_ProgramUnit, opts => opts.MapFrom(src => src.ProgramUnit))
             .ForMember(dest => dest.Vsd_TaxExemption, opts => opts.MapFrom(src => src.TaxExemption))
             .ForMember(dest => dest.Vsd_InvoiceId, opts => opts.MapFrom(src => new EntityReference(Vsd_Invoice.EntityLogicalName, src.InvoiceId)))
-            // TODO replace "systemuser" with constants e.g. SystemUser.EntityLogicalName
-            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => new EntityReference("systemuser", src.OwnerId)))
+            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => src.Owner))
             .ForMember(dest => dest.Vsd_ProvinceStateId, opts => opts.MapFrom(src => src.ProvinceStateId != null ? new EntityReference(Vsd_Province.EntityLogicalName, src.ProvinceStateId.Value) : null))
             .ForMember(dest => dest.TransactionCurrencyId, opts => opts.MapFrom(src => new EntityReference(TransactionCurrency.EntityLogicalName, src.CurrencyId)));
     }

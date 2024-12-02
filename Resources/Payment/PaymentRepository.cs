@@ -21,9 +21,11 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
         foreach (var invoice in payment.Vsd_Vsd_Payment_Vsd_Invoice)
         {
             invoice.Id = Guid.NewGuid();
+            invoice.Vsd_PaymentId = payment.ToEntityReference();
             foreach (var invoiceLineDetail in invoice.Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail)
             {
                 invoiceLineDetail.Id = Guid.NewGuid();
+                invoiceLineDetail.Vsd_InvoiceId = invoice.ToEntityReference();
             }
         }
 

@@ -19,10 +19,10 @@ public record InvoiceLineDetail : IDto
     public TaxExemption? TaxExemption { get; set; } // Dynamics Optional
 
     // References
-    public Guid InvoiceId { get; set; }         // Dynamics Business Required
-    public Guid OwnerId { get; set; }           // Dynamics System Required
-    public Guid? ProvinceStateId { get; set; }  // Dynamics Optional
-    public Guid? CaseId { get; set; }           // Dynamics Optional
-    public Guid? EntitlementId { get; set; }    // Dynamics Optional
-    public Guid CurrencyId { get; set; }        // Dynamics System Required
+    public Guid InvoiceId { get; set; }                     // Dynamics Business Required
+    public required DynamicReference Owner { get; set; }    // Dynamics System Required
+    public Guid? ProvinceStateId { get; set; }              // Dynamics Optional
+    public Guid? CaseId { get; set; }                       // Dynamics Optional
+    public Guid? EntitlementId { get; set; }                // Dynamics Optional
+    public Guid CurrencyId { get; set; }                    // Dynamics System Required
 }
