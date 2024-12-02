@@ -62,8 +62,10 @@ public record Payment : IDto
     // Foreign Keys
     public Guid? CaseId { get; set; }                   // Dynamics Optional
     public Guid? EntitlementId { get; set; }            // Dynamics Optional
-    // TODO rename to PayeeId
-    public Guid? Payee { get; set; }                    // Dynamics Optional
+    public DynamicReference? Payee { get; set; }        // Dynamics Optional
     // TODO rename to CurrencyId
     public Guid? TransactionCurrencyId { get; set; }    // Dynamics Optional
+
+    // Foreign Objects
+    public IEnumerable<Invoice>? Invoices { get; set; }
 }

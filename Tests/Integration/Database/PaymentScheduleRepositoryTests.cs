@@ -1,4 +1,3 @@
-﻿
 public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repository)
 {
     // WARNING!!! these are not reliable tests, they will fail, these were shortcuts I used for building a POC, these tests will need to be adjusted in order to be idempotent
@@ -33,7 +32,7 @@ public class PaymentScheduleRepositoryTests(IPaymentScheduleRepository repositor
     public void Update()
     {
         // Arrange
-        var dto = new PaymentSchedule { CaseName = "CaseName" };
+        var dto = new PaymentSchedule { CaseName = "CaseName", Payee = null };
         dto.Id = new Guid("23fdd752-fbd8-eb11-b828-00505683fbf4");
         dto.FirstRunDate = new DateTime(2001, 1, 1);
         dto.NextRunDate = new DateTime(2002, 2, 2);

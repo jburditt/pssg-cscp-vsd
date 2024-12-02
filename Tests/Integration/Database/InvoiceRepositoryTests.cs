@@ -1,6 +1,3 @@
-using Manager.Contract;
-using Newtonsoft.Json;
-
 public class InvoiceRepositoryTests(IInvoiceRepository repository)
 {
     // WARNING!!! these are not reliable tests, they will fail, these were shortcuts I used for building a POC, these tests will need to be adjusted in order to be idempotent
@@ -9,7 +6,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
     public void Insert()
     {
         // Arrange
-        var invoice = new Invoice();
+        var invoice = new Invoice() { Owner = new DynamicReference(TestData.OwnerId, "systemuser") };
         invoice.AuthorizationDate = DateTime.Now;
         invoice.CpuInvoiceType = CpuInvoiceType.OneTimePayment;
         invoice.CpuScheduledPaymentDate = DateTime.Now;
@@ -22,12 +19,10 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.ProgramUnit = ProgramUnit.Cvap;
         invoice.StateCode = StateCode.Active;
         invoice.TaxExemption = TaxExemption.NoTax;
-        invoice.OwnerId = TestData.OwnerId;
         invoice.CaseId = TestData.CaseId;
 
         invoice.Id = Guid.NewGuid();
-        invoice.PayeeId = TestData.AccountId;
-        invoice.PayeeLogicalName = Account.EntityLogicalName;
+        invoice.Payee = new DynamicReference(TestData.AccountId, Account.EntityLogicalName);
         invoice.EntitlementId = TestData.EntitlementId;
         invoice.CurrencyId = Constant.CadCurrency;
         invoice.CvapPaymentType = CvapPaymentType.PostAdjudication;
@@ -47,6 +42,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
                 Approved = YesNo.Yes,
                 InvoiceType = InvoiceType.OtherPayments,
                 OwnerId = invoice.OwnerId,
+                OwnerId = invoice.Owner.Id,
                 StateCode = StateCode.Active,
                 TaxExemption = TaxExemption.NoTax,
                 CurrencyId = Constant.CadCurrency

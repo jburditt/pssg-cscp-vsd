@@ -110,38 +110,36 @@ public record Invoice : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public InvoiceStatusCode StatusCode { get; set; } = InvoiceStatusCode.Draft;    // Dynamics Optional
-    public Origin Origin { get; set; }              // Dynamics Optional
+    public Origin? Origin { get; set; }                                             // Dynamics Optional
     // TODO rename to Date
-    public DateTime InvoiceDate { get; set; }       // Dynamics Optional
+    public DateTime? InvoiceDate { get; set; }                                      // Dynamics Optional
 
-    public ProgramUnit ProgramUnit { get; set; }                            // Dynamics Optional
-    public TaxExemption TaxExemption { get; set; }                          // Dynamics Optional
-    public DateTime CpuScheduledPaymentDate { get; set; }                   // Dynamics Optional
+    public ProgramUnit? ProgramUnit { get; set; }                           // Dynamics Optional
+    public TaxExemption? TaxExemption { get; set; }                         // Dynamics Optional
+    public DateTime? CpuScheduledPaymentDate { get; set; }                  // Dynamics Optional
     public MethodOfPayment? MethodOfPayment { get; set; }                   // Dynamics Optional
-    public CpuInvoiceType CpuInvoiceType { get; set; }                      // Dynamics Optional
-    public string PaymentAdviceComments { get; set; } = string.Empty;       // Dynamics Optional
-    public CvapAuthorizationStatus CvapAuthorizationStatus { get; set; }    // Dynamics Optional
-    public DateTime AuthorizationDate { get; set; }                         // Dynamics Optional
-    public InvoiceType CvapInvoiceType { get; set; }                        // Dynamics Optional
-    public CvapPaymentType CvapPaymentType { get; set; }                    // Dynamics Optional
-    public CvapNumberOfLineItems CvapNumberOfLineItems { get; set; }        // Dynamics Optional
+    public CpuInvoiceType? CpuInvoiceType { get; set; }                     // Dynamics Optional
+    public string? PaymentAdviceComments { get; set; } = string.Empty;      // Dynamics Optional
+    public CvapAuthorizationStatus? CvapAuthorizationStatus { get; set; }   // Dynamics Optional
+    public DateTime? AuthorizationDate { get; set; }                        // Dynamics Optional
+    public InvoiceType? CvapInvoiceType { get; set; }                       // Dynamics Optional
+    public CvapPaymentType? CvapPaymentType { get; set; }                   // Dynamics Optional
+    public CvapNumberOfLineItems? CvapNumberOfLineItems { get; set; }       // Dynamics Optional
 
     // Foreign Keys
-    public Guid? ContractId { get; set; }           // Dynamics Optional
-    public Guid OwnerId { get; set; }               // Dynamics System Required
-    public Guid? PayeeId { get; set; }              // Dynamics Optional
-    // PayId can be a reference key to Account or Contact, use values Account.EntityLogicalName or Contact.EntityLogicalName
-    public string? PayeeLogicalName { get; set; }   // Inherently Optional from PayeeId
-    public Guid? ProgramId { get; set; }            // Dynamics Optional
-    public Guid? CurrencyId { get; set; }           // Dynamics Optional
-    public Guid? ProvinceStateId { get; set; }      // Dynamics Optional
-    public Guid? CaseId { get; set; }               // Dynamics Business Recommended
-    public Guid? EntitlementId { get; set; }        // Dynamics Optional
-    public string? EntitlementName { get; set; }    // Inherently Optional from EntitlementId
-    public Guid? CvapStobId { get; set; }           // Dynamics Optional
-    public Guid? ProcessId { get; set; }            // Dynamics Optional
-    public Guid? PaymentScheduleId { get; set; }    // Dynamics Optional
-    public Guid? PaymentId { get; set; }            // Dynamics Optional
+    public Guid? ContractId { get; set; }                   // Dynamics Optional
+    public required DynamicReference Owner { get; set; }    // Dynamics System Required
+    public DynamicReference? Payee { get; set; }            // Dynamics Optional
+    public Guid? ProgramId { get; set; }                    // Dynamics Optional
+    public Guid? CurrencyId { get; set; }                   // Dynamics Optional
+    public Guid? ProvinceStateId { get; set; }              // Dynamics Optional
+    public Guid? CaseId { get; set; }                       // Dynamics Business Recommended
+    public Guid? EntitlementId { get; set; }                // Dynamics Optional
+    public string? EntitlementName { get; set; }            // Inherently Optional from EntitlementId
+    public Guid? CvapStobId { get; set; }                   // Dynamics Optional
+    public Guid? ProcessId { get; set; }                    // Dynamics Optional
+    public Guid? PaymentScheduleId { get; set; }            // Dynamics Optional
+    public Guid? PaymentId { get; set; }                    // Dynamics Optional
 
     // Related Entities
     public IEnumerable<InvoiceLineDetail>? InvoiceLineDetails { get; set; }

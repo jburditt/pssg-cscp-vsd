@@ -5,7 +5,7 @@ public class PaymentScheduleMapperTests(IMapper mapper)
     [Fact]
     public void Dto_To_Entity()
     {
-        var dto = new PaymentSchedule { CaseName = "CaseName" };
+        var dto = new PaymentSchedule { CaseName = "CaseName", Payee = null };
         dto.Id = new Guid("23fdd752-fbd8-eb11-b828-00505683fbf4");
         dto.FirstRunDate = new DateTime(2001, 1, 1);
         dto.NextRunDate = new DateTime(2002, 2, 2);

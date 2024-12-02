@@ -5,7 +5,7 @@ public abstract class BaseRepository<TEntity, TDto>
     where TDto : IDto
 {
     // TODO check if this acts like a singleton otherwise check if we can have concurrency issues
-    protected readonly OrganizationServiceContext _databaseContext;
+    private readonly OrganizationServiceContext _databaseContext;
     protected readonly IMapper _mapper;
 
     public BaseRepository(OrganizationServiceContext databaseContext, IMapper mapper)

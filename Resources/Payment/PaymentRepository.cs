@@ -9,6 +9,29 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
         _databaseContext = databaseContext;
     }
 
+    public override Guid Insert(Payment dto)
+    {
+        if (dto.Id == Guid.Empty)
+        {
+            dto.Id = Guid.NewGuid();
+        }
+
+        var payment = _mapper.Map<Vsd_Payment>(dto);
+
+        foreach (var invoice in payment.Vsd_Vsd_Payment_Vsd_Invoice)
+        {
+            invoice.Id = Guid.NewGuid();
+            foreach (var invoiceLineDetail in invoice.Vsd_Vsd_Invoice_Vsd_InvoiceLineDetail)
+            {
+                invoiceLineDetail.Id = Guid.NewGuid();
+            }
+        }
+
+        _databaseContext.AddObject(payment);
+        _databaseContext.SaveChanges();
+        return payment.Id;
+    }
+
     public IEnumerable<Payment> Query(PaymentQuery paymentQuery)
     {
         var queryResults = _databaseContext.Vsd_PaymentSet
