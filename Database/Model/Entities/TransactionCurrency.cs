@@ -74,6 +74,10 @@ namespace Database.Model
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string IsoCurrencyCode = "isocurrencycode";
+			public const string Lk_TransactionCurrency_CreatedOnBehalfBy = "lk_transactioncurrency_createdonbehalfby";
+			public const string Lk_TransactionCurrency_ModifiedOnBehalfBy = "lk_transactioncurrency_modifiedonbehalfby";
+			public const string Lk_TransactionCurrencyBase_CreatedBy = "lk_transactioncurrencybase_createdby";
+			public const string Lk_TransactionCurrencyBase_ModifiedBy = "lk_transactioncurrencybase_modifiedby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -88,6 +92,8 @@ namespace Database.Model
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
 			public const string TransactionCurrency_Account = "TransactionCurrency_Account";
+			public const string TransactionCurrency_Contact = "TransactionCurrency_Contact";
+			public const string TransactionCurrency_SystemUser = "TransactionCurrency_SystemUser";
 			public const string TransactionCurrency_Team = "TransactionCurrency_Team";
 			public const string TransactionCurrency_Vsd_Contract = "TransactionCurrency_Vsd_Contract";
 			public const string TransactionCurrency_Vsd_Entitlement = "TransactionCurrency_Vsd_Entitlement";
@@ -698,6 +704,42 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N transactioncurrency_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("transactioncurrency_contact")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Contact> TransactionCurrency_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Contact>("transactioncurrency_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Contact>("transactioncurrency_contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N TransactionCurrency_SystemUser
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_SystemUser")]
+		public System.Collections.Generic.IEnumerable<Database.Model.SystemUser> TransactionCurrency_SystemUser
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.SystemUser>("TransactionCurrency_SystemUser", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.SystemUser>("TransactionCurrency_SystemUser", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N TransactionCurrency_Team
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_Team")]
@@ -856,6 +898,72 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Province>("TransactionCurrency_vsd_province", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_transactioncurrency_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_transactioncurrency_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_TransactionCurrency_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrency_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrency_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_transactioncurrency_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_transactioncurrency_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_TransactionCurrency_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrency_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrency_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_transactioncurrencybase_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_transactioncurrencybase_createdby")]
+		public Database.Model.SystemUser Lk_TransactionCurrencyBase_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrencybase_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_transactioncurrencybase_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_transactioncurrencybase_modifiedby")]
+		public Database.Model.SystemUser Lk_TransactionCurrencyBase_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_transactioncurrencybase_modifiedby", null);
 			}
 		}
 		

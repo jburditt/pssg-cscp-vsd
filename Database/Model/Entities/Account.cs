@@ -678,6 +678,7 @@ namespace Database.Model
 		{
 			public const string ReferencingAccount_Master_Account = "account_master_account";
 			public const string ReferencingAccount_Parent_Account = "account_parent_account";
+			public const string Account_Primary_Contact = "account_primary_contact";
 			public const string AccountCategoryCode = "accountcategorycode";
 			public const string AccountCategoryCodename = "accountcategorycodename";
 			public const string AccountClassificationCode = "accountclassificationcode";
@@ -749,6 +750,7 @@ namespace Database.Model
 			public const string Aging90_Base = "aging90_base";
 			public const string BusinessTypeCode = "businesstypecode";
 			public const string BusinessTypeCodename = "businesstypecodename";
+			public const string Contact_Customer_Accounts = "Contact_Customer_Accounts";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByExternalParty = "createdbyexternalparty";
 			public const string CreatedByExternalPartyName = "createdbyexternalpartyname";
@@ -802,6 +804,10 @@ namespace Database.Model
 			public const string IsPrivateName = "isprivatename";
 			public const string LastOnHoldTime = "lastonholdtime";
 			public const string LastUsedInCampaign = "lastusedincampaign";
+			public const string Lk_AccountBase_CreatedBy = "lk_accountbase_createdby";
+			public const string Lk_AccountBase_CreatedOnBehalfBy = "lk_accountbase_createdonbehalfby";
+			public const string Lk_AccountBase_ModifiedBy = "lk_accountbase_modifiedby";
+			public const string Lk_AccountBase_ModifiedOnBehalfBy = "lk_accountbase_modifiedonbehalfby";
 			public const string MarketCap = "marketcap";
 			public const string MarketCap_Base = "marketcap_base";
 			public const string MarketingOnly = "marketingonly";
@@ -887,6 +893,7 @@ namespace Database.Model
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
 			public const string StockExchange = "stockexchange";
+			public const string System_User_Accounts = "system_user_accounts";
 			public const string Team_Accounts = "team_accounts";
 			public const string TeamsFollowed = "teamsfollowed";
 			public const string Telephone1 = "telephone1";
@@ -903,8 +910,10 @@ namespace Database.Model
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string TraversedPath = "traversedpath";
+			public const string User_Accounts = "user_accounts";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
+			public const string Vsd_Account_Contact = "vsd_account_contact";
 			public const string Vsd_Account_Vsd_Contract_Customer = "Vsd_Account_Vsd_Contract_Customer";
 			public const string Vsd_Account_Vsd_Invoice_Customer = "Vsd_Account_Vsd_Invoice_Customer";
 			public const string Vsd_Account_Vsd_Invoice_Payee = "Vsd_Account_Vsd_Invoice_Payee";
@@ -913,6 +922,7 @@ namespace Database.Model
 			public const string Vsd_Account_Vsd_Program = "Vsd_Account_Vsd_Program";
 			public const string Vsd_AccountNo = "vsd_accountno";
 			public const string Vsd_BcEId = "vsd_bceid";
+			public const string Vsd_BoardContact_Account = "vsd_boardcontact_account";
 			public const string Vsd_BoardContactId = "vsd_boardcontactid";
 			public const string Vsd_BoardContactIdName = "vsd_boardcontactidname";
 			public const string Vsd_BoardContactIdYomiName = "vsd_boardcontactidyominame";
@@ -934,6 +944,7 @@ namespace Database.Model
 			public const string Vsd_CvapUsingInvoiceWebForm = "vsd_cvapusinginvoicewebform";
 			public const string Vsd_CvapUsingInvoiceWebFormName = "vsd_cvapusinginvoicewebformname";
 			public const string Vsd_DBAName = "vsd_dbaname";
+			public const string Vsd_ExecutiveContact_Account = "vsd_executivecontact_account";
 			public const string Vsd_ExecutiveContactId = "vsd_executivecontactid";
 			public const string Vsd_ExecutiveContactIdName = "vsd_executivecontactidname";
 			public const string Vsd_ExecutiveContactIdYomiName = "vsd_executivecontactidyominame";
@@ -5818,6 +5829,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N contact_customer_accounts
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_customer_accounts")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Contact> Contact_Customer_Accounts
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Contact>("contact_customer_accounts", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Contact>("contact_customer_accounts", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N vsd_account_vsd_contract_Customer
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_account_vsd_contract_Customer")]
@@ -5926,6 +5955,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:N vsd_account_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_account_contact")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Contact> Vsd_Account_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Contact>("vsd_account_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Contact>("vsd_account_contact", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 account_master_account
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("masterid")]
@@ -5959,6 +6006,110 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 account_primary_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("primarycontactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("account_primary_contact")]
+		public Database.Model.Contact Account_Primary_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("account_primary_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("account_primary_contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_accountbase_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_accountbase_createdby")]
+		public Database.Model.SystemUser Lk_AccountBase_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_accountbase_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_accountbase_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_AccountBase_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_accountbase_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_accountbase_modifiedby")]
+		public Database.Model.SystemUser Lk_AccountBase_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_accountbase_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_accountbase_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_AccountBase_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_accountbase_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 system_user_accounts
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredsystemuserid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("system_user_accounts")]
+		public Database.Model.SystemUser System_User_Accounts
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("system_user_accounts", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("system_user_accounts", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_accounts
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -5988,6 +6139,58 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.TransactionCurrency>("transactioncurrency_account", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 user_accounts
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_accounts")]
+		public Database.Model.SystemUser User_Accounts
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_accounts", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_boardcontact_account
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_boardcontactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_boardcontact_account")]
+		public Database.Model.Contact Vsd_BoardContact_Account
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_boardcontact_account", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_boardcontact_account", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_executivecontact_account
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_executivecontactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_executivecontact_account")]
+		public Database.Model.Contact Vsd_ExecutiveContact_Account
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_executivecontact_account", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_executivecontact_account", null, value);
 			}
 		}
 		

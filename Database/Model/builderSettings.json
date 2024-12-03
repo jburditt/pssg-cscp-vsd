@@ -99,6 +99,8 @@
   "emitVirtualAttributes": true,
   "entityNamesFilter": [
     "account",
+    "contact",
+    "systemuser",
     "team",
     "transactioncurrency",
     "vsd_caspaymenttype",

@@ -107,6 +107,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_PaymentSchedule_CreatedBy = "lk_vsd_paymentschedule_createdby";
+			public const string Lk_Vsd_PaymentSchedule_CreatedOnBehalfBy = "lk_vsd_paymentschedule_createdonbehalfby";
+			public const string Lk_Vsd_PaymentSchedule_ModifiedBy = "lk_vsd_paymentschedule_modifiedby";
+			public const string Lk_Vsd_PaymentSchedule_ModifiedOnBehalfBy = "lk_vsd_paymentschedule_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -131,6 +135,7 @@ namespace Database.Model
 			public const string TransactionCurrency_Vsd_PaymentSchedule = "TransactionCurrency_vsd_paymentschedule";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
+			public const string User_Vsd_PaymentSchedule = "user_vsd_paymentschedule";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_Account_Vsd_PaymentSchedule_Payee = "vsd_account_vsd_paymentschedule_Payee";
@@ -138,6 +143,7 @@ namespace Database.Model
 			public const string Vsd_ActualValue_Base = "vsd_actualvalue_base";
 			public const string Vsd_CaseId = "vsd_caseid";
 			public const string Vsd_CaseiDnaMe = "vsd_caseidname";
+			public const string Vsd_Contact_Vsd_PaymentSchedule_Payee = "vsd_contact_vsd_paymentschedule_Payee";
 			public const string Vsd_CPpDeduction = "vsd_cppdeduction";
 			public const string Vsd_CPpDeduction_Base = "vsd_cppdeduction_base";
 			public const string Vsd_EndDate = "vsd_enddate";
@@ -1387,6 +1393,72 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 lk_vsd_paymentschedule_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_paymentschedule_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_PaymentSchedule_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_paymentschedule_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_paymentschedule_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_PaymentSchedule_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_paymentschedule_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_paymentschedule_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_PaymentSchedule_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_paymentschedule_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_paymentschedule_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_PaymentSchedule_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_paymentschedule_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_vsd_paymentschedule
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -1420,6 +1492,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 user_vsd_paymentschedule
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_paymentschedule")]
+		public Database.Model.SystemUser User_Vsd_PaymentSchedule
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_vsd_paymentschedule", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_account_vsd_paymentschedule_Payee
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_payee")]
@@ -1435,6 +1521,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Account>("vsd_account_vsd_paymentschedule_Payee", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_paymentschedule_Payee
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_payee")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_paymentschedule_Payee")]
+		public Database.Model.Contact Vsd_Contact_Vsd_PaymentSchedule_Payee
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_paymentschedule_Payee", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_paymentschedule_Payee", null, value);
 			}
 		}
 		

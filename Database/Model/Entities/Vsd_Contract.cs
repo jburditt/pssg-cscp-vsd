@@ -159,6 +159,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_Contract_CreatedBy = "lk_vsd_contract_createdby";
+			public const string Lk_Vsd_Contract_CreatedOnBehalfBy = "lk_vsd_contract_createdonbehalfby";
+			public const string Lk_Vsd_Contract_ModifiedBy = "lk_vsd_contract_modifiedby";
+			public const string Lk_Vsd_Contract_ModifiedOnBehalfBy = "lk_vsd_contract_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -186,6 +190,7 @@ namespace Database.Model
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string TraversedPath = "traversedpath";
+			public const string User_Vsd_Contract = "user_vsd_contract";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_Account_Vsd_Contract_Customer = "vsd_account_vsd_contract_Customer";
@@ -207,6 +212,9 @@ namespace Database.Model
 			public const string Vsd_CommentsNotes = "vsd_commentsnotes";
 			public const string Vsd_ComplaintAndFeedbackProcessForParticipant = "vsd_complaintandfeedbackprocessforparticipant";
 			public const string Vsd_ComplaintAndFeedbackProcessForParticipantName = "vsd_complaintandfeedbackprocessforparticipantname";
+			public const string Vsd_Contact_Vsd_Contract_ContactLookup1 = "vsd_contact_vsd_contract_ContactLookup1";
+			public const string Vsd_Contact_Vsd_Contract_ContactLookup2 = "vsd_contact_vsd_contract_ContactLookup2";
+			public const string Vsd_Contact_Vsd_Contract_Customer = "vsd_contact_vsd_contract_Customer";
 			public const string Vsd_ContactLookup1 = "vsd_contactlookup1";
 			public const string Vsd_ContactLookup1Name = "vsd_contactlookup1name";
 			public const string Vsd_ContactLookup1YomiName = "vsd_contactlookup1yominame";
@@ -297,6 +305,7 @@ namespace Database.Model
 			public const string Vsd_SigningOfficersName = "vsd_signingofficersname";
 			public const string Vsd_SigningOfficerTitle = "vsd_signingofficertitle";
 			public const string Vsd_SolicitationReferenceNumber = "vsd_solicitationreferencenumber";
+			public const string Vsd_SystemUser_Vsd_Contract_UserLookup = "vsd_systemuser_vsd_contract_UserLookup";
 			public const string Vsd_TotalAmendedContractAmount = "vsd_totalamendedcontractamount";
 			public const string Vsd_TotalAmendedContractAmount_Base = "vsd_totalamendedcontractamount_base";
 			public const string Vsd_TotalContractHours = "vsd_totalcontracthours";
@@ -2979,6 +2988,72 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 lk_vsd_contract_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_contract_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_Contract_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_contract_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_contract_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Contract_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_contract_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_contract_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_Contract_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_contract_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_contract_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Contract_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_contract_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_vsd_contract
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -3012,6 +3087,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 user_vsd_contract
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_contract")]
+		public Database.Model.SystemUser User_Vsd_Contract
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_vsd_contract", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_account_vsd_contract_Customer
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_customer")]
@@ -3027,6 +3116,82 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Account>("vsd_account_vsd_contract_Customer", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_contract_ContactLookup1
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_contactlookup1")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_contract_ContactLookup1")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Contract_ContactLookup1
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_ContactLookup1", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_ContactLookup1", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_contract_ContactLookup2
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_contactlookup2")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_contract_ContactLookup2")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Contract_ContactLookup2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_ContactLookup2", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_ContactLookup2", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_contract_Customer
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_customer")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_contract_Customer")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Contract_Customer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_Customer", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_contract_Customer", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_systemuser_vsd_contract_UserLookup
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_userlookup")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_contract_UserLookup")]
+		public Database.Model.SystemUser Vsd_SystemUser_Vsd_Contract_UserLookup
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_contract_UserLookup", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_contract_UserLookup", null, value);
 			}
 		}
 		

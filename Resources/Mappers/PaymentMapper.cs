@@ -39,7 +39,6 @@ public class PaymentRepositoryMapper : Profile
             .ForMember(dest => dest.Vsd_Case, opt => opt.MapFrom(src => src.CaseId != null ? new EntityReference("incident", src.CaseId.Value) : null))
             .ForMember(dest => dest.Vsd_EntitlementId, opt => opt.MapFrom(src => src.EntitlementId != null ? new EntityReference(Vsd_Entitlement.EntityLogicalName, src.EntitlementId.Value) : null))
             .ForMember(dest => dest.Vsd_Payee, opt => opt.MapFrom(src => src.Payee))
-            .ForMember(dest => dest.TransactionCurrencyId, opt => opt.MapFrom(src => src.TransactionCurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.TransactionCurrencyId.Value) : null))
-            .ForMember(dest => dest.Vsd_Vsd_Payment_Vsd_Invoice, opt => opt.MapFrom(src => src.Invoices));
+            .ForMember(dest => dest.TransactionCurrencyId, opt => opt.MapFrom(src => src.TransactionCurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.TransactionCurrencyId.Value) : null));
     }
 }

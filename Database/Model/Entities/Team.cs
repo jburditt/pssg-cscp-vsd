@@ -92,6 +92,11 @@ namespace Database.Model
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string IsDefault = "isdefault";
 			public const string IsDefaultName = "isdefaultname";
+			public const string Lk_Team_CreatedOnBehalfBy = "lk_team_createdonbehalfby";
+			public const string Lk_Team_ModifiedOnBehalfBy = "lk_team_modifiedonbehalfby";
+			public const string Lk_TeamBase_AdministratorId = "lk_teambase_administratorid";
+			public const string Lk_TeamBase_CreatedBy = "lk_teambase_createdby";
+			public const string Lk_TeamBase_ModifiedBy = "lk_teambase_modifiedby";
 			public const string MembershipType = "membershiptype";
 			public const string MembershipTypeName = "membershiptypename";
 			public const string ModifiedBy = "modifiedby";
@@ -113,6 +118,7 @@ namespace Database.Model
 			public const string SystemManaged = "systemmanaged";
 			public const string SystemManagedName = "systemmanagedname";
 			public const string Team_Accounts = "Team_Accounts";
+			public const string Team_Contacts = "Team_Contacts";
 			public const string Team_Vsd_Contract = "Team_Vsd_Contract";
 			public const string Team_Vsd_Entitlement = "Team_Vsd_Entitlement";
 			public const string Team_Vsd_Invoice = "Team_Vsd_Invoice";
@@ -122,6 +128,7 @@ namespace Database.Model
 			public const string Team_Vsd_Program = "Team_Vsd_Program";
 			public const string TeamId = "teamid";
 			public const string Id = "teamid";
+			public const string TeamMembership_Association = "teammembership_association";
 			public const string TeamTemplateId = "teamtemplateid";
 			public const string TeamType = "teamtype";
 			public const string TeamTypeName = "teamtypename";
@@ -1014,6 +1021,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N team_contacts
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_contacts")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Contact> Team_Contacts
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Contact>("team_contacts", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Contact>("team_contacts", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N team_vsd_contract
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_contract")]
@@ -1136,6 +1161,109 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Program>("team_vsd_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:N teammembership_association
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("teammembership_association")]
+		public System.Collections.Generic.IEnumerable<Database.Model.SystemUser> TeamMembership_Association
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.SystemUser>("teammembership_association", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.SystemUser>("teammembership_association", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_team_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_team_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Team_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_team_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_team_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_team_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_team_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Team_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_team_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_team_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_teambase_administratorid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("administratorid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_teambase_administratorid")]
+		public Database.Model.SystemUser Lk_TeamBase_AdministratorId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_teambase_administratorid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_teambase_administratorid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_teambase_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_teambase_createdby")]
+		public Database.Model.SystemUser Lk_TeamBase_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_teambase_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_teambase_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_teambase_modifiedby")]
+		public Database.Model.SystemUser Lk_TeamBase_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_teambase_modifiedby", null);
 			}
 		}
 		

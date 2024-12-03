@@ -289,6 +289,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_Invoice_CreatedBy = "lk_vsd_invoice_createdby";
+			public const string Lk_Vsd_Invoice_CreatedOnBehalfBy = "lk_vsd_invoice_createdonbehalfby";
+			public const string Lk_Vsd_Invoice_ModifiedBy = "lk_vsd_invoice_modifiedby";
+			public const string Lk_Vsd_Invoice_ModifiedOnBehalfBy = "lk_vsd_invoice_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -315,6 +319,7 @@ namespace Database.Model
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string TraversedPath = "traversedpath";
+			public const string User_Vsd_Invoice = "user_vsd_invoice";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_Account_Vsd_Invoice_Customer = "vsd_account_vsd_invoice_Customer";
@@ -329,6 +334,8 @@ namespace Database.Model
 			public const string Vsd_ClaimantLastNameText = "vsd_claimantlastnametext";
 			public const string Vsd_ClaimantNameText = "vsd_claimantnametext";
 			public const string Vsd_ClaimNumberText = "vsd_claimnumbertext";
+			public const string Vsd_Contact_Vsd_Invoice_Customer = "vsd_contact_vsd_invoice_Customer";
+			public const string Vsd_Contact_Vsd_Invoice_Payee = "vsd_contact_vsd_invoice_Payee";
 			public const string Vsd_ContractId = "vsd_contractid";
 			public const string Vsd_ContractIdName = "vsd_contractidname";
 			public const string Vsd_Cpu_ContractAdminNotes = "vsd_cpu_contractadminnotes";
@@ -421,6 +428,8 @@ namespace Database.Model
 			public const string Vsd_SubtotalAmount_Base = "vsd_subtotalamount_base";
 			public const string Vsd_SubtotalAmount_Date = "vsd_subtotalamount_date";
 			public const string Vsd_SubtotalAmount_State = "vsd_subtotalamount_state";
+			public const string Vsd_SystemUser_Vsd_Invoice_User2 = "vsd_systemuser_vsd_invoice_User2";
+			public const string Vsd_SystemUser_Vsd_Invoice_User3 = "vsd_systemuser_vsd_invoice_User3";
 			public const string Vsd_TaxExemption = "vsd_taxexemption";
 			public const string Vsd_TaxExemptionName = "vsd_taxexemptionname";
 			public const string Vsd_TaxRate = "vsd_taxrate";
@@ -3372,6 +3381,72 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 lk_vsd_invoice_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_Invoice_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_invoice_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Invoice_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_invoice_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_Invoice_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_invoice_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Invoice_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_invoice_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -3401,6 +3476,20 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.TransactionCurrency>("TransactionCurrency_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 user_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_invoice")]
+		public Database.Model.SystemUser User_Vsd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_vsd_invoice", null);
 			}
 		}
 		
@@ -3443,6 +3532,44 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 vsd_contact_vsd_invoice_Customer
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_customer2")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_invoice_Customer")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Invoice_Customer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_invoice_Customer", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_invoice_Customer", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_invoice_Payee
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_payee")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_invoice_Payee")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Invoice_Payee
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_invoice_Payee", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_invoice_Payee", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_payment_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_paymentid")]
@@ -3458,6 +3585,44 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Payment>("vsd_payment_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_systemuser_vsd_invoice_User2
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_user2")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_invoice_User2")]
+		public Database.Model.SystemUser Vsd_SystemUser_Vsd_Invoice_User2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_invoice_User2", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_invoice_User2", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_systemuser_vsd_invoice_User3
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_user3")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_invoice_User3")]
+		public Database.Model.SystemUser Vsd_SystemUser_Vsd_Invoice_User3
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_invoice_User3", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_invoice_User3", null, value);
 			}
 		}
 		

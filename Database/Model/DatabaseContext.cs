@@ -41,6 +41,28 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Contact"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Contact> ContactSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Contact>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.SystemUser"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.SystemUser> SystemUserSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.SystemUser>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.Team"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.Team> TeamSet

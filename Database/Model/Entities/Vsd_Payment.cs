@@ -156,6 +156,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_Payment_CreatedBy = "lk_vsd_payment_createdby";
+			public const string Lk_Vsd_Payment_CreatedOnBehalfBy = "lk_vsd_payment_createdonbehalfby";
+			public const string Lk_Vsd_Payment_ModifiedBy = "lk_vsd_payment_modifiedby";
+			public const string Lk_Vsd_Payment_ModifiedOnBehalfBy = "lk_vsd_payment_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -179,6 +183,7 @@ namespace Database.Model
 			public const string TransactionCurrency_Vsd_Payment = "TransactionCurrency_vsd_payment";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
+			public const string User_Vsd_Payment = "user_vsd_payment";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_Account_Vsd_Payment_Payee = "vsd_account_vsd_payment_Payee";
@@ -191,6 +196,7 @@ namespace Database.Model
 			public const string Vsd_CasPaymentNumber = "vsd_caspaymentnumber";
 			public const string Vsd_CasResponse = "vsd_casresponse";
 			public const string Vsd_City = "vsd_city";
+			public const string Vsd_Contact_Vsd_Payment_Payee = "vsd_contact_vsd_payment_Payee";
 			public const string Vsd_ContractId = "vsd_contractid";
 			public const string Vsd_ContractIdName = "vsd_contractidname";
 			public const string Vsd_Country = "vsd_country";
@@ -232,6 +238,7 @@ namespace Database.Model
 			public const string Vsd_SpecialHandlingName = "vsd_specialhandlingname";
 			public const string Vsd_StateProvince = "vsd_stateprovince";
 			public const string Vsd_SupplierNumber = "vsd_suppliernumber";
+			public const string Vsd_SystemUser_Vsd_Payment_UserLookup2 = "vsd_systemuser_vsd_payment_UserLookup2";
 			public const string Vsd_Terms = "vsd_terms";
 			public const string Vsd_TermsName = "vsd_termsname";
 			public const string Vsd_TransitNo = "vsd_transitno";
@@ -1802,6 +1809,72 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 lk_vsd_payment_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_payment_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_Payment_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_payment_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_payment_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Payment_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_payment_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_payment_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_Payment_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_payment_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_payment_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Payment_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_payment_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_vsd_payment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -1835,6 +1908,20 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 user_vsd_payment
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_payment")]
+		public Database.Model.SystemUser User_Vsd_Payment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_vsd_payment", null);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 vsd_account_vsd_payment_Payee
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_payee")]
@@ -1850,6 +1937,44 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Account>("vsd_account_vsd_payment_Payee", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_payment_Payee
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_payee")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_payment_Payee")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Payment_Payee
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_payment_Payee", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_payment_Payee", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_systemuser_vsd_payment_UserLookup2
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_userlookup2")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_payment_UserLookup2")]
+		public Database.Model.SystemUser Vsd_SystemUser_Vsd_Payment_UserLookup2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_payment_UserLookup2", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("vsd_systemuser_vsd_payment_UserLookup2", null, value);
 			}
 		}
 		

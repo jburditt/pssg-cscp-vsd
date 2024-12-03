@@ -32,6 +32,8 @@ vsu</CamelCaseCustomWords>
     <DeleteFilesFromOutputFolders>true</DeleteFilesFromOutputFolders>
     <EntitiesToSkip />
     <EntitiesWhitelist>account|
+contact|
+systemuser|
 team|
 transactioncurrency|
 vsd_caspaymenttype|
@@ -137,7 +139,7 @@ VoiceMail</TokenCapitalizationOverrides>
   <Namespace>Database.Model</Namespace>
   <ServiceContextName>DatabaseContext</ServiceContextName>
   <SuppressGeneratedCodeAttribute>true</SuppressGeneratedCodeAttribute>
-  <SettingsVersion>2.2024.10.16</SettingsVersion>
+  <SettingsVersion>2.2024.11.8</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
   <Version>2.2024.11.8</Version>
 </Config>

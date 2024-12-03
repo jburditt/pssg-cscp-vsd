@@ -62,6 +62,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_CvapStOB_CreatedBy = "lk_vsd_cvapstob_createdby";
+			public const string Lk_Vsd_CvapStOB_CreatedOnBehalfBy = "lk_vsd_cvapstob_createdonbehalfby";
+			public const string Lk_Vsd_CvapStOB_ModifiedBy = "lk_vsd_cvapstob_modifiedby";
+			public const string Lk_Vsd_CvapStOB_ModifiedOnBehalfBy = "lk_vsd_cvapstob_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -736,6 +740,72 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Invoice>("vsd_vsd_cvapstob_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_cvapstob_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_cvapstob_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_CvapStOB_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_cvapstob_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_cvapstob_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_CvapStOB_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_cvapstob_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_cvapstob_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_CvapStOB_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_cvapstob_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_cvapstob_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_CvapStOB_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_cvapstob_modifiedonbehalfby", null, value);
 			}
 		}
 		

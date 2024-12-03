@@ -62,6 +62,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_CasPaymentType_CreatedBy = "lk_vsd_caspaymenttype_createdby";
+			public const string Lk_Vsd_CasPaymentType_CreatedOnBehalfBy = "lk_vsd_caspaymenttype_createdonbehalfby";
+			public const string Lk_Vsd_CasPaymentType_ModifiedBy = "lk_vsd_caspaymenttype_modifiedby";
+			public const string Lk_Vsd_CasPaymentType_ModifiedOnBehalfBy = "lk_vsd_caspaymenttype_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -702,6 +706,72 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Invoice>("vsd_vsd_caspaymenttype_vsd_invoice_CASPaymentType", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_caspaymenttype_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_caspaymenttype_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_CasPaymentType_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_caspaymenttype_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_caspaymenttype_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_CasPaymentType_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_caspaymenttype_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_caspaymenttype_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_CasPaymentType_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_caspaymenttype_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_caspaymenttype_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_CasPaymentType_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_caspaymenttype_modifiedonbehalfby", null, value);
 			}
 		}
 		

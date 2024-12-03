@@ -6,7 +6,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
     public void Insert()
     {
         // Arrange
-        var invoice = new Invoice() { Owner = new DynamicReference(TestData.OwnerId, "systemuser") };
+        var invoice = new Invoice() { Owner = TestData.Owner };
         invoice.AuthorizationDate = DateTime.Now;
         invoice.CpuInvoiceType = CpuInvoiceType.OneTimePayment;
         invoice.CpuScheduledPaymentDate = DateTime.Now;
@@ -41,8 +41,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
                 AmountSimple = 100,
                 Approved = YesNo.Yes,
                 InvoiceType = InvoiceType.OtherPayments,
-                OwnerId = invoice.OwnerId,
-                OwnerId = invoice.Owner.Id,
+                Owner = invoice.Owner,
                 StateCode = StateCode.Active,
                 TaxExemption = TaxExemption.NoTax,
                 CurrencyId = Constant.CadCurrency
@@ -75,7 +74,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
     public void Update()
     {
         // Arrange
-        var invoice = new Invoice();
+        var invoice = new Invoice() { Owner = null };
 
         // Act
         var result = repository.Update(invoice);

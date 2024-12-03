@@ -191,6 +191,10 @@ namespace Database.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ExchangerAte = "exchangerate";
 			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string Lk_Vsd_Entitlement_CreatedBy = "lk_vsd_entitlement_createdby";
+			public const string Lk_Vsd_Entitlement_CreatedOnBehalfBy = "lk_vsd_entitlement_createdonbehalfby";
+			public const string Lk_Vsd_Entitlement_ModifiedBy = "lk_vsd_entitlement_modifiedby";
+			public const string Lk_Vsd_Entitlement_ModifiedOnBehalfBy = "lk_vsd_entitlement_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -217,6 +221,7 @@ namespace Database.Model
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string TraversedPath = "traversedpath";
+			public const string User_Vsd_Entitlement = "user_vsd_entitlement";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 			public const string Vsd_AccumulatedAmount = "vsd_accumulatedamount";
@@ -231,6 +236,7 @@ namespace Database.Model
 			public const string Vsd_BenefitTypeIdName = "vsd_benefittypeidname";
 			public const string Vsd_CaseId = "vsd_caseid";
 			public const string Vsd_CaseiDnaMe = "vsd_caseidname";
+			public const string Vsd_Contact_Vsd_Entitlement = "vsd_contact_vsd_entitlement";
 			public const string Vsd_ContactId = "vsd_contactid";
 			public const string Vsd_ContactIdName = "vsd_contactidname";
 			public const string Vsd_ContactIdYomiName = "vsd_contactidyominame";
@@ -1894,6 +1900,72 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// N:1 lk_vsd_entitlement_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_entitlement_createdby")]
+		public Database.Model.SystemUser Lk_Vsd_Entitlement_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_createdby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_entitlement_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_entitlement_createdonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Entitlement_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_entitlement_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_entitlement_modifiedby")]
+		public Database.Model.SystemUser Lk_Vsd_Entitlement_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_modifiedby", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 lk_vsd_entitlement_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_entitlement_modifiedonbehalfby")]
+		public Database.Model.SystemUser Lk_Vsd_Entitlement_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.SystemUser>("lk_vsd_entitlement_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 team_vsd_entitlement
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
@@ -1923,6 +1995,39 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.TransactionCurrency>("TransactionCurrency_vsd_entitlement", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 user_vsd_entitlement
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_entitlement")]
+		public Database.Model.SystemUser User_Vsd_Entitlement
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.SystemUser>("user_vsd_entitlement", null);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_contact_vsd_entitlement
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_contactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_entitlement")]
+		public Database.Model.Contact Vsd_Contact_Vsd_Entitlement
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_entitlement", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Contact>("vsd_contact_vsd_entitlement", null, value);
 			}
 		}
 		
