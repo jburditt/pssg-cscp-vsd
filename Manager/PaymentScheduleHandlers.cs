@@ -1,11 +1,10 @@
-﻿using Utilities;
-
-namespace Manager;
+﻿namespace Manager;
 
 public class PaymentScheduleHandlers : BaseHandlers<IPaymentScheduleRepository, PaymentSchedule>,
     IRequestHandler<PaymentScheduleEntitlementQuery, IEnumerable<PaymentScheduleEntitlement>>,
     IRequestHandler<GetPaymentTotalCommand, PaymentTotalResult>,
-    IRequestHandler<GetNextRuntimeCommand, DateTime>
+    IRequestHandler<GetNextRuntimeCommand, DateTime>,
+    IRequestHandler<UpdateCommand<PaymentSchedule>, bool>
 {
     private readonly IPaymentScheduleService _service;
     private readonly IMapper _mapper;

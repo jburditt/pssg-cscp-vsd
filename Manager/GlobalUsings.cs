@@ -4,3 +4,4 @@ global using MediatR;
 global using Shared.Contract;
 global using Resources;
 global using Task = System.Threading.Tasks.Task;
+global using Utilities;

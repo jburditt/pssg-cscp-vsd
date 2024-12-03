@@ -17,3 +17,8 @@ NOTE in theory, you could add your authentication profile to PAC using your conn
 ## Troubleshooting
 
 If you encounter a user authentication error and the authentication hasn't changed and your VPN is connected, try restarting the XrmToolbox application. I find this happens often but restarting always fixes the issue.
+
+## Dataverse Cheatsheet
+
+.AddLink - Adds a link between two entity instances that already exist in database
+.AddRelatedObject - Adds a new related entity to an existing entity
