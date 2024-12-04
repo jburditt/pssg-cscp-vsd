@@ -15,6 +15,9 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<ContractHandlers>();
         //services.AddTransient<IContractRepository, ContractRepository>();
 
+        services.AddTransient<IConfigurationRepository, ConfigurationRepository>();
+        services.AddTransient<IConfigurationService, ConfigurationService>();
+
         services.AddTransient<CurrencyHandlers>();
         services.AddTransient<ICurrencyRepository, CurrencyRepository>();
 
@@ -48,8 +51,8 @@ public static class ServiceCollectionExtensions
         // NOTE global and shared mapper should be first, since it has the prefix configurations and shared mappings
         var mapperTypes = new[] {
             typeof(GlobalMapper), typeof(SharedMapper), typeof(TeamMapper), typeof(PaymentScheduleMapper), typeof(EntitlementMapper), typeof(IncomeSupportParameterMapper), 
-            //typeof(CurrencyRepositoryMapper), typeof(PaymentRepositoryMapper), typeof(ProgramRepositoryMapper), typeof(ContractRepositoryMapper),
-            typeof(InvoiceMapper), //typeof(InvoiceLineDetailRepositoryMapper), typeof(ScheduleGRepositoryMapper)
+            typeof(CurrencyMapper), typeof(PaymentMapper), //typeof(ProgramMapper), typeof(ContractRepositoryMapper),
+            typeof(InvoiceMapper), typeof(InvoiceLineDetailMapper), //typeof(ScheduleGRepositoryMapper)
         };
         services.AddAutoMapper(cfg => cfg.ShouldUseConstructor = constructor => constructor.IsPublic, mapperTypes);
         return services;

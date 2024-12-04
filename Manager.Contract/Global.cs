@@ -38,12 +38,26 @@ public enum InvoiceType
 
 public enum ProgramUnit
 {
+    //[OptionSetMetadataAttribute("CPU", 4, "#0000ff")]
     Cpu = 100000003,
+
+    //[OptionSetMetadataAttribute("CSU", 3, "#0000ff")]
     Csu = 100000002,
+
+    //[OptionSetMetadataAttribute("CVAP", 1, "#0000ff")]
     Cvap = 100000000,
+
+    //[OptionSetMetadataAttribute("Gangs", 6, "#0000ff")]
     Gangs = 100000005,
+
+    //[OptionSetMetadataAttribute("IIPS", 0, "#0000ff")]
+    Iips = 100000006,
+
+    //[OptionSetMetadataAttribute("REST", 5, "#0000ff")]
     Rest = 100000004,
-    Vsu = 100000001
+
+    //[OptionSetMetadataAttribute("VSU", 2, "#0000ff")]
+    Vsu = 100000001,
 }
 
 public enum Quarter

@@ -1,8 +1,8 @@
 ﻿namespace Resources;
 
-public class PaymentRepositoryMapper : Profile
+public class PaymentMapper : Profile
 {
-    public PaymentRepositoryMapper()
+    public PaymentMapper()
     {
         CreateMap<Vsd_Payment, Payment>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

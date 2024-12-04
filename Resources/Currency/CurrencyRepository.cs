@@ -13,7 +13,7 @@ public class CurrencyRepository : BaseRepository<TransactionCurrency, Currency>,
     {
         var queryResults = _databaseContext.TransactionCurrencySet
             .WhereIf(currencyQuery.StateCode != null, c => c.StateCode == (TransactionCurrency_StateCode?)currencyQuery.StateCode)
-            .WhereIf(currencyQuery.IsoCurrencyCode == null, p => p.IsoCurrencyCode == currencyQuery.IsoCurrencyCode)
+            .WhereIf(currencyQuery.IsoCurrencyCode != null, p => p.IsoCurrencyCode == currencyQuery.IsoCurrencyCode)
             .FirstOrDefault();
         return _mapper.Map<Currency>(queryResults);
     }
@@ -21,8 +21,8 @@ public class CurrencyRepository : BaseRepository<TransactionCurrency, Currency>,
     public IEnumerable<Currency> Query(CurrencyQuery currencyQuery)
     {
         var queryResults = _databaseContext.TransactionCurrencySet
-            .WhereIf(currencyQuery.StateCode == null, c => c.StateCode == (TransactionCurrency_StateCode?)currencyQuery.StateCode)
-            .WhereIf(currencyQuery.IsoCurrencyCode == null, c => c.IsoCurrencyCode == currencyQuery.IsoCurrencyCode)
+            .WhereIf(currencyQuery.StateCode != null, c => c.StateCode == (TransactionCurrency_StateCode?)currencyQuery.StateCode)
+            .WhereIf(currencyQuery.IsoCurrencyCode != null, c => c.IsoCurrencyCode == currencyQuery.IsoCurrencyCode)
             .ToList();
         return _mapper.Map<IEnumerable<Currency>>(queryResults);
     }

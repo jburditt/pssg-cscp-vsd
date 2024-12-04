@@ -1,4 +1,4 @@
-﻿public class PaymentTests(ILoggerFactory loggerFactory)
+﻿public class PaymentTests(IMediator mediator, IConfigurationRepository configurationRepository, ILoggerFactory loggerFactory)
 {
     private readonly ILogger _logger = loggerFactory.CreateLogger<PaymentScheduleTests>();
 
@@ -9,10 +9,16 @@
 
         //try
         //{
-            var startTime = DateTime.Now;
-            //var configs = XrmHelpers.Helpers.GetSystemConfigurations(OrgService, "CAS", string.Empty, null);
+        var startTime = DateTime.Now;
 
-            //string clientKey = Helpers.GetConfigKeyValue(configs, "ClientKey", "CAS", null);
+        var configurationQuery = new ConfigurationQuery();
+        configurationQuery.StateCode = StateCode.Active;
+        configurationQuery.Group = "CAS";
+        var configs = await mediator.Send(configurationQuery);
+
+        var getKeyValueCommand = new GetKeyValueCommand(configs, "ClientKey", "CAS", null);
+        var clientKey = await mediator.Send(getKeyValueCommand);
+
             //string clientId = Helpers.GetConfigKeyValue(configs, "ClientId", "CAS", null);
             //string url = Helpers.GetConfigKeyValue(configs, "InterfaceUrl", "CAS", null);
 
