@@ -1,6 +1,6 @@
 ﻿namespace Resources;
 
-public interface IPaymentRepository : IQueryRepository<PaymentQuery, Payment>, IBaseRepository<Payment>
+public interface IPaymentRepository : IFindRepository<FindPaymentQuery, Payment>, IQueryRepository<PaymentQuery, Payment>, IBaseRepository<Payment>
 {
 
 }

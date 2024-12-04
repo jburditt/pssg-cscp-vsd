@@ -43,3 +43,7 @@ Sample html:
 * Project: [Weasyprint](http://weasyprint.org/)
 * Image: [aquavitae/weasyprint](https://hub.docker.com/r/aquavitae/weasyprint/)
 * Source: [aquavitae/docker-weasyprint](https://github.com/aquavitae/docker-weasyprint)
+
+## Dataverse How-To
+
+1-1 and N-1 mappings use Join method, see X

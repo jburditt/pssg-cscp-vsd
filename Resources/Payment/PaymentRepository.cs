@@ -52,13 +52,67 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
         return paymentEntity.Id;
     }
 
-    public IEnumerable<Payment> Query(PaymentQuery paymentQuery)
+    public Payment FirstOrDefault(FindPaymentQuery query) 
     {
         var queryResults = _databaseContext.Vsd_PaymentSet
+            //.Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new { Payment = p, Invoice = i })
+            .WhereIf(query.Id != null, x => x.Vsd_PaymentId == query.Id)
+            //.Select(x => new PaymentComposite(x.Payment, x.Invoice))
+            .FirstOrDefault();
+
+        _databaseContext.LoadProperty(queryResults, Vsd_Payment.Fields.Vsd_Vsd_Payment_Vsd_Invoice.ToLower());
+
+        return _mapper.Map<Payment>(queryResults);
+    }
+
+    public IEnumerable<Payment> Query(PaymentQuery paymentQuery)
+    {
+        if (paymentQuery.IncludeChildren)
+        {
+            var query = _databaseContext.Vsd_PaymentSet
+                .Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new PaymentInvoiceEntity(p, i))
+                .Where(paymentQuery);
+            //.Select(x => new PaymentInvoiceEntity(x.Payment, x.Invoice));
+
+            var queryResults = query
+                .ToList()
+                .GroupBy(x => x.Payment, x => x.Invoice, (p, i) => new PaymentInvoicesEntity(p, i));
+
+            //var queryResults = _databaseContext
+            //    .CreateQuery(Vsd_Payment.Fields.Vsd_Vsd_Payment_Vsd_Invoice.ToLower())
+            //    .Where(x => x.Attributes[Vsd_Payment.Fields.Vsd_PaymentId] == paymentQuery.Id);
+
+            return _mapper.Map<IEnumerable<Payment>>(queryResults);
+        }
+        else
+        {
+            var queryResults = _databaseContext.Vsd_PaymentSet
+                .Where(paymentQuery)
+                .ToList();
+            return _mapper.Map<IEnumerable<Payment>>(queryResults);
+        }
+    }
+
+}
+
+public record PaymentInvoiceEntity(Vsd_Payment Payment, Vsd_Invoice Invoice);
+public record PaymentInvoicesEntity(Vsd_Payment Payment, IEnumerable<Vsd_Invoice> Invoices);
+
+public static class PaymentExtensions
+{
+    public static IQueryable<Vsd_Payment> Where(this IQueryable<Vsd_Payment> query, BasePaymentQuery paymentQuery)
+    {
+        return query
             .WhereIf(paymentQuery.ProgramId != null, p => p.Vsd_ProgramId.Id == paymentQuery.ProgramId)
             .WhereIf(paymentQuery.ContractId != null, p => p.Vsd_ContractId.Id == paymentQuery.ContractId)
-            .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.StatusCode, paymentQuery.ExcludeStatusCodes)
-            .ToList();
-        return _mapper.Map<IEnumerable<Payment>>(queryResults);
+            .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.StatusCode, paymentQuery.ExcludeStatusCodes);
+    }
+
+    public static IQueryable<PaymentInvoiceEntity> Where(this IQueryable<PaymentInvoiceEntity> query, BasePaymentQuery paymentQuery)
+    {
+        return query
+            .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
+            .WhereIf(paymentQuery.ContractId != null, p => p.Payment.Vsd_ContractId.Id == paymentQuery.ContractId)
+            .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.Payment.StatusCode, paymentQuery.ExcludeStatusCodes);
     }
 }

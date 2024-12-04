@@ -36,12 +36,14 @@ public record FindPaymentQuery : BasePaymentQuery, IRequest<Payment> { }
 public record PaymentQuery : BasePaymentQuery, IRequest<IEnumerable<Payment>> { }
 public record BasePaymentQuery
 {
+    public Guid? Id { get; set; }
     public StateCode? StateCode { get; set; }
     public PaymentStatusCode? StatusCode { get; set; }
     public List<PaymentStatusCode>? ExcludeStatusCodes { get; set; }
     public DateTime? Date { get; set; }
     public Guid? ProgramId { get; set; }
     public Guid? ContractId { get; set; }
+    public bool IncludeChildren { get; set; }
 }
 
 public record Payment : IDto
