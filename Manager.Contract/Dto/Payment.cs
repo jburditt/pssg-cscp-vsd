@@ -51,6 +51,8 @@ public record Payment : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
+    public PaymentStatusCode StatusCode { get; set; }
+    public string? Name { get; set; }                   // Dynamics Optional
     public DateTime Date { get; set; }                  // Dynamics Business Required
     public decimal? SubTotal { get; set; }              // Dynamics Optional
     public decimal? Total { get; set; }                 // Dynamics Optional
@@ -61,6 +63,7 @@ public record Payment : IDto
     public string? RemittanceMessage1 { get; set; }     // Dynamics Optional
     public string? RemittanceMessage2 { get; set; }     // Dynamics Optional
     public string? RemittanceMessage3 { get; set; }     // Dynamics Optional
+    public string? CasResponse { get; set; }            // Dynamics Optional
 
     // Foreign Keys
     public Guid? CaseId { get; set; }                   // Dynamics Optional
