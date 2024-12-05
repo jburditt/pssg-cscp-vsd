@@ -41,6 +41,7 @@ public record BasePaymentQuery
     public PaymentStatusCode? StatusCode { get; set; }
     public List<PaymentStatusCode>? ExcludeStatusCodes { get; set; }
     public DateTime? Date { get; set; }
+    public DateTime? BeforeDate { get; set; }
     public Guid? ProgramId { get; set; }
     public Guid? ContractId { get; set; }
     public bool IncludeChildren { get; set; }

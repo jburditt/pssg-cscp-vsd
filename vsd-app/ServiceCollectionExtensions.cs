@@ -12,6 +12,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddHandlers(this IServiceCollection services)
     {
+        services.AddTransient<ICasPaymentRepository, CasPaymentRepository>();
+
         //services.AddTransient<ContractHandlers>();
         //services.AddTransient<IContractRepository, ContractRepository>();
 

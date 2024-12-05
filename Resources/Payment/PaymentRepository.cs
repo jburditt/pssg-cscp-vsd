@@ -60,8 +60,6 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
             //.Select(x => new PaymentComposite(x.Payment, x.Invoice))
             .FirstOrDefault();
 
-        _databaseContext.LoadProperty(queryResults, Vsd_Payment.Fields.Vsd_Vsd_Payment_Vsd_Invoice.ToLower());
-
         return _mapper.Map<Payment>(queryResults);
     }
 
@@ -103,16 +101,23 @@ public static class PaymentExtensions
     public static IQueryable<Vsd_Payment> Where(this IQueryable<Vsd_Payment> query, BasePaymentQuery paymentQuery)
     {
         return query
+            .WhereIf(paymentQuery.StateCode != null, x => x.StateCode == (Vsd_Payment_StateCode?)paymentQuery.StateCode)
+            .WhereIf(paymentQuery.StatusCode != null, x => x.StatusCode == (Vsd_Payment_StatusCode?)paymentQuery.StatusCode)
+            .WhereIf(paymentQuery.BeforeDate != null, x => x.Vsd_PaymentDate <= paymentQuery.BeforeDate)
             .WhereIf(paymentQuery.ProgramId != null, p => p.Vsd_ProgramId.Id == paymentQuery.ProgramId)
             .WhereIf(paymentQuery.ContractId != null, p => p.Vsd_ContractId.Id == paymentQuery.ContractId)
             .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.StatusCode, paymentQuery.ExcludeStatusCodes);
     }
 
+    // TODO does not work
+    // TODO match above 
     public static IQueryable<PaymentInvoiceEntity> Where(this IQueryable<PaymentInvoiceEntity> query, BasePaymentQuery paymentQuery)
     {
         return query
             .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
             .WhereIf(paymentQuery.ContractId != null, p => p.Payment.Vsd_ContractId.Id == paymentQuery.ContractId)
+            .WhereIf(paymentQuery.StateCode != null, p => p.Payment.StateCode == (Vsd_Payment_StateCode)paymentQuery.StateCode)
+            .WhereIf(paymentQuery.StatusCode != null, p => p.Payment.StatusCode == (Vsd_Payment_StatusCode?)paymentQuery.StatusCode)
             .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.Payment.StatusCode, paymentQuery.ExcludeStatusCodes);
     }
 }
