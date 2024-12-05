@@ -110,6 +110,8 @@ public record Invoice : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public InvoiceStatusCode StatusCode { get; set; } = InvoiceStatusCode.Draft;    // Dynamics Optional
+    [Description("Auto generated invoice number")]
+    public string? Name { get; set; }                                               // Dynamics Optional
     public Origin? Origin { get; set; }                                             // Dynamics Optional
     // TODO rename to Date
     public DateTime? InvoiceDate { get; set; }                                      // Dynamics Optional
