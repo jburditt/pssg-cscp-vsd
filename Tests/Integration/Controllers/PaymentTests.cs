@@ -22,6 +22,7 @@ public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, 
         var url = await mediator.Send(getKeyValueCommand);
 
         var paymentQuery = new PaymentQuery();
+        paymentQuery.IncludeChildren = true;
         paymentQuery.StateCode = StateCode.Active;
         paymentQuery.StatusCode = PaymentStatusCode.Waiting;
         paymentQuery.BeforeDate = DateTime.Now;
@@ -134,7 +135,7 @@ public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, 
         string country = string.Empty;
         string postalCode = string.Empty;
         int programUnit = (int)ProgramUnit.Cvap;
-        Entity invoiceEntity = null;
+        Invoice invoiceEntity = null;
         string methodOfPayment = "GEN CHQ";
         string accountNumber = string.Empty;
         string transitNumber = string.Empty;

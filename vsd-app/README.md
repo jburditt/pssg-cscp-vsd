@@ -46,4 +46,18 @@ Sample html:
 
 ## Dataverse How-To
 
-1-1 and N-1 mappings use Join method, see X
+Query
+1-1 and N-1 mappings use Join method, see 
+1-N and N-N mappings query see PaymentRepository.Query method
+
+Insert with children see PaymentRepository.Insert method
+
+### TIPS
+For joins, try using anonymous types instead of creating a new class; otherwise you might get object reference not set to an instance of an object errors
+
+Query a join table
+```
+var queryResults = _databaseContext
+    .CreateQuery(Vsd_Payment.Fields.Vsd_Vsd_Payment_Vsd_Invoice.ToLower())
+    .Where(x => x.Attributes[Vsd_Payment.Fields.Vsd_PaymentId] == paymentQuery.Id);
+```

@@ -68,17 +68,16 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
         if (paymentQuery.IncludeChildren)
         {
             var query = _databaseContext.Vsd_PaymentSet
-                .Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new PaymentInvoiceEntity(p, i))
-                .Where(paymentQuery);
-            //.Select(x => new PaymentInvoiceEntity(x.Payment, x.Invoice));
+                .Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new { Payment = p, Invoice = i })
+                .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
+                .WhereIf(paymentQuery.ContractId != null, p => p.Payment.Vsd_ContractId.Id == paymentQuery.ContractId)
+                .WhereIf(paymentQuery.StateCode != null, p => p.Payment.StateCode == (Vsd_Payment_StateCode)paymentQuery.StateCode)
+                .WhereIf(paymentQuery.StatusCode != null, p => p.Payment.StatusCode == (Vsd_Payment_StatusCode?)paymentQuery.StatusCode)
+                .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.Payment.StatusCode, paymentQuery.ExcludeStatusCodes);
 
             var queryResults = query
                 .ToList()
                 .GroupBy(x => x.Payment, x => x.Invoice, (p, i) => new PaymentInvoicesEntity(p, i));
-
-            //var queryResults = _databaseContext
-            //    .CreateQuery(Vsd_Payment.Fields.Vsd_Vsd_Payment_Vsd_Invoice.ToLower())
-            //    .Where(x => x.Attributes[Vsd_Payment.Fields.Vsd_PaymentId] == paymentQuery.Id);
 
             return _mapper.Map<IEnumerable<Payment>>(queryResults);
         }
@@ -107,17 +106,5 @@ public static class PaymentExtensions
             .WhereIf(paymentQuery.ProgramId != null, p => p.Vsd_ProgramId.Id == paymentQuery.ProgramId)
             .WhereIf(paymentQuery.ContractId != null, p => p.Vsd_ContractId.Id == paymentQuery.ContractId)
             .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.StatusCode, paymentQuery.ExcludeStatusCodes);
-    }
-
-    // TODO does not work
-    // TODO match above 
-    public static IQueryable<PaymentInvoiceEntity> Where(this IQueryable<PaymentInvoiceEntity> query, BasePaymentQuery paymentQuery)
-    {
-        return query
-            .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
-            .WhereIf(paymentQuery.ContractId != null, p => p.Payment.Vsd_ContractId.Id == paymentQuery.ContractId)
-            .WhereIf(paymentQuery.StateCode != null, p => p.Payment.StateCode == (Vsd_Payment_StateCode)paymentQuery.StateCode)
-            .WhereIf(paymentQuery.StatusCode != null, p => p.Payment.StatusCode == (Vsd_Payment_StatusCode?)paymentQuery.StatusCode)
-            .WhereIfNotIn(paymentQuery.ExcludeStatusCodes != null, x => (PaymentStatusCode)x.Payment.StatusCode, paymentQuery.ExcludeStatusCodes);
     }
 }
