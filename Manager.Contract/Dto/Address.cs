@@ -17,6 +17,8 @@ public record Address
     string? StateOrProvince,
     string? PostalCode
 ) {
+    public string? Country { get; set; }
+
     public static AddressCode? MapAddress1Code(int? addressCode) => addressCode switch
     {
         1 => AddressCode.MailingAddress,

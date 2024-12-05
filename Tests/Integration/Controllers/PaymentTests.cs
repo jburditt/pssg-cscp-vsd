@@ -1,6 +1,4 @@
-﻿using Microsoft.Xrm.Sdk;
-
-public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, ILoggerFactory loggerFactory)
+﻿public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, ILoggerFactory loggerFactory)
 {
     private readonly ILogger _logger = loggerFactory.CreateLogger<PaymentScheduleTests>();
 
@@ -47,7 +45,7 @@ public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, 
 
                 //messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending); //Sending
 
-                var invoices = GenerateInvoice(configs, postImageEntity);
+                var invoices = await GenerateInvoice(configs, postImageEntity);
                 var jsonRequest = JsonConvert.SerializeObject(invoices);
 
                 //Log.AppendLine("Sending Json: " + jsonRequest.ToString());
@@ -151,7 +149,7 @@ public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, 
 
         ArgumentNullException.ThrowIfNull(invoiceEntity.InvoiceDate, "Invoice Date is missing.");
         ArgumentNullException.ThrowIfNull(invoiceEntity.Name, "Invoice Number is missing.");
-        ArgumentNullException.ThrowIfNull(invoiceEntity.ProgramUnit, "Invoice Program Unit is missing.");
+        //ArgumentNullException.ThrowIfNull(invoiceEntity.ProgramUnit, "Invoice Program Unit is missing.");
 
         if (invoiceEntity.MethodOfPayment == MethodOfPayment.Eft)
             methodOfPayment = "GEN EFT";
@@ -248,72 +246,64 @@ public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, 
                 //    if (accountEntity.Contains("emailaddress1"))
                 //        emailAddress = (string)accountEntity["emailaddress1"];
         }
-        //else
-        //{
-        //    var contactEntity = OrgService.Retrieve(payeeLookup.LogicalName.ToLowerInvariant(), payeeLookup.Id,
-        //        new ColumnSet("vsd_contactrole", "vsd_accountnumber", "vsd_suppliersitenumber", "firstname", "lastname", "address3_line1", "address3_line2", "address3_line3",
-        //        "address3_city", "address3_stateorprovince", "address3_country", "address3_postalcode", "vsd_accountno", "vsd_transitno", "vsd_institutionno", "emailaddress1", "vsd_rest_chequename"));
+        else
+        {
+            var contactEntity = await mediator.Send(new FindContactQuery { Id = payeeLookup.Id });
 
-        //    if (!contactEntity.Contains("vsd_contactrole"))
-        //        throw new InvalidPluginExecutionException("Contact Role is empty..");
-        //    if (!contactEntity.Contains("vsd_accountnumber"))
-        //    {
-        //        if ((programUnit == (int)ProgramUnit.CVAP || programUnit == (int)ProgramUnit.VSU || programUnit == (int)ProgramUnit.REST) && ((OptionSetValue)contactEntity["vsd_contactrole"]).Value == 100000000) //CVAP or VSU or REST and Client
-        //        {
-        //            isBlockSupplier = true;
-        //            contactEntity["vsd_accountnumber"] = Helpers.GetConfigKeyValue(programUnitConfigs, "BlockSupplierNumber", "CAS", (ProgramUnit)programUnit);
-        //        }
-        //        else
-        //            throw new InvalidPluginExecutionException("Vendor Number on contact is empty..");
-        //    }
-        //    if (!contactEntity.Contains("vsd_suppliersitenumber"))
-        //    {
-        //        if ((programUnit == (int)ProgramUnit.CVAP || programUnit == (int)ProgramUnit.VSU || programUnit == (int)ProgramUnit.REST) && ((OptionSetValue)contactEntity["vsd_contactrole"]).Value == 100000000) //CVAP or VSU or REST and Client
-        //        {
-        //            isBlockSupplier = true;
-        //            contactEntity["vsd_suppliersitenumber"] = int.Parse(Helpers.GetConfigKeyValue(programUnitConfigs, "SupplierSiteNumber", "CAS", (ProgramUnit)programUnit));
-        //        }
-        //    }
-        //    if (!contactEntity.Contains("firstname"))
-        //        throw new InvalidPluginExecutionException("First Name on contact is empty..");
-        //    if (!contactEntity.Contains("lastname"))
-        //        throw new InvalidPluginExecutionException("Last Name on contact is empty..");
+            ArgumentNullException.ThrowIfNull(contactEntity.ContactRole, "Contact Role is missing.");
+            if (string.IsNullOrEmpty(contactEntity.AccountNumber))
+            {
+                if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
+                {
+                    isBlockSupplier = true;
+                    contactEntity.AccountNumber = await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "BlockSupplierNumber", "CAS", programUnit));
+                }
+                else
+                    throw new Exception("Vendor/Account Number on Service Provider is missing.");
+            }
+            if (contactEntity.SupplierSiteNumber == null)
+            {
+                if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
+                {
+                    isBlockSupplier = true;
+                    contactEntity.SupplierSiteNumber = int.Parse(await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "SupplierSiteNumber", "CAS", programUnit)));
+                }
+            }
 
-        //    supplierNumber = (string)contactEntity["vsd_accountnumber"];
-        //    if (contactEntity.Contains("vsd_suppliersitenumber"))
-        //        siteNumber = (int)contactEntity["vsd_suppliersitenumber"];
+            supplierNumber = contactEntity.AccountNumber;
+            if (contactEntity.SupplierSiteNumber != null)
+                siteNumber = (int)contactEntity.SupplierSiteNumber;
 
-        //    if (programUnit == (int)ProgramUnit.REST && contactEntity.Contains("vsd_rest_chequename") && !string.IsNullOrEmpty(contactEntity["vsd_rest_chequename"].ToString()) && methodOfPayment.Equals("GEN CHQ", StringComparison.InvariantCultureIgnoreCase)) //REST and CHQ
-        //        firstName = contactEntity["vsd_rest_chequename"].ToString();
-        //    else
-        //    {
-        //        firstName = (string)contactEntity["firstname"];
-        //        lastName = (string)contactEntity["lastname"];
-        //    }
+            if (programUnit == ProgramUnit.Rest && !string.IsNullOrEmpty(contactEntity.RestChequeName) && methodOfPayment.Equals("GEN CHQ", StringComparison.InvariantCultureIgnoreCase)) //REST and CHQ
+                firstName = contactEntity.RestChequeName;
+            else
+            {
+                firstName = contactEntity.FirstName;
+                lastName = contactEntity.LastName;
+            }
 
-        //    if (contactEntity.Contains("address3_line1"))
-        //        addressLine1 = (string)contactEntity["address3_line1"];
-        //    if (contactEntity.Contains("address3_line2"))
-        //        addressLine2 = (string)contactEntity["address3_line2"];
-        //    if (contactEntity.Contains("address3_line3"))
-        //        addressLine3 = (string)contactEntity["address3_line3"];
-        //    if (contactEntity.Contains("address3_city"))
-        //        city = (string)contactEntity["address3_city"];
-        //    if (contactEntity.Contains("address3_stateorprovince"))
-        //        province = (string)contactEntity["address3_stateorprovince"];
-        //    if (contactEntity.Contains("address3_country"))
-        //        country = (string)contactEntity["address3_country"];
-        //    if (contactEntity.Contains("address3_postalcode"))
-        //        postalCode = (string)contactEntity["address3_postalcode"];
-        //    if (contactEntity.Contains("vsd_accountno"))
-        //        accountNumber = (string)contactEntity["vsd_accountno"];
-        //    if (contactEntity.Contains("vsd_transitno"))
-        //        transitNumber = (string)contactEntity["vsd_transitno"];
-        //    if (contactEntity.Contains("vsd_institutionno"))
-        //        institutionNumber = (string)contactEntity["vsd_institutionno"];
-        //    if (contactEntity.Contains("emailaddress1"))
-        //        emailAddress = (string)contactEntity["emailaddress1"];
-        //}
+            if (contactEntity.Addresses != null && contactEntity.Addresses.Length > 0 && !string.IsNullOrEmpty(contactEntity.Addresses[0].AddressLine1)) //Payment Address
+            {
+                addressLine1 = contactEntity.Addresses[0].AddressLine1;
+                addressLine2 = contactEntity.Addresses[0].AddressLine2;
+                addressLine3 = contactEntity.Addresses[0].AddressLine3;
+                city = contactEntity.Addresses[0].City;
+                province = contactEntity.Addresses[0].StateOrProvince;
+                country = contactEntity.Addresses[0].Country;
+                postalCode = contactEntity.Addresses[0].PostalCode;
+
+                //    if (contactEntity.Contains("address3_country"))
+                //        country = (string)contactEntity["address3_country"];
+                //    if (contactEntity.Contains("vsd_accountno"))
+                //        accountNumber = (string)contactEntity["vsd_accountno"];
+                //    if (contactEntity.Contains("vsd_transitno"))
+                //        transitNumber = (string)contactEntity["vsd_transitno"];
+                //    if (contactEntity.Contains("vsd_institutionno"))
+                //        institutionNumber = (string)contactEntity["vsd_institutionno"];
+                //    if (contactEntity.Contains("emailaddress1"))
+                //        emailAddress = (string)contactEntity["emailaddress1"];
+            }
+        }
         #endregion
 
         //#region Invoice Details
