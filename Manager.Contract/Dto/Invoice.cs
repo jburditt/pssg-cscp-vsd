@@ -101,6 +101,7 @@ public record InvoiceQuery : IRequest<IEnumerable<Invoice>>
     public Guid? ProgramId { get; set; }
     public Origin? Origin { get; set; }
     public DateTime? InvoiceDate { get; set; }
+    public bool IncludeChildren { get; set; }
 }
 
 public record InvoiceResult(IEnumerable<Invoice> Invoices);
