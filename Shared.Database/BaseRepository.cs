@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace Shared.Database;
 
 public abstract class BaseRepository<TEntity, TDto> 
@@ -21,6 +23,19 @@ public abstract class BaseRepository<TEntity, TDto>
         _databaseContext.SaveChanges();
         return entity.Id;
     }
+
+    //public IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate)
+    //{
+    //    Expression<Func<TEntity, TDto>> mapper = Mapper.Engine.CreateMapExpression<TEntity, TDto>();
+
+    //    Expression<Func<TEntity, bool>> mappedSelector = predicate.Compose(mapper);
+
+    //    var entities = _databaseContext.CreateQuery<TEntity>()
+    //        .Where(mappedSelector)
+    //        .ToList();
+
+    //    return Map(entities);
+    //}
 
     public virtual Guid Upsert(TDto dto)
     {
@@ -140,5 +155,10 @@ public abstract class BaseRepository<TEntity, TDto>
     private TEntity Map(TDto dto)
     {
         return _mapper.Map<TEntity>(dto);
+    }
+
+    private IEnumerable<TDto> Map(IEnumerable<TEntity> dto)
+    {
+        return _mapper.Map<IEnumerable<TDto>>(dto);
     }
 }
