@@ -22,7 +22,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.CaseId = TestData.CaseId;
 
         invoice.Id = Guid.NewGuid();
-        invoice.Payee = new DynamicReference(TestData.AccountId, Account.EntityLogicalName);
+        invoice.Payee = new DynamicReference(TestData.AccountId, Database.Model.Account.EntityLogicalName);
         invoice.EntitlementId = TestData.EntitlementId;
         invoice.CurrencyId = Constant.CadCurrency;
         invoice.CvapPaymentType = CvapPaymentType.PostAdjudication;
@@ -33,6 +33,8 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
         invoice.ProvinceStateId = Constant.ProvinceBc;
         invoice.PaymentScheduleId = TestData.PaymentScheduleId;
         invoice.TaxExemption = TaxExemption.NoTax;
+        invoice.CpuInvoiceType = CpuInvoiceType.Deprecated;
+        invoice.CvapInvoiceType = InvoiceType.OtherPayments;
 
         invoice.InvoiceLineDetails = new List<InvoiceLineDetail>
         {
@@ -40,7 +42,7 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
             {
                 AmountSimple = 100,
                 Approved = YesNo.Yes,
-                InvoiceType = InvoiceType.OtherPayments,
+                InvoiceType = InvoiceType.DoNotUseMedicalSessions,
                 Owner = invoice.Owner,
                 StateCode = StateCode.Active,
                 TaxExemption = TaxExemption.NoTax,
@@ -81,5 +83,19 @@ public class InvoiceRepositoryTests(IInvoiceRepository repository)
 
         // Assert
         //Assert.True(result != Guid.Empty);
+    }
+
+    [Fact]
+    public void Delete()
+    {
+        // TODO delete invoice line details too
+        // Arrange
+        var id = new Guid("");
+
+        // Act
+        var result = repository.Delete(id);
+
+        // Assert
+        Assert.True(result);
     }
 }

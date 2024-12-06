@@ -42,6 +42,19 @@ public abstract class BaseRepository<TEntity, TDto>
         return entity.Id;
     }
 
+    //public virtual bool Update<TEntity>(Guid id, params Func<TEntity, object>[] properties)
+    //{
+    //    var entity = _databaseContext
+    //        .CreateQuery<TEntity>()
+    //        .FirstOrDefault(x => x.Id == id);
+    //    if (entity == null)
+    //        return false;
+    //    foreach (var lambda in properties)
+    //        lambda.Invoke(entity);
+    //    _databaseContext.SaveChanges();
+    //    return true;
+    //}
+
     public virtual bool Update(TDto dto)
     {
         if (dto.Id == Guid.Empty)

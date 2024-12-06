@@ -20,10 +20,27 @@
     }
 
     [Fact]
+    public void First()
+    {
+        // Arrange
+        var query = new FindPaymentQuery();
+        query.Id = new Guid("");
+
+        // Act
+        var result = paymentRepository.FirstOrDefault(query);
+
+        // Assert
+        Assert.True(result.Invoices.Count() > 0);
+    }
+
+    [Fact]
     public void Query()
     {
         // Arrange
         var paymentQuery = new PaymentQuery();
+        paymentQuery.IncludeChildren = true;
+        paymentQuery.StateCode = StateCode.Active;
+        //paymentQuery.StatusCode = PaymentStatusCode.Sent;
         paymentQuery.ExcludeStatusCodes = new List<PaymentStatusCode> { PaymentStatusCode.Voided, PaymentStatusCode.Paid, PaymentStatusCode.Waiting, PaymentStatusCode.Sending, PaymentStatusCode.Sent };
 
         // Act

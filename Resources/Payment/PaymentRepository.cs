@@ -67,6 +67,7 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
     {
         if (paymentQuery.IncludeChildren)
         {
+            // TODO Invoice Id is empty Guid
             var query = _databaseContext.Vsd_PaymentSet
                 .Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new { Payment = p, Invoice = i })
                 .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
@@ -92,7 +93,6 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
 
 }
 
-public record PaymentInvoiceEntity(Vsd_Payment Payment, Vsd_Invoice Invoice);
 public record PaymentInvoicesEntity(Vsd_Payment Payment, IEnumerable<Vsd_Invoice> Invoices);
 
 public static class PaymentExtensions

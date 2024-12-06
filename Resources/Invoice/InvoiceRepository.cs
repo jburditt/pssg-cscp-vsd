@@ -9,10 +9,13 @@ public class InvoiceRepository : BaseRepository<Vsd_Invoice, Invoice>, IInvoiceR
         _databaseContext = databaseContext;
     }
 
+    // TODO use paymentrepository.insert as a template
     // NOTE not fully tested
     public override Guid Insert(Invoice invoice)
     {
+        // TODO check Id is a Guid and not empty
         var entity = _mapper.Map<Vsd_Invoice>(invoice);
+        // TODO check if you should move this line to before SaveChanges
         _databaseContext.AddObject(entity);
         if (invoice.InvoiceLineDetails != null)
         {
@@ -27,15 +30,33 @@ public class InvoiceRepository : BaseRepository<Vsd_Invoice, Invoice>, IInvoiceR
         return entity.Id;
     }
 
-    public IEnumerable<Invoice> Query(InvoiceQuery invoiceQuery)
+    public IEnumerable<Invoice> Query(InvoiceQuery query)
     {
-        var queryResults = _databaseContext.Vsd_InvoiceSet
-            .WhereIf(invoiceQuery.ProgramId != null, c => c.Vsd_ProgramId.Id == invoiceQuery.ProgramId)
-            .WhereIf(invoiceQuery.Origin != null, c => c.Vsd_Origin == (Vsd_Invoice_Vsd_Origin?)invoiceQuery.Origin)
-            .WhereIf(invoiceQuery.InvoiceDate != null, c => c.Vsd_InvoicedAte == invoiceQuery.InvoiceDate)
-            .ToList();
-        return _mapper.Map<IEnumerable<Invoice>>(queryResults);
+        if (query.IncludeChildren)
+        {
+            // TODO not fully tested, use paymentrepository.query to finish
+            var queryResults = _databaseContext.Vsd_InvoiceSet
+                .Join(_databaseContext.Vsd_InvoiceLineDetailSet, invoice => invoice.Id, invoiceLineDetail => invoiceLineDetail.Vsd_InvoiceId.Id, (invoice, invoiceLineDetail) => new { Invoice = invoice, InvoiceLineDetail = invoiceLineDetail })
+                .WhereIf(query.Id != null, c => c.Invoice.Id == query.Id)
+                .WhereIf(query.ProgramId != null, c => c.Invoice.Vsd_ProgramId.Id == query.ProgramId)
+                .WhereIf(query.Origin != null, c => c.Invoice.Vsd_Origin == (Vsd_Invoice_Vsd_Origin?)query.Origin)
+                .WhereIf(query.InvoiceDate != null, c => c.Invoice.Vsd_InvoicedAte == query.InvoiceDate)
+                .Select(x => new { x.Invoice, x.InvoiceLineDetail })
+                .ToList();
+            return _mapper.Map<IEnumerable<Invoice>>(queryResults);
+        }
+        else
+        {
+            var queryResults = _databaseContext.Vsd_InvoiceSet
+                .WhereIf(query.ProgramId != null, c => c.Vsd_ProgramId.Id == query.ProgramId)
+                .WhereIf(query.Origin != null, c => c.Vsd_Origin == (Vsd_Invoice_Vsd_Origin?)query.Origin)
+                .WhereIf(query.InvoiceDate != null, c => c.Vsd_InvoicedAte == query.InvoiceDate)
+                .ToList();
+            return _mapper.Map<IEnumerable<Invoice>>(queryResults);
+        }
     }
+
+    public record InvoiceComposite(Vsd_Invoice Invoice, Vsd_InvoiceLineDetail InvoiceLineDetail);
 
 
     public override bool Delete(Guid id)
@@ -51,6 +72,7 @@ public class InvoiceRepository : BaseRepository<Vsd_Invoice, Invoice>, IInvoiceR
         }
         return base.Delete(id);
     }
+
     public override bool TryDeleteRange(IEnumerable<Invoice> invoices, bool isRecursive = false)
     {
         // NOTE you can optimize these by removing the foreach queries and using Invoice.InvoiceLineDetailId instead but you will need to map InvoiceLineDetailId first on Query method
