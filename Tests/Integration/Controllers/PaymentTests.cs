@@ -145,7 +145,6 @@
         string emailAddress = string.Empty;
         bool isBlockSupplier = false;
         var payeeLookup = paymentEntity.Payee;
-        List<InvoiceLineDetail> invoiceLineDetails = new List<InvoiceLineDetail>();
 
         ArgumentNullException.ThrowIfNull(invoiceEntity.InvoiceDate, "Invoice Date is missing.");
         ArgumentNullException.ThrowIfNull(invoiceEntity.Name, "Invoice Number is missing.");
@@ -310,135 +309,131 @@
                 throw new Exception("Validator is missing from the invoice.");
         }
 
-        //var defaultDistributionAccount = "";
-        //if (programUnit == (int)ProgramUnit.CPU)
-        //{
-        //    if (!invoiceEntity.Contains("vsd_cpu_invoicetype"))
-        //        throw new Exception("Invoice Type is empty for CPU invoice. Unable to determine STOB..");
+        var defaultDistributionAccount = "";
+        if (programUnit == ProgramUnit.Cpu)
+        {
+            if (invoiceEntity.CpuInvoiceType == null)
+                throw new Exception("Invoice Type is missing for CPU invoice. Unable to determine STOB.");
 
-        //    if (((OptionSetValue)invoiceEntity["vsd_cpu_invoicetype"]).Value == 100000000) //Scheduled Payment
-        //    {
-        //        if (!invoiceEntity.Contains("vsd_programid"))
-        //            throw new Exception("Invoice Program Lookup is empty..");
+            if (invoiceEntity.CpuInvoiceType == CpuInvoiceType.ScheduledPayment)
+            {
+                if (invoiceEntity.ProgramId == null)
+                    throw new Exception("Invoice Program Lookup is missing.");
 
-        //        defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
-        //    }
-        //    else if (((OptionSetValue)invoiceEntity["vsd_cpu_invoicetype"]).Value == 100000001) //One Time Payment
-        //    {
-        //        if (invoiceEntity.Contains("vsd_programid"))
-        //            defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
+                //defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
+            }
+            else if (invoiceEntity.CpuInvoiceType == CpuInvoiceType.OneTimePayment)
+            {
+                //if (invoiceEntity.ProgramId != null)
+                //    defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
 
-        //        if (invoiceEntity.Contains("vsd_caspaymenttype"))
-        //            defaultDistributionAccount = GenerateOneTimeDistributionAccount(((EntityReference)invoiceEntity["vsd_caspaymenttype"]).Id);
+                //if (invoiceEntity.Contains("vsd_caspaymenttype"))
+                //    defaultDistributionAccount = GenerateOneTimeDistributionAccount(((EntityReference)invoiceEntity["vsd_caspaymenttype"]).Id);
 
-        //        if (string.IsNullOrEmpty(defaultDistributionAccount))
-        //            throw new Exception("Invoice Payment Type/Program is empty..");
-        //    }
-        //    else
-        //        throw new Exception("Unknown CPU Invoice Type..");
-        //}
-        //else if (programUnit == (int)ProgramUnit.CVAP || programUnit == (int)ProgramUnit.VSU || programUnit == (int)ProgramUnit.REST)
-        //{
-        //    if (invoiceEntity.Contains("vsd_cvap_stobid"))
-        //        defaultDistributionAccount = GenerateCVAPDistributionAccount(((EntityReference)invoiceEntity["vsd_cvap_stobid"]).Id);
+                if (string.IsNullOrEmpty(defaultDistributionAccount))
+                    throw new Exception("Invoice Payment Type/Program is missing.");
+            }
+            else
+                throw new Exception("Unknown CPU Invoice Type..");
+        }
+        else if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
+        {
+            //if (invoiceEntity.Contains("vsd_cvap_stobid"))
+            //    defaultDistributionAccount = GenerateCVAPDistributionAccount(((EntityReference)invoiceEntity["vsd_cvap_stobid"]).Id);
 
-        //    if (string.IsNullOrEmpty(defaultDistributionAccount))
-        //        throw new Exception("CVAP STOB is empty..");
-        //}
-        //else
-        //    throw new Exception(string.Format("STOB information is not setup for Program Unit '{0}'..", (ProgramUnit)programUnit));
+            if (string.IsNullOrEmpty(defaultDistributionAccount))
+                throw new Exception("CVAP STOB is missing.");
+        }
+        else
+            throw new Exception(string.Format("STOB information is not setup for Program Unit '{0}'.", (ProgramUnit)programUnit));
 
-        //if (string.IsNullOrEmpty(defaultDistributionAccount))
-        //    throw new Exception("Default Distribution Account is empty..");
+        if (string.IsNullOrEmpty(defaultDistributionAccount))
+            throw new Exception("Default Distribution Account is missing.");
 
-        //exp = new QueryExpression("vsd_invoicelinedetail");
-        //exp.NoLock = true;
-        //exp.ColumnSet.AddColumns("vsd_name", "vsd_amountcalculated", "vsd_taxexemption", "vsd_lineitemtotalamount", "vsd_gst");
-        //exp.Criteria.AddCondition("vsd_invoiceid", ConditionOperator.Equal, invoiceEntity.Id);
-        //exp.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0); //Active
-        //exp.Criteria.AddCondition("vsd_lineitemapproved", ConditionOperator.Equal, 100000001); //Approved
+        var invoiceLineDetailQuery = new InvoiceLineDetailQuery();
+        invoiceLineDetailQuery.InvoiceId = invoiceEntity.Id;
+        invoiceLineDetailQuery.StateCode = StateCode.Active;
+        invoiceLineDetailQuery.Approved = YesNo.Yes;
+        var invoiceLineDetails = await mediator.Send(invoiceLineDetailQuery);
 
-        //coll = OrgService.RetrieveMultiple(exp);
-        //if (coll != null && coll.Entities != null && coll.Entities.Count > 0)
-        //{
-        //    int j = 0;
-        //    for (int i = 0; i < coll.Entities.Count; i++)
-        //    {
-        //        if (!coll.Entities[i].Contains("vsd_amountcalculated"))
-        //            throw new Exception("Invoice Line Item Sub Total Amount is empty..");
-        //        if (!coll.Entities[i].Contains("vsd_taxexemption"))
-        //            throw new Exception("Invoice Line Item Tax is empty..");
-        //        if (!coll.Entities[i].Contains("vsd_lineitemtotalamount"))
-        //            throw new Exception("Invoice Line Item Total Amount is empty..");
+        int j = 0;
+        foreach (var invoiceLineDetail in invoiceLineDetails)
+        {
+            if (invoiceLineDetail.AmountCalculated == null)
+                throw new Exception("Invoice Line Item Sub Total Amount is missing.");
+            if (invoiceLineDetail.TaxExemption == null)
+                throw new Exception("Invoice Line Item Tax is missing.");
+            if (invoiceLineDetail.TotalAmount == null)
+                throw new Exception("Invoice Line Item Total Amount is missing.");
 
-        //        j = j + 1;
-        //        InvoiceLineDetail lineDetail = new InvoiceLineDetail()
-        //        {
-        //            InvoiceLineNumber = j,
-        //            InvoiceLineType = "Item",
-        //            LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //            InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-        //            DefaultDistributionAccount = defaultDistributionAccount
-        //        };
-        //        invoiceLineDetails.Add(lineDetail);
+            //        j = j + 1;
+            //        InvoiceLineDetail lineDetail = new InvoiceLineDetail()
+            //        {
+            //            InvoiceLineNumber = j,
+            //            InvoiceLineType = "Item",
+            //            LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //            InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
+            //            DefaultDistributionAccount = defaultDistributionAccount
+            //        };
+            //        invoiceLineDetails.Add(lineDetail);
 
-        //        if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000000) //PST
-        //        {
-        //            j = j + 1;
-        //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-        //            {
-        //                InvoiceLineNumber = j,
-        //                InvoiceLineType = "Item",
-        //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-        //                DefaultDistributionAccount = defaultDistributionAccount
-        //            };
-        //            invoiceLineDetails.Add(lineDetail1);
-        //            //lineDetail.TaxClassificationCode = "PST";
-        //        }
-        //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000001) //GST
-        //        {
-        //            j = j + 1;
-        //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-        //            {
-        //                InvoiceLineNumber = j,
-        //                InvoiceLineType = "Item",
-        //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-        //                DefaultDistributionAccount = gstDistributionAccount
-        //            };
-        //            invoiceLineDetails.Add(lineDetail1);
-        //            //lineDetail.TaxClassificationCode = "GST";
-        //        }
-        //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000003) //GST and PST
-        //        {
-        //            if (!coll.Entities[i].Contains("vsd_gst"))
-        //                throw new Exception("GST amount is empty..");
+            //        if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000000) //PST
+            //        {
+            //            j = j + 1;
+            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
+            //            {
+            //                InvoiceLineNumber = j,
+            //                InvoiceLineType = "Item",
+            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
+            //                DefaultDistributionAccount = defaultDistributionAccount
+            //            };
+            //            invoiceLineDetails.Add(lineDetail1);
+            //            //lineDetail.TaxClassificationCode = "PST";
+            //        }
+            //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000001) //GST
+            //        {
+            //            j = j + 1;
+            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
+            //            {
+            //                InvoiceLineNumber = j,
+            //                InvoiceLineType = "Item",
+            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
+            //                DefaultDistributionAccount = gstDistributionAccount
+            //            };
+            //            invoiceLineDetails.Add(lineDetail1);
+            //            //lineDetail.TaxClassificationCode = "GST";
+            //        }
+            //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000003) //GST and PST
+            //        {
+            //            if (!coll.Entities[i].Contains("vsd_gst"))
+            //                throw new Exception("GST amount is missing.");
 
-        //            j = j + 1;
-        //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-        //            {
-        //                InvoiceLineNumber = j,
-        //                InvoiceLineType = "Item",
-        //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_gst"]).Value,
-        //                DefaultDistributionAccount = gstDistributionAccount
-        //            };
-        //            invoiceLineDetails.Add(lineDetail1);
+            //            j = j + 1;
+            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
+            //            {
+            //                InvoiceLineNumber = j,
+            //                InvoiceLineType = "Item",
+            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_gst"]).Value,
+            //                DefaultDistributionAccount = gstDistributionAccount
+            //            };
+            //            invoiceLineDetails.Add(lineDetail1);
 
-        //            j = j + 1;
-        //            InvoiceLineDetail lineDetail2 = new InvoiceLineDetail()
-        //            {
-        //                InvoiceLineNumber = j,
-        //                InvoiceLineType = "Item",
-        //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - (((Money)coll.Entities[i]["vsd_amountcalculated"]).Value + ((Money)coll.Entities[i]["vsd_gst"]).Value),
-        //                DefaultDistributionAccount = defaultDistributionAccount
-        //            };
-        //            invoiceLineDetails.Add(lineDetail2);
-        //            //lineDetail.TaxClassificationCode = "GST AND PST";
-        //        }
-        //    }
+            //            j = j + 1;
+            //            InvoiceLineDetail lineDetail2 = new InvoiceLineDetail()
+            //            {
+            //                InvoiceLineNumber = j,
+            //                InvoiceLineType = "Item",
+            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - (((Money)coll.Entities[i]["vsd_amountcalculated"]).Value + ((Money)coll.Entities[i]["vsd_gst"]).Value),
+            //                DefaultDistributionAccount = defaultDistributionAccount
+            //            };
+            //            invoiceLineDetails.Add(lineDetail2);
+            //            //lineDetail.TaxClassificationCode = "GST AND PST";
+            //        }
+        }
         //}
         //else
         //{
@@ -457,25 +452,25 @@
 
         //#region Mandatory Field Validations
         //if (string.IsNullOrEmpty(supplierNumber))
-        //    throw new Exception("Vendor Number is empty..");
+        //    throw new Exception("Vendor Number is missing.");
         //if (methodOfPayment.Equals("GEN EFT", StringComparison.InvariantCultureIgnoreCase) && isBlockSupplier)
         //{
         //    if (string.IsNullOrEmpty(accountNumber))
-        //        throw new Exception("Account # is empty..");
+        //        throw new Exception("Account # is missing.");
         //    if (string.IsNullOrEmpty(transitNumber))
-        //        throw new Exception("Transit # is empty..");
+        //        throw new Exception("Transit # is missing.");
         //    if (string.IsNullOrEmpty(institutionNumber))
-        //        throw new Exception("Institution # is empty..");
+        //        throw new Exception("Institution # is missing.");
         //}
 
         //if (siteNumber == int.MinValue)
-        //    throw new Exception("Supplier Site Number is empty..");
+        //    throw new Exception("Supplier Site Number is missing.");
         //if (!paymentEntity.Contains("vsd_paymenttotal"))
-        //    throw new Exception("Invoice Amount is empty..");
+        //    throw new Exception("Invoice Amount is missing.");
         //if (!invoiceDate.HasValue)
-        //    throw new Exception("Invoice Date is empty..");
+        //    throw new Exception("Invoice Date is missing.");
         //if (!paymentEntity.Contains("vsd_gldate"))
-        //    throw new Exception("GL Date is empty..");
+        //    throw new Exception("GL Date is missing.");
         //#endregion
 
         Invoice result = new Invoice
@@ -521,7 +516,7 @@
         //            if (((OptionSetValue)paymentEntity["vsd_eftadvice"]).Value == 100000000) //Email
         //            {
         //                if (string.IsNullOrEmpty(emailAddress))
-        //                    throw new Exception("Email Address on the Payee is empty..");
+        //                    throw new Exception("Email Address on the Payee is missing.");
 
         //                result.EmailAddress = emailAddress;
         //                result.EFTAdvice = "E";

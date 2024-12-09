@@ -1,6 +1,6 @@
 ﻿namespace Resources;
 
-public interface IInvoiceLineDetailRepository : IBaseRepository<InvoiceLineDetail>
+public interface IInvoiceLineDetailRepository : IQueryRepository<InvoiceLineDetailQuery, InvoiceLineDetail>, IBaseRepository<InvoiceLineDetail>
 {
 
 }

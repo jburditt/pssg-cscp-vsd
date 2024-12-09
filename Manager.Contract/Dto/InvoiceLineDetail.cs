@@ -1,12 +1,12 @@
 ﻿namespace Manager.Contract;
 
-public record InvoiceLineDetailQuery : IRequest<InvoiceLineDetailResult>
+public record InvoiceLineDetailQuery : IRequest<IEnumerable<InvoiceLineDetail>>
 {
     public Guid? Id { get; set; }
     public Guid? InvoiceId { get; set; }
+    public StateCode? StateCode { get; set; }
+    public YesNo? Approved { get; set; }
 }
-
-public record InvoiceLineDetailResult(IEnumerable<InvoiceLineDetail> InvoiceLineDetails);
 
 public record InvoiceLineDetail : IDto
 {
@@ -16,6 +16,8 @@ public record InvoiceLineDetail : IDto
     public ProgramUnit? ProgramUnit { get; set; }   // Dynamics Optional
     public YesNo? Approved { get; set; }            // Dynamics Optional
     public decimal? AmountSimple { get; set; }      // Dynamics Optional
+    public decimal? AmountCalculated { get; set; }  // Dynamics Optional
+    public decimal? TotalAmount { get; set; }       // Dynamics Optional
     public TaxExemption? TaxExemption { get; set; } // Dynamics Optional
 
     // References

@@ -24,6 +24,7 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
         return _mapper.Map<PaymentSchedule>(queryResults);
     }
 
+    // TODO rewrite this so that entitlement is an object that is attached to payment schedule
     public IEnumerable<PaymentScheduleEntitlement> Query(PaymentScheduleEntitlementQuery query)
     {
         ArgumentNullException.ThrowIfNull(query?.PaymentScheduleQuery);
