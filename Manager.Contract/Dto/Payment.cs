@@ -32,6 +32,15 @@ public enum EftAdvice
     Mail = 100000001,
 }
 
+public enum LineCode
+{
+    //[OptionSetMetadataAttribute("CR", 1, "#0000ff")]
+    Cr = 100000001,
+
+    //[OptionSetMetadataAttribute("DR", 0, "#0000ff")]
+    Dr = 100000000,
+}
+
 public record FindPaymentQuery : BasePaymentQuery, IRequest<Payment> { }
 public record PaymentQuery : BasePaymentQuery, IRequest<IEnumerable<Payment>> { }
 public record BasePaymentQuery
@@ -52,6 +61,7 @@ public record Payment : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public PaymentStatusCode StatusCode { get; set; }
+    public LineCode? LineCode { get; set; }             // Dynamics Optional
     public string? Name { get; set; }                   // Dynamics Optional
     public DateTime Date { get; set; }                  // Dynamics Business Required
     public decimal? SubTotal { get; set; }              // Dynamics Optional

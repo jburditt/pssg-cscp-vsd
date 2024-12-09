@@ -118,7 +118,7 @@
         }
     }
 
-    private async Task<Invoice> GenerateInvoice(IEnumerable<Configuration> configs, Payment paymentEntity)
+    private async Task<CasApTransactionInvoice> GenerateInvoice(IEnumerable<Configuration> configs, Payment paymentEntity)
     {
         ArgumentNullException.ThrowIfNull(paymentEntity.Invoices, "Invoice is missing.");
         if (paymentEntity.Invoices.Count() != 1)
@@ -355,6 +355,7 @@
         invoiceLineDetailQuery.StateCode = StateCode.Active;
         invoiceLineDetailQuery.Approved = YesNo.Yes;
         var invoiceLineDetails = await mediator.Send(invoiceLineDetailQuery);
+        var jsonInvoiceLineDetails = new List<CasApTransactionInvoiceLineDetail>();
 
         int j = 0;
         foreach (var invoiceLineDetail in invoiceLineDetails)
@@ -366,16 +367,16 @@
             if (invoiceLineDetail.TotalAmount == null)
                 throw new Exception("Invoice Line Item Total Amount is missing.");
 
-            //        j = j + 1;
-            //        InvoiceLineDetail lineDetail = new InvoiceLineDetail()
-            //        {
-            //            InvoiceLineNumber = j,
-            //            InvoiceLineType = "Item",
-            //            LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //            InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-            //            DefaultDistributionAccount = defaultDistributionAccount
-            //        };
-            //        invoiceLineDetails.Add(lineDetail);
+            j = j + 1;
+            var lineDetail = new CasApTransactionInvoiceLineDetail()
+            {
+                InvoiceLineNumber = j,
+                InvoiceLineType = "Item",
+                LineCode = paymentEntity.LineCode.ToString(),
+                InvoiceLineAmount = (decimal)invoiceLineDetail.AmountCalculated,
+                DefaultDistributionAccount = defaultDistributionAccount
+            };
+            jsonInvoiceLineDetails.Add(lineDetail);
 
             //        if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000000) //PST
             //        {
@@ -450,55 +451,57 @@
 
         #endregion
 
-        //#region Mandatory Field Validations
-        //if (string.IsNullOrEmpty(supplierNumber))
-        //    throw new Exception("Vendor Number is missing.");
-        //if (methodOfPayment.Equals("GEN EFT", StringComparison.InvariantCultureIgnoreCase) && isBlockSupplier)
-        //{
-        //    if (string.IsNullOrEmpty(accountNumber))
-        //        throw new Exception("Account # is missing.");
-        //    if (string.IsNullOrEmpty(transitNumber))
-        //        throw new Exception("Transit # is missing.");
-        //    if (string.IsNullOrEmpty(institutionNumber))
-        //        throw new Exception("Institution # is missing.");
-        //}
+        #region Mandatory Field Validations
 
-        //if (siteNumber == int.MinValue)
-        //    throw new Exception("Supplier Site Number is missing.");
-        //if (!paymentEntity.Contains("vsd_paymenttotal"))
-        //    throw new Exception("Invoice Amount is missing.");
-        //if (!invoiceDate.HasValue)
-        //    throw new Exception("Invoice Date is missing.");
-        //if (!paymentEntity.Contains("vsd_gldate"))
-        //    throw new Exception("GL Date is missing.");
-        //#endregion
+        if (string.IsNullOrEmpty(supplierNumber))
+            throw new Exception("Vendor Number is missing.");
 
-        Invoice result = new Invoice
+        if (methodOfPayment.Equals("GEN EFT", StringComparison.InvariantCultureIgnoreCase) && isBlockSupplier)
+        {
+            if (string.IsNullOrEmpty(accountNumber))
+                throw new Exception("Account # is missing.");
+            if (string.IsNullOrEmpty(transitNumber))
+                throw new Exception("Transit # is missing.");
+            if (string.IsNullOrEmpty(institutionNumber))
+                throw new Exception("Institution # is missing.");
+        }
+
+        if (siteNumber == int.MinValue)
+            throw new Exception("Supplier Site Number is missing.");
+        if (paymentEntity.Total == null)
+            throw new Exception("Invoice Amount is missing.");
+        if (invoiceDate == DateTime.MinValue)
+            throw new Exception("Invoice Date is missing.");
+        if (paymentEntity.GlDate == DateTime.MinValue)
+            throw new Exception("GL Date is missing.");
+
+        #endregion
+
+        var result = new CasApTransactionInvoice
         {
             //Mandatory values
-            Owner = null,
-        //    IsBlockSupplier = isBlockSupplier,
-        //    InvoiceType = Helpers.GetConfigKeyValue(configs, "InvoiceType", "CAS", null),
-        //    SupplierNumber = supplierNumber,
-        //    SupplierSiteNumber = siteNumber,
-        //    InvoiceDate = invoiceDate.Value,
-        //    InvoiceNumber = invoiceNumber,
-        //    InvoiceAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
-        //    PayGroup = methodOfPayment,
-        //    DateInvoiceReceived = invoiceDate.Value,
-        //    RemittanceCode = Helpers.GetConfigKeyValue(configs, "RemittanceCode", "CAS", null),
-        //    SpecialHandling = false,
-        //    Terms = paymentEntity.FormattedValues["vsd_terms"],
-        //    GLDate = (DateTime)paymentEntity["vsd_gldate"],
-        //    InvoiceBatchName = Helpers.GetConfigKeyValue(configs, "BatchName", "CAS", null),
+            IsBlockSupplier = isBlockSupplier,
+            //InvoiceType = Helpers.GetConfigKeyValue(configs, "InvoiceType", "CAS", null),
+            //SupplierNumber = supplierNumber,
+            //SupplierSiteNumber = siteNumber,
+            //InvoiceDate = invoiceDate.Value,
+            //InvoiceNumber = invoiceNumber,
+            //InvoiceAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
+            //PayGroup = methodOfPayment,
+            //DateInvoiceReceived = invoiceDate.Value,
+            //RemittanceCode = Helpers.GetConfigKeyValue(configs, "RemittanceCode", "CAS", null),
+            //SpecialHandling = false,
+            //Terms = paymentEntity.FormattedValues["vsd_terms"],
+            //GLDate = (DateTime)paymentEntity["vsd_gldate"],
+            //InvoiceBatchName = Helpers.GetConfigKeyValue(configs, "BatchName", "CAS", null),
 
-        //    //Optional Value
-        //    QualifiedReceiver = ((EntityReference)paymentEntity["ownerid"]).Name,
-        //    PaymentAdviceComments = paymentEntity.Contains("vsd_paymentadvicecomments") ? (string)paymentEntity["vsd_paymentadvicecomments"] : "",
-        //    RemittanceMessage1 = paymentEntity.Contains("vsd_remittancemessage1") ? (string)paymentEntity["vsd_remittancemessage1"] : "",
-        //    RemittanceMessage2 = paymentEntity.Contains("vsd_remittancemessage2") ? (string)paymentEntity["vsd_remittancemessage2"] : "",
-        //    RemittanceMessage3 = paymentEntity.Contains("vsd_remittancemessage3") ? (string)paymentEntity["vsd_remittancemessage3"] : "",
-        //    CurrencyCode = Helpers.GetConfigKeyValue(configs, "CurrencyCode", "CAS", null)
+            ////Optional Value
+            //QualifiedReceiver = ((EntityReference)paymentEntity["ownerid"]).Name,
+            //PaymentAdviceComments = paymentEntity.Contains("vsd_paymentadvicecomments") ? (string)paymentEntity["vsd_paymentadvicecomments"] : "",
+            //RemittanceMessage1 = paymentEntity.Contains("vsd_remittancemessage1") ? (string)paymentEntity["vsd_remittancemessage1"] : "",
+            //RemittanceMessage2 = paymentEntity.Contains("vsd_remittancemessage2") ? (string)paymentEntity["vsd_remittancemessage2"] : "",
+            //RemittanceMessage3 = paymentEntity.Contains("vsd_remittancemessage3") ? (string)paymentEntity["vsd_remittancemessage3"] : "",
+            //CurrencyCode = Helpers.GetConfigKeyValue(configs, "CurrencyCode", "CAS", null)
         };
 
         //result.InvoiceLineDetails = invoiceLineDetails;
