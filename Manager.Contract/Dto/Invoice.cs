@@ -128,6 +128,7 @@ public record Invoice : IDto
     public InvoiceType? CvapInvoiceType { get; set; }                       // Dynamics Optional
     public CvapPaymentType? CvapPaymentType { get; set; }                   // Dynamics Optional
     public CvapNumberOfLineItems? CvapNumberOfLineItems { get; set; }       // Dynamics Optional
+    public string? Validator { get; set; }                                  // Dynamics Optional     
 
     // Foreign Keys
     public Guid? ContractId { get; set; }                   // Dynamics Optional

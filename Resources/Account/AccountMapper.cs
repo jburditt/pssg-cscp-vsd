@@ -9,11 +9,12 @@
             .ForMember(dest => dest.SupplierSiteNumber, opt => opt.MapFrom(src => src.Vsd_SupplierSiteNumber))
             .ForMember(dest => dest.RestChequeName, opt => opt.MapFrom(src => src.Vsd_Rest_ChequeName))
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.StateCode))
+            .ForMember(dest => dest.Address1Code, opt => opt.MapFrom(src => src.Address1_AddressTypeCode))
+            .ForMember(dest => dest.Address2Code, opt => opt.MapFrom(src => src.Address2_AddressTypeCode))
             .ForMember(
                 dest => dest.Addresses, 
-                opt => opt.MapFrom(src => new Address[] {
+                opt => opt.MapFrom(src => new Address[2] {
                 new Address(
-                    Address.MapAddress1Code((int?)src.Address1_AddressTypeCode),
                     src.Address1_Line1,
                     src.Address1_Line2,
                     src.Address1_Line3,
@@ -21,7 +22,6 @@
                     src.Address1_StateOrProvince,
                     src.Address1_PostalCode),
                 new Address(
-                    Address.MapAddress2Code((int?)src.Address2_AddressTypeCode),
                     src.Address2_Line1,
                     src.Address2_Line2,
                     src.Address2_Line3,
