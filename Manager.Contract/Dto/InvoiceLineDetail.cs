@@ -19,6 +19,7 @@ public record InvoiceLineDetail : IDto
     public decimal? AmountCalculated { get; set; }  // Dynamics Optional
     public decimal? TotalAmount { get; set; }       // Dynamics Optional
     public TaxExemption? TaxExemption { get; set; } // Dynamics Optional
+    public decimal? GstAmount { get; set; }         // Dynamics Optional
 
     // References
     public Guid InvoiceId { get; set; }                     // Dynamics Business Required

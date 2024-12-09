@@ -6,6 +6,7 @@ public class InvoiceLineDetailMapper : Profile
     {
         CreateMap<Vsd_InvoiceLineDetail, InvoiceLineDetail>()
             .ForMember(dest => dest.Approved, opts => opts.MapFrom(src => src.Vsd_LineItemApproved))
+            .ForMember(dest => dest.GstAmount, opts => opts.MapFrom(src => src.Vsd_Gst))
             .ForMember(dest => dest.InvoiceType, opts => opts.MapFrom(src => (InvoiceType?)src.Vsd_InvoiceType))
             .ForMember(dest => dest.AmountSimple, opts => opts.MapFrom(src => src.Vsd_AmountSimple))
             .ForMember(dest => dest.AmountCalculated, opts => opts.MapFrom(src => src.Vsd_AmountCalculated))
@@ -19,6 +20,7 @@ public class InvoiceLineDetailMapper : Profile
 
         CreateMap<InvoiceLineDetail, Vsd_InvoiceLineDetail>()
             .ForMember(dest => dest.Vsd_LineItemApproved, opts => opts.MapFrom(src => src.Approved))
+            .ForMember(dest => dest.Vsd_Gst, opts => opts.MapFrom(src => src.GstAmount))
             .ForMember(dest => dest.Vsd_InvoiceType, opts => opts.MapFrom(src => (Vsd_InvoiceTypes?)src.InvoiceType))
             .ForMember(dest => dest.Vsd_AmountSimple, opts => opts.MapFrom(src => src.AmountSimple))
             .ForMember(dest => dest.Vsd_AmountCalculated, opts => opts.MapFrom(src => src.AmountCalculated))

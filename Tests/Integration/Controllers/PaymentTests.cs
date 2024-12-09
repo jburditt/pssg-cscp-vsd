@@ -173,14 +173,14 @@
                 else
                     throw new Exception("Vendor/Account Number on Service Provider is missing.");
             }
-            //if (!accountEntity.SiteNumber.HasValue)
-            //{
-            //    if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
-            //    {
-            //        isBlockSupplier = true;
-            //        accountEntity.SiteNumber = int.Parse(await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "SupplierSiteNumber", "CAS", programUnit));
-            //    }
-            //}
+            if (string.IsNullOrEmpty(accountEntity.SupplierSiteNumber))
+            {
+                if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
+                {
+                    isBlockSupplier = true;
+                    accountEntity.SupplierSiteNumber = await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "SupplierSiteNumber", "CAS", programUnit));
+                }
+            }
 
             //supplierNumber = accountEntity.AccountNumber;
             //if (accountEntity.SiteNumber.HasValue)
@@ -204,46 +204,46 @@
             //else if (accountEntity.Address2_AddressTypeCode.HasValue && accountEntity.Address2_AddressTypeCode.Value == 100000001 && !string.IsNullOrEmpty(accountEntity.Address2_Line1)) //Payment Address
             //{
             //    addressLine1 = accountEntity.Address2_Line1;
-            
-                //        if (accountEntity.Contains("address2_line2"))
-                //            addressLine2 = (string)accountEntity["address2_line2"];
-                //        if (accountEntity.Contains("address2_line3"))
-                //            addressLine3 = (string)accountEntity["address2_line3"];
-                //        if (accountEntity.Contains("address2_city"))
-                //            city = (string)accountEntity["address2_city"];
-                //        if (accountEntity.Contains("address2_stateorprovince"))
-                //            province = (string)accountEntity["address2_stateorprovince"];
-                //        if (accountEntity.Contains("address2_country"))
-                //            country = (string)accountEntity["address2_country"];
-                //        if (accountEntity.Contains("address2_postalcode"))
-                //            postalCode = (string)accountEntity["address2_postalcode"];
-                //    }
-                //    else
-                //    {
-                //        if (accountEntity.Contains("address1_line1"))
-                //            addressLine1 = (string)accountEntity["address1_line1"];
-                //        if (accountEntity.Contains("address1_line2"))
-                //            addressLine2 = (string)accountEntity["address1_line2"];
-                //        if (accountEntity.Contains("address1_line3"))
-                //            addressLine3 = (string)accountEntity["address1_line3"];
-                //        if (accountEntity.Contains("address1_city"))
-                //            city = (string)accountEntity["address1_city"];
-                //        if (accountEntity.Contains("address1_stateorprovince"))
-                //            province = (string)accountEntity["address1_stateorprovince"];
-                //        if (accountEntity.Contains("address1_country"))
-                //            country = (string)accountEntity["address1_country"];
-                //        if (accountEntity.Contains("address1_postalcode"))
-                //            postalCode = (string)accountEntity["address1_postalcode"];
-                //    }
 
-                //    if (accountEntity.Contains("vsd_accountno"))
-                //        accountNumber = (string)accountEntity["vsd_accountno"];
-                //    if (accountEntity.Contains("vsd_transitno"))
-                //        transitNumber = (string)accountEntity["vsd_transitno"];
-                //    if (accountEntity.Contains("vsd_institutionno"))
-                //        institutionNumber = (string)accountEntity["vsd_institutionno"];
-                //    if (accountEntity.Contains("emailaddress1"))
-                //        emailAddress = (string)accountEntity["emailaddress1"];
+            //        if (accountEntity.Contains("address2_line2"))
+            //            addressLine2 = (string)accountEntity["address2_line2"];
+            //        if (accountEntity.Contains("address2_line3"))
+            //            addressLine3 = (string)accountEntity["address2_line3"];
+            //        if (accountEntity.Contains("address2_city"))
+            //            city = (string)accountEntity["address2_city"];
+            //        if (accountEntity.Contains("address2_stateorprovince"))
+            //            province = (string)accountEntity["address2_stateorprovince"];
+            //        if (accountEntity.Contains("address2_country"))
+            //            country = (string)accountEntity["address2_country"];
+            //        if (accountEntity.Contains("address2_postalcode"))
+            //            postalCode = (string)accountEntity["address2_postalcode"];
+            //    }
+            //    else
+            //    {
+            //        if (accountEntity.Contains("address1_line1"))
+            //            addressLine1 = (string)accountEntity["address1_line1"];
+            //        if (accountEntity.Contains("address1_line2"))
+            //            addressLine2 = (string)accountEntity["address1_line2"];
+            //        if (accountEntity.Contains("address1_line3"))
+            //            addressLine3 = (string)accountEntity["address1_line3"];
+            //        if (accountEntity.Contains("address1_city"))
+            //            city = (string)accountEntity["address1_city"];
+            //        if (accountEntity.Contains("address1_stateorprovince"))
+            //            province = (string)accountEntity["address1_stateorprovince"];
+            //        if (accountEntity.Contains("address1_country"))
+            //            country = (string)accountEntity["address1_country"];
+            //        if (accountEntity.Contains("address1_postalcode"))
+            //            postalCode = (string)accountEntity["address1_postalcode"];
+            //    }
+
+            //    if (accountEntity.Contains("vsd_accountno"))
+            //        accountNumber = (string)accountEntity["vsd_accountno"];
+            //    if (accountEntity.Contains("vsd_transitno"))
+            //        transitNumber = (string)accountEntity["vsd_transitno"];
+            //    if (accountEntity.Contains("vsd_institutionno"))
+            //        institutionNumber = (string)accountEntity["vsd_institutionno"];
+            //    if (accountEntity.Contains("emailaddress1"))
+            //        emailAddress = (string)accountEntity["emailaddress1"];
         }
         else
         {
@@ -358,96 +358,68 @@
         var jsonInvoiceLineDetails = new List<CasApTransactionInvoiceLineDetail>();
 
         int j = 0;
-        foreach (var invoiceLineDetail in invoiceLineDetails)
+        if (invoiceLineDetails != null && invoiceLineDetails.Any()) 
         {
-            if (invoiceLineDetail.AmountCalculated == null)
-                throw new Exception("Invoice Line Item Sub Total Amount is missing.");
-            if (invoiceLineDetail.TaxExemption == null)
-                throw new Exception("Invoice Line Item Tax is missing.");
-            if (invoiceLineDetail.TotalAmount == null)
-                throw new Exception("Invoice Line Item Total Amount is missing.");
-
-            j = j + 1;
-            var lineDetail = new CasApTransactionInvoiceLineDetail()
+            foreach (var invoiceLineDetail in invoiceLineDetails)
             {
-                InvoiceLineNumber = j,
-                InvoiceLineType = "Item",
-                LineCode = paymentEntity.LineCode.ToString(),
-                InvoiceLineAmount = (decimal)invoiceLineDetail.AmountCalculated,
-                DefaultDistributionAccount = defaultDistributionAccount
-            };
-            jsonInvoiceLineDetails.Add(lineDetail);
+                if (invoiceLineDetail.AmountCalculated == null)
+                    throw new Exception("Invoice Line Item Sub Total Amount is missing.");
+                if (invoiceLineDetail.TaxExemption == null)
+                    throw new Exception("Invoice Line Item Tax is missing.");
+                if (invoiceLineDetail.TotalAmount == null)
+                    throw new Exception("Invoice Line Item Total Amount is missing.");
 
-            //        if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000000) //PST
-            //        {
-            //            j = j + 1;
-            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-            //            {
-            //                InvoiceLineNumber = j,
-            //                InvoiceLineType = "Item",
-            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-            //                DefaultDistributionAccount = defaultDistributionAccount
-            //            };
-            //            invoiceLineDetails.Add(lineDetail1);
-            //            //lineDetail.TaxClassificationCode = "PST";
-            //        }
-            //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000001) //GST
-            //        {
-            //            j = j + 1;
-            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-            //            {
-            //                InvoiceLineNumber = j,
-            //                InvoiceLineType = "Item",
-            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - ((Money)coll.Entities[i]["vsd_amountcalculated"]).Value,
-            //                DefaultDistributionAccount = gstDistributionAccount
-            //            };
-            //            invoiceLineDetails.Add(lineDetail1);
-            //            //lineDetail.TaxClassificationCode = "GST";
-            //        }
-            //        else if (((OptionSetValue)coll.Entities[i]["vsd_taxexemption"]).Value == 100000003) //GST and PST
-            //        {
-            //            if (!coll.Entities[i].Contains("vsd_gst"))
-            //                throw new Exception("GST amount is missing.");
+                j = j + 1;
+                var lineDetail = new CasApTransactionInvoiceLineDetail()
+                {
+                    InvoiceLineNumber = j,
+                    InvoiceLineType = "Item",
+                    LineCode = paymentEntity.LineCode.ToString(),
+                    InvoiceLineAmount = (decimal)invoiceLineDetail.AmountCalculated,
+                    DefaultDistributionAccount = defaultDistributionAccount
+                };
+                jsonInvoiceLineDetails.Add(lineDetail);
 
-            //            j = j + 1;
-            //            InvoiceLineDetail lineDetail1 = new InvoiceLineDetail()
-            //            {
-            //                InvoiceLineNumber = j,
-            //                InvoiceLineType = "Item",
-            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_gst"]).Value,
-            //                DefaultDistributionAccount = gstDistributionAccount
-            //            };
-            //            invoiceLineDetails.Add(lineDetail1);
+                j = j + 1;
+                if (invoiceLineDetail.TaxExemption == TaxExemption.PstOnly)
+                {
+                    lineDetail.InvoiceLineAmount = (decimal)invoiceLineDetail.TotalAmount - (decimal)invoiceLineDetail.AmountCalculated;
+                    jsonInvoiceLineDetails.Add(lineDetail);
+                }
+                else if (invoiceLineDetail.TaxExemption == TaxExemption.GstOnly)
+                {
+                    lineDetail.InvoiceLineAmount = (decimal)invoiceLineDetail.TotalAmount - (decimal)invoiceLineDetail.AmountCalculated;
+                    lineDetail.DefaultDistributionAccount = gstDistributionAccount;
+                    jsonInvoiceLineDetails.Add(lineDetail);
+                }
+                else if (invoiceLineDetail.TaxExemption == TaxExemption.AllTax) //GST and PST
+                {
+                    if (invoiceLineDetail.GstAmount == null)
+                        throw new Exception("GST amount is missing.");
 
-            //            j = j + 1;
-            //            InvoiceLineDetail lineDetail2 = new InvoiceLineDetail()
-            //            {
-            //                InvoiceLineNumber = j,
-            //                InvoiceLineType = "Item",
-            //                LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //                InvoiceLineAmount = ((Money)coll.Entities[i]["vsd_lineitemtotalamount"]).Value - (((Money)coll.Entities[i]["vsd_amountcalculated"]).Value + ((Money)coll.Entities[i]["vsd_gst"]).Value),
-            //                DefaultDistributionAccount = defaultDistributionAccount
-            //            };
-            //            invoiceLineDetails.Add(lineDetail2);
-            //            //lineDetail.TaxClassificationCode = "GST AND PST";
-            //        }
+                    lineDetail.InvoiceLineAmount = (decimal)invoiceLineDetail.GstAmount;
+                    lineDetail.DefaultDistributionAccount = gstDistributionAccount;
+                    jsonInvoiceLineDetails.Add(lineDetail);
+
+                    j = j + 1;
+                    lineDetail.InvoiceLineAmount = (decimal)(invoiceLineDetail.TotalAmount - invoiceLineDetail.AmountCalculated + invoiceLineDetail.GstAmount);
+                    lineDetail.DefaultDistributionAccount = defaultDistributionAccount;
+                    jsonInvoiceLineDetails.Add(lineDetail);
+                }
+            }
         }
-        //}
-        //else
-        //{
-        //    InvoiceLineDetail lineDetail = new InvoiceLineDetail()
-        //    {
-        //        InvoiceLineNumber = 1,
-        //        InvoiceLineType = "Item",
-        //        LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-        //        InvoiceLineAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
-        //        DefaultDistributionAccount = defaultDistributionAccount
-        //    };
-        //    invoiceLineDetails.Add(lineDetail);
-        //}
+        else
+        {
+            //    InvoiceLineDetail lineDetail = new InvoiceLineDetail()
+            //    {
+            //        InvoiceLineNumber = 1,
+            //        InvoiceLineType = "Item",
+            //        LineCode = paymentEntity.FormattedValues["vsd_linecode"],
+            //        InvoiceLineAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
+            //        DefaultDistributionAccount = defaultDistributionAccount
+            //    };
+            //    invoiceLineDetails.Add(lineDetail);
+        }
 
         #endregion
 
