@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ScheduleG\ScheduleGRepository.cs" />
+    <Compile Remove="ScheduleG\ScheduleGRepositoryMapper.cs" />
+    <Compile Remove="Task\TaskRepository.cs" />
+    <Compile Remove="Task\TaskRepositoryMapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Manager.Contract\Manager.Contract.csproj" />
     <ProjectReference Include="..\Shared.Database\Shared.Database.csproj" />

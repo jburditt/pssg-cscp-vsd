@@ -37,7 +37,7 @@ public record FindContractQuery : IRequest<FindContractResult>
 
 public record FindContractResult(Contract? Contract);
 
-public record ContractQuery : IRequest<ContractResult>
+public record ContractQuery : IRequest<IEnumerable<Contract>>
 {
     public Guid? Id { get; set; }
     public StateCode? StateCode { get; set; }
@@ -48,8 +48,6 @@ public record ContractQuery : IRequest<ContractResult>
     public bool? NotNullFiscalEndDate { get; set; }
     public ContractType? NotEqualType { get; set; }
 }
-
-public record ContractResult(IEnumerable<Contract> Contracts);
 
 public record Contract : IDto
 {

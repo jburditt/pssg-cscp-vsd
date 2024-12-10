@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="ContractHandlers.cs" />
-    <Compile Remove="ProgramHandlers.cs" />
     <Compile Remove="ScheduleGHandlers.cs" />
     <Compile Remove="TaskHandlers.cs" />
   </ItemGroup>

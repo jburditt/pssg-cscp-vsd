@@ -16,15 +16,13 @@ public enum ProgramStatusCode
     ProcessingBudgetProposal = 100000009,
 }
 
-public record ProgramQuery : IRequest<ProgramResult>
+public record ProgramQuery : IRequest<IEnumerable<Program>>
 {
     public Guid? Id { get; set; }
     public StateCode? StateCode { get; set; }
     public ProgramStatusCode? StatusCode { get; set; }
     public Guid? ContractId { get; set; }
 }
-
-public record ProgramResult(IEnumerable<Program> Programs);
 
 public record Program : IDto
 {
@@ -44,4 +42,4 @@ public record Program : IDto
     public string? ContractName { get; set; }
 }
 
-public class GetApprovedCommand() : IRequest<ProgramResult>;
+public class GetApprovedCommand() : IRequest<IEnumerable<Program>>;
