@@ -28,10 +28,13 @@ public record Account : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public string? Name { get; set; }                   
-    public string? AccountNumber { get; set; }          
+    public string? AccountNumber { get; set; }
+    public string? InstitutionNumber { get; set; }      
+    public string? TransitNumber { get; set; }          
     public int? SupplierSiteNumber { get; set; }     
     public string? RestChequeName { get; set; }         
     public AccountAddress1Code? Address1Code { get; set; }
     public AccountAddress2Code? Address2Code { get; set; }
     public Address[]? Addresses { get; set; }
+    public string[]? Emails { get; set; }
 }

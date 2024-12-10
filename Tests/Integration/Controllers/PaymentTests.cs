@@ -220,14 +220,10 @@
                 }
             }
 
-            //if (accountEntity.Contains("vsd_accountno"))
-            //    accountNumber = (string)accountEntity["vsd_accountno"];
-            //if (accountEntity.Contains("vsd_transitno"))
-            //    transitNumber = (string)accountEntity["vsd_transitno"];
-            //if (accountEntity.Contains("vsd_institutionno"))
-            //    institutionNumber = (string)accountEntity["vsd_institutionno"];
-            //if (accountEntity.Contains("emailaddress1"))
-            //    emailAddress = (string)accountEntity["emailaddress1"];
+            accountNumber = accountEntity.AccountNumber ?? string.Empty;
+            transitNumber = accountEntity.TransitNumber ?? string.Empty;
+            institutionNumber = accountEntity.InstitutionNumber ?? string.Empty;
+            emailAddress = accountEntity.Emails?[0] ?? string.Empty;
         }
         else
         {
@@ -394,15 +390,15 @@
         }
         else
         {
-            //    InvoiceLineDetail lineDetail = new InvoiceLineDetail()
-            //    {
-            //        InvoiceLineNumber = 1,
-            //        InvoiceLineType = "Item",
-            //        LineCode = paymentEntity.FormattedValues["vsd_linecode"],
-            //        InvoiceLineAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
-            //        DefaultDistributionAccount = defaultDistributionAccount
-            //    };
-            //    invoiceLineDetails.Add(lineDetail);
+            var lineDetail = new CasApTransactionInvoiceLineDetail()
+            {
+                InvoiceLineNumber = 1,
+                InvoiceLineType = "Item",
+                LineCode = paymentEntity.LineCode.ToString(),
+                InvoiceLineAmount = (decimal)paymentEntity.Total,
+                DefaultDistributionAccount = defaultDistributionAccount
+            };
+            jsonInvoiceLineDetails.Add(lineDetail);
         }
 
         #endregion
