@@ -109,7 +109,7 @@
             getPaymentTotalCommand.MinimumWage = minimumWage.Value;
             var paymentAmounts = await mediator.Send(getPaymentTotalCommand);
 
-            var payment = new Payment();
+            var payment = new Payment() { Owner = TestData.Owner };
             payment.Date = DateTime.Now;
             if (entitlement.TaxExemptFlag ?? false)
             {

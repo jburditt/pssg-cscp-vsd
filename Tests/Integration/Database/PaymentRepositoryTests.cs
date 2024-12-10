@@ -3,7 +3,7 @@
     [Fact]
     public void Insert()
     {
-        var payment = new Payment();
+        var payment = new Payment() { Owner = TestData.Owner };
         payment.Date = new DateTime(2024, 1, 1);
         payment.SubTotal = 2.22m;
         payment.Total = 3.33m;

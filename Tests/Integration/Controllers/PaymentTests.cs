@@ -173,77 +173,61 @@
                 else
                     throw new Exception("Vendor/Account Number on Service Provider is missing.");
             }
-            if (string.IsNullOrEmpty(accountEntity.SupplierSiteNumber))
+            if (accountEntity.SupplierSiteNumber.HasValue)
             {
                 if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
                 {
                     isBlockSupplier = true;
-                    accountEntity.SupplierSiteNumber = await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "SupplierSiteNumber", "CAS", programUnit));
+                    accountEntity.SupplierSiteNumber = int.Parse(await mediator.Send(new GetKeyValueCommand(programUnitConfigs, "SupplierSiteNumber", "CAS", programUnit)));
                 }
             }
 
-            //supplierNumber = accountEntity.AccountNumber;
-            //if (accountEntity.SiteNumber.HasValue)
-            //    siteNumber = accountEntity.SiteNumber.Value;
+            supplierNumber = accountEntity.AccountNumber;
+            if (accountEntity.SupplierSiteNumber != null)
+                siteNumber = accountEntity.SupplierSiteNumber.Value;
 
-            //if (programUnit == ProgramUnit.Rest && !string.IsNullOrEmpty(accountEntity.RestChequeName) && methodOfPayment.Equals("GEN CHQ", StringComparison.InvariantCultureIgnoreCase)) //REST and CHQ
-            //    firstName = accountEntity.RestChequeName;
-            //else
-            //    firstName = accountEntity.Name;
+            if (programUnit == ProgramUnit.Rest && !string.IsNullOrEmpty(accountEntity.RestChequeName) && methodOfPayment.Equals("GEN CHQ", StringComparison.InvariantCultureIgnoreCase)) //REST and CHQ
+                firstName = accountEntity.RestChequeName;
+            else
+                firstName = accountEntity.Name;
 
-            //if (accountEntity.Address1_AddressTypeCode.HasValue && accountEntity.Address1_AddressTypeCode.Value == 2 && !string.IsNullOrEmpty(accountEntity.Address1_Line1)) //Payment Address
-            //{
-            //    addressLine1 = accountEntity.Address1_Line1;
-            //    addressLine2 = accountEntity.Address1_Line2;
-            //    addressLine3 = accountEntity.Address1_Line3;
-            //    city = accountEntity.Address1_City;
-            //    province = accountEntity.Address1_StateOrProvince;
-            //    country = accountEntity.Address1_Country;
-            //    postalCode = accountEntity.Address1_PostalCode;
-            //}
-            //else if (accountEntity.Address2_AddressTypeCode.HasValue && accountEntity.Address2_AddressTypeCode.Value == 100000001 && !string.IsNullOrEmpty(accountEntity.Address2_Line1)) //Payment Address
-            //{
-            //    addressLine1 = accountEntity.Address2_Line1;
+            if ( //Payment Address
+                accountEntity.Address2Code.HasValue && 
+                accountEntity.Address2Code.Value == AccountAddress2Code.PaymentAddress && 
+                accountEntity.Addresses != null &&
+                accountEntity.Addresses.Length > 1 &&
+                !string.IsNullOrEmpty(accountEntity.Addresses[1].AddressLine1)
+            ){
+                addressLine1 = accountEntity.Addresses[1].AddressLine1 ?? string.Empty;
+                addressLine2 = accountEntity.Addresses[1].AddressLine2 ?? string.Empty;
+                addressLine3 = accountEntity.Addresses[1].AddressLine3 ?? string.Empty;
+                city = accountEntity.Addresses[1].City ?? string.Empty;
+                province = accountEntity.Addresses[1].StateOrProvince ?? string.Empty;
+                country = accountEntity.Addresses[1].Country ?? string.Empty;
+                postalCode = accountEntity.Addresses[1].PostalCode ?? string.Empty;
+            }
+            else
+            {
+                if (accountEntity.Addresses != null && accountEntity.Addresses.Length > 0)
+                {
+                    addressLine1 = accountEntity.Addresses[0].AddressLine1 ?? string.Empty;
+                    addressLine2 = accountEntity.Addresses[0].AddressLine2 ?? string.Empty;
+                    addressLine3 = accountEntity.Addresses[0].AddressLine3 ?? string.Empty;
+                    city = accountEntity.Addresses[0].City ?? string.Empty;
+                    province = accountEntity.Addresses[0].StateOrProvince ?? string.Empty;
+                    country = accountEntity.Addresses[0].Country ?? string.Empty;
+                    postalCode = accountEntity.Addresses[0].PostalCode ?? string.Empty;
+                }
+            }
 
-            //        if (accountEntity.Contains("address2_line2"))
-            //            addressLine2 = (string)accountEntity["address2_line2"];
-            //        if (accountEntity.Contains("address2_line3"))
-            //            addressLine3 = (string)accountEntity["address2_line3"];
-            //        if (accountEntity.Contains("address2_city"))
-            //            city = (string)accountEntity["address2_city"];
-            //        if (accountEntity.Contains("address2_stateorprovince"))
-            //            province = (string)accountEntity["address2_stateorprovince"];
-            //        if (accountEntity.Contains("address2_country"))
-            //            country = (string)accountEntity["address2_country"];
-            //        if (accountEntity.Contains("address2_postalcode"))
-            //            postalCode = (string)accountEntity["address2_postalcode"];
-            //    }
-            //    else
-            //    {
-            //        if (accountEntity.Contains("address1_line1"))
-            //            addressLine1 = (string)accountEntity["address1_line1"];
-            //        if (accountEntity.Contains("address1_line2"))
-            //            addressLine2 = (string)accountEntity["address1_line2"];
-            //        if (accountEntity.Contains("address1_line3"))
-            //            addressLine3 = (string)accountEntity["address1_line3"];
-            //        if (accountEntity.Contains("address1_city"))
-            //            city = (string)accountEntity["address1_city"];
-            //        if (accountEntity.Contains("address1_stateorprovince"))
-            //            province = (string)accountEntity["address1_stateorprovince"];
-            //        if (accountEntity.Contains("address1_country"))
-            //            country = (string)accountEntity["address1_country"];
-            //        if (accountEntity.Contains("address1_postalcode"))
-            //            postalCode = (string)accountEntity["address1_postalcode"];
-            //    }
-
-            //    if (accountEntity.Contains("vsd_accountno"))
-            //        accountNumber = (string)accountEntity["vsd_accountno"];
-            //    if (accountEntity.Contains("vsd_transitno"))
-            //        transitNumber = (string)accountEntity["vsd_transitno"];
-            //    if (accountEntity.Contains("vsd_institutionno"))
-            //        institutionNumber = (string)accountEntity["vsd_institutionno"];
-            //    if (accountEntity.Contains("emailaddress1"))
-            //        emailAddress = (string)accountEntity["emailaddress1"];
+            //if (accountEntity.Contains("vsd_accountno"))
+            //    accountNumber = (string)accountEntity["vsd_accountno"];
+            //if (accountEntity.Contains("vsd_transitno"))
+            //    transitNumber = (string)accountEntity["vsd_transitno"];
+            //if (accountEntity.Contains("vsd_institutionno"))
+            //    institutionNumber = (string)accountEntity["vsd_institutionno"];
+            //if (accountEntity.Contains("emailaddress1"))
+            //    emailAddress = (string)accountEntity["emailaddress1"];
         }
         else
         {
