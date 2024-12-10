@@ -9,12 +9,20 @@ public class ProgramTypeRepository : BaseRepository<Vsd_ProgramType, ProgramType
         _databaseContext = databaseContext;
     }
 
-    public ProgramType FirstOrDefault(FindProgramTypeQuery ProgramTypeQuery)
+    public ProgramType FirstOrDefault(FindProgramTypeQuery query)
     {
-        var queryResults = _databaseContext.Vsd_ProgramTypeSet
-            .Where(ProgramTypeQuery)
+        var entities = _databaseContext.Vsd_ProgramTypeSet
+            .Where(query)
             .FirstOrDefault();
-        return _mapper.Map<ProgramType>(queryResults);
+        return _mapper.Map<ProgramType>(entities);
+    }
+
+    public IEnumerable<ProgramType> Query(ProgramTypeQuery query)
+    {
+        var entities = _databaseContext.Vsd_ProgramTypeSet
+            .Where(query)
+            .ToList();
+        return _mapper.Map<IEnumerable<ProgramType>>(entities);
     }
 }
 

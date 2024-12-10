@@ -1,7 +1,7 @@
 ﻿namespace Manager.Contract;
 
 public record FindProgramTypeQuery : BaseProgramTypeQuery, IRequest<ProgramType>;
-public record ProgramTypeQuery : BaseProgramQuery, IRequest<IEnumerable<Program>>;
+public record ProgramTypeQuery : BaseProgramTypeQuery, IRequest<IEnumerable<ProgramType>>;
 public record BaseProgramTypeQuery
 {
     public Guid? Id { get; set; }
