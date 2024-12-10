@@ -41,6 +41,16 @@ public enum LineCode
     Dr = 100000000,
 }
 
+// Used for CAS integration.
+public enum SpecialHandling
+{
+    //[OptionSetMetadataAttribute("DBack", 1, "#0000ff")]
+    Dback = 100000001,
+
+    //[OptionSetMetadataAttribute("No", 0, "#0000ff")]
+    No = 100000000,
+}
+
 public record FindPaymentQuery : BasePaymentQuery, IRequest<Payment> { }
 public record PaymentQuery : BasePaymentQuery, IRequest<IEnumerable<Payment>> { }
 public record BasePaymentQuery
@@ -73,9 +83,12 @@ public record Payment : IDto
     public string? RemittanceMessage1 { get; set; }     // Dynamics Optional
     public string? RemittanceMessage2 { get; set; }     // Dynamics Optional
     public string? RemittanceMessage3 { get; set; }     // Dynamics Optional
+    public string? AdviceComments { get; set; }         // Dynamics Optional
     public string? CasResponse { get; set; }            // Dynamics Optional
+    public SpecialHandling? SpecialHandling { get; set; }// Dynamics Optional
 
     // Foreign Keys
+    public required DynamicReference Owner { get; set; }// Dynamics System Required
     public Guid? CaseId { get; set; }                   // Dynamics Optional
     public Guid? EntitlementId { get; set; }            // Dynamics Optional
     public DynamicReference? Payee { get; set; }        // Dynamics Optional

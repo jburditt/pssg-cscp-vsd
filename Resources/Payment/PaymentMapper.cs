@@ -6,6 +6,7 @@ public class PaymentMapper : Profile
     {
         // NOTE keep this in sync with CreateMap<PaymentInvoicesEntity, Payment>() below
         CreateMap<Vsd_Payment, Payment>()
+            .ForMember(dest => dest.AdviceComments, opt => opt.MapFrom(src => src.Vsd_PaymentAdviceComments))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.LineCode, opt => opt.MapFrom(src => (LineCode?)src.Vsd_LineCode))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Vsd_Name))
@@ -24,10 +25,13 @@ public class PaymentMapper : Profile
             .ForMember(dest => dest.CasResponse, opt => opt.MapFrom(src => src.Vsd_CasResponse))
             .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.Vsd_Case.Id))
             .ForMember(dest => dest.EntitlementId, opt => opt.MapFrom(src => src.Vsd_EntitlementId.Id))
+            .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.OwnerId))
+            .ForMember(dest => dest.SpecialHandling, opt => opt.MapFrom(src => src.Vsd_SpecialHandling))
             .ForMember(dest => dest.Payee, opt => opt.MapFrom(src => src.Vsd_Payee))
             .ForMember(dest => dest.TransactionCurrencyId, opt => opt.MapFrom(src => src.TransactionCurrencyId.Id));
 
         CreateMap<Payment, Vsd_Payment>()
+            .ForMember(dest => dest.Vsd_PaymentAdviceComments, opt => opt.MapFrom(src => src.AdviceComments))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Vsd_LineCode, opt => opt.MapFrom(src => (Vsd_Payment_Vsd_LineCode?)src.LineCode))
             .ForMember(dest => dest.Vsd_Name, opt => opt.MapFrom(src => src.Name))
@@ -45,6 +49,8 @@ public class PaymentMapper : Profile
             .ForMember(dest => dest.Vsd_CasResponse, opt => opt.MapFrom(src => src.CasResponse))
             .ForMember(dest => dest.Vsd_Case, opt => opt.MapFrom(src => src.CaseId != null ? new EntityReference("incident", src.CaseId.Value) : null))
             .ForMember(dest => dest.Vsd_EntitlementId, opt => opt.MapFrom(src => src.EntitlementId != null ? new EntityReference(Vsd_Entitlement.EntityLogicalName, src.EntitlementId.Value) : null))
+            .ForMember(dest => dest.OwnerId, opt => opt.MapFrom(src => src.Owner))
+            .ForMember(dest => dest.Vsd_SpecialHandling, opt => opt.MapFrom(src => src.SpecialHandling))
             .ForMember(dest => dest.Vsd_Payee, opt => opt.MapFrom(src => src.Payee))
             .ForMember(dest => dest.TransactionCurrencyId, opt => opt.MapFrom(src => src.TransactionCurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.TransactionCurrencyId.Value) : null));
 

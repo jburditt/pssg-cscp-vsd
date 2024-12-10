@@ -93,19 +93,19 @@
             }
             finally
             {
-                var updatePayment = new Payment();
-                updatePayment.Id = postImageEntity.Id;
+                //var updatePayment = new Payment();
+                //updatePayment.Id = postImageEntity.Id;
 
-                if (!string.IsNullOrEmpty(userMessage))
-                    updatePayment.CasResponse = (userMessage.Length >= 2000 ? userMessage.Substring(0, 1998) : userMessage);
+                //if (!string.IsNullOrEmpty(userMessage))
+                //    updatePayment.CasResponse = (userMessage.Length >= 2000 ? userMessage.Substring(0, 1998) : userMessage);
 
-                if (isError)
-                    updatePayment.StatusCode = PaymentStatusCode.Failed;
-                else
-                {
-                    updatePayment.Date = DateTime.Now;
-                    updatePayment.StatusCode = PaymentStatusCode.Sent;
-                }
+                //if (isError)
+                //    updatePayment.StatusCode = PaymentStatusCode.Failed;
+                //else
+                //{
+                //    updatePayment.Date = DateTime.Now;
+                //    updatePayment.StatusCode = PaymentStatusCode.Sent;
+                //}
 
                 // TODO
                 //OrgService.Update(updatePayment);
@@ -374,7 +374,7 @@
                 {
                     InvoiceLineNumber = j,
                     InvoiceLineType = "Item",
-                    LineCode = paymentEntity.LineCode.ToString(),
+                    LineCode = paymentEntity.LineCode?.ToString(),
                     InvoiceLineAmount = (decimal)invoiceLineDetail.AmountCalculated,
                     DefaultDistributionAccount = defaultDistributionAccount
                 };
@@ -449,145 +449,150 @@
 
         #endregion
 
+        string invoiceType = await mediator.Send(new GetKeyValueCommand(configs, "InvoiceType", "CAS", null));
+        string remittanceCode = await mediator.Send(new GetKeyValueCommand(configs, "RemittanceCode", "CAS", null));
+        string batchName = await mediator.Send(new GetKeyValueCommand(configs, "BatchName", "CAS", null));
+        string currencyCode = await mediator.Send(new GetKeyValueCommand(configs, "CurrencyCode", "CAS", null));
+
         var result = new CasApTransactionInvoice
         {
             //Mandatory values
             IsBlockSupplier = isBlockSupplier,
-            //InvoiceType = Helpers.GetConfigKeyValue(configs, "InvoiceType", "CAS", null),
-            //SupplierNumber = supplierNumber,
-            //SupplierSiteNumber = siteNumber,
-            //InvoiceDate = invoiceDate.Value,
-            //InvoiceNumber = invoiceNumber,
-            //InvoiceAmount = ((Money)paymentEntity["vsd_paymenttotal"]).Value,
-            //PayGroup = methodOfPayment,
-            //DateInvoiceReceived = invoiceDate.Value,
-            //RemittanceCode = Helpers.GetConfigKeyValue(configs, "RemittanceCode", "CAS", null),
-            //SpecialHandling = false,
-            //Terms = paymentEntity.FormattedValues["vsd_terms"],
-            //GLDate = (DateTime)paymentEntity["vsd_gldate"],
-            //InvoiceBatchName = Helpers.GetConfigKeyValue(configs, "BatchName", "CAS", null),
+            InvoiceType = invoiceType,
+            SupplierNumber = supplierNumber,
+            SupplierSiteNumber = siteNumber,
+            InvoiceDate = invoiceDate,
+            InvoiceNumber = invoiceNumber,
+            InvoiceAmount = (decimal)paymentEntity.Total,
+            PayGroup = methodOfPayment,
+            DateInvoiceReceived = invoiceDate,
+            RemittanceCode = remittanceCode,
+            SpecialHandling = false,
+            Terms = paymentEntity.Terms?.ToString(),
+            GLDate = paymentEntity.GlDate,
+            InvoiceBatchName = batchName,
 
-            ////Optional Value
-            //QualifiedReceiver = ((EntityReference)paymentEntity["ownerid"]).Name,
-            //PaymentAdviceComments = paymentEntity.Contains("vsd_paymentadvicecomments") ? (string)paymentEntity["vsd_paymentadvicecomments"] : "",
-            //RemittanceMessage1 = paymentEntity.Contains("vsd_remittancemessage1") ? (string)paymentEntity["vsd_remittancemessage1"] : "",
-            //RemittanceMessage2 = paymentEntity.Contains("vsd_remittancemessage2") ? (string)paymentEntity["vsd_remittancemessage2"] : "",
-            //RemittanceMessage3 = paymentEntity.Contains("vsd_remittancemessage3") ? (string)paymentEntity["vsd_remittancemessage3"] : "",
-            //CurrencyCode = Helpers.GetConfigKeyValue(configs, "CurrencyCode", "CAS", null)
+            //Optional Value
+            QualifiedReceiver = paymentEntity.Owner.SchemaName,
+            PaymentAdviceComments = paymentEntity.AdviceComments ?? "",
+            RemittanceMessage1 = paymentEntity.RemittanceMessage1 ?? "",
+            RemittanceMessage2 = paymentEntity.RemittanceMessage2 ?? "",
+            RemittanceMessage3 = paymentEntity.RemittanceMessage3 ?? "",
+            CurrencyCode = currencyCode
         };
 
-        //result.InvoiceLineDetails = invoiceLineDetails;
+        result.InvoiceLineDetails = jsonInvoiceLineDetails;
 
-        //if (methodOfPayment.Equals("GEN EFT", StringComparison.InvariantCultureIgnoreCase))
-        //{
-        //    if (isBlockSupplier)
-        //    {
-        //        result.AccountNumber = accountNumber;
-        //        result.TransitNumber = transitNumber;
-        //        result.InstitutionNumber = institutionNumber;
+        if (methodOfPayment.Equals("GEN EFT", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (isBlockSupplier)
+            {
+                result.AccountNumber = accountNumber;
+                result.TransitNumber = transitNumber;
+                result.InstitutionNumber = institutionNumber;
 
-        //        if (paymentEntity.Contains("vsd_eftadvice"))
-        //        {
-        //            if (((OptionSetValue)paymentEntity["vsd_eftadvice"]).Value == 100000000) //Email
-        //            {
-        //                if (string.IsNullOrEmpty(emailAddress))
-        //                    throw new Exception("Email Address on the Payee is missing.");
+                if (paymentEntity.EftAdvice != null)
+                {
+                    if (paymentEntity.EftAdvice == EftAdvice.Email)
+                    {
+                        if (string.IsNullOrEmpty(emailAddress))
+                            throw new Exception("Email Address on the Payee is missing.");
 
-        //                result.EmailAddress = emailAddress;
-        //                result.EFTAdvice = "E";
-        //            }
-        //            else if (((OptionSetValue)paymentEntity["vsd_eftadvice"]).Value == 100000001) //Mail
-        //            {
-        //                result.EFTAdvice = "P";
-        //                List<string> nameLines = new List<string>();
-        //                if (!string.IsNullOrEmpty(firstName))
-        //                    nameLines.Add(firstName);
-        //                if (!string.IsNullOrEmpty(lastName))
-        //                    nameLines.Add(lastName);
-        //                if (nameLines.Count > 0)
-        //                {
-        //                    result.NameLine1 = string.Join(" ", nameLines);
-        //                    if (result.NameLine1.Length > 40)
-        //                        throw new Exception(string.Format("'{0}' name exceeded 40 character limit.."));
-        //                }
-        //                if (!string.IsNullOrEmpty(addressLine1))
-        //                    result.AddressLine1 = addressLine1;
-        //                if (!string.IsNullOrEmpty(addressLine2))
-        //                    result.AddressLine2 = addressLine2;
-        //                if (!string.IsNullOrEmpty(addressLine3))
-        //                    result.AddressLine3 = addressLine3;
-        //                if (!string.IsNullOrEmpty(city))
-        //                    result.City = city;
-        //                if (!string.IsNullOrEmpty(country))
-        //                {
-        //                    var countryLookup = GetCountryCode(country);
-        //                    result.Country = countryLookup.Name;
+                        result.EmailAddress = emailAddress;
+                        result.EFTAdvice = "E";
+                    }
+                    else if (paymentEntity.EftAdvice == EftAdvice.Mail)
+                    {
+                        result.EFTAdvice = "P";
+                        List<string> nameLines = new List<string>();
+                        if (!string.IsNullOrEmpty(firstName))
+                            nameLines.Add(firstName);
+                        if (!string.IsNullOrEmpty(lastName))
+                            nameLines.Add(lastName);
+                        if (nameLines.Count > 0)
+                        {
+                            result.NameLine1 = string.Join(" ", nameLines);
+                            if (result.NameLine1.Length > 40)
+                                throw new Exception(string.Format("'{0}' name exceeded 40 character limit.."));
+                        }
+                        if (!string.IsNullOrEmpty(addressLine1))
+                            result.AddressLine1 = addressLine1;
+                        if (!string.IsNullOrEmpty(addressLine2))
+                            result.AddressLine2 = addressLine2;
+                        if (!string.IsNullOrEmpty(addressLine3))
+                            result.AddressLine3 = addressLine3;
+                        if (!string.IsNullOrEmpty(city))
+                            result.City = city;
+                        if (!string.IsNullOrEmpty(country))
+                        {
+                            //var countryLookup = GetCountryCode(country);
+                            //result.Country = countryLookup.Name;
 
-        //                    if (!string.IsNullOrEmpty(province))
-        //                        result.Province = GetProvinceCode(province, countryLookup.Id);
-        //                }
-        //                if (!string.IsNullOrEmpty(postalCode))
-        //                    result.PostalCode = postalCode;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            result.EmailAddress = emailAddress;
-        //            result.EFTAdvice = "E";
-        //        }
+                            //if (!string.IsNullOrEmpty(province))
+                            //    result.Province = GetProvinceCode(province, countryLookup.Id);
+                        }
+                        if (!string.IsNullOrEmpty(postalCode))
+                            result.PostalCode = postalCode;
+                    }
+                }
+                else
+                {
+                    result.EmailAddress = emailAddress;
+                    result.EFTAdvice = "E";
+                }
 
-        //        result.PayAloneFlag = "Y";
-        //    }
-        //}
-        //else //GEN CHQ
-        //{
-        //    if (isBlockSupplier)
-        //    {
-        //        List<string> nameLines = new List<string>();
-        //        if (!string.IsNullOrEmpty(firstName))
-        //            nameLines.Add(firstName);
-        //        if (!string.IsNullOrEmpty(lastName))
-        //            nameLines.Add(lastName);
-        //        if (nameLines.Count > 0)
-        //        {
-        //            result.NameLine1 = string.Join(" ", nameLines);
-        //            if (result.NameLine1.Length > 40)
-        //                throw new Exception(string.Format("'{0}' name exceeded 40 character limit..", result.NameLine1));
-        //        }
-        //        if (!string.IsNullOrEmpty(addressLine1))
-        //            result.AddressLine1 = addressLine1;
-        //        if (!string.IsNullOrEmpty(addressLine2))
-        //            result.AddressLine2 = addressLine2;
-        //        if (!string.IsNullOrEmpty(addressLine3))
-        //            result.AddressLine3 = addressLine3;
-        //        if (!string.IsNullOrEmpty(city))
-        //            result.City = city;
-        //        if (!string.IsNullOrEmpty(country))
-        //        {
-        //            var countryLookup = GetCountryCode(country);
-        //            result.Country = countryLookup.Name;
+                result.PayAloneFlag = "Y";
+            }
+        }
+        else //GEN CHQ
+        {
+            if (isBlockSupplier)
+            {
+                List<string> nameLines = new List<string>();
+                if (!string.IsNullOrEmpty(firstName))
+                    nameLines.Add(firstName);
+                if (!string.IsNullOrEmpty(lastName))
+                    nameLines.Add(lastName);
+                if (nameLines.Count > 0)
+                {
+                    result.NameLine1 = string.Join(" ", nameLines);
+                    if (result.NameLine1.Length > 40)
+                        throw new Exception(string.Format("'{0}' name exceeded 40 character limit..", result.NameLine1));
+                }
+                if (!string.IsNullOrEmpty(addressLine1))
+                    result.AddressLine1 = addressLine1;
+                if (!string.IsNullOrEmpty(addressLine2))
+                    result.AddressLine2 = addressLine2;
+                if (!string.IsNullOrEmpty(addressLine3))
+                    result.AddressLine3 = addressLine3;
+                if (!string.IsNullOrEmpty(city))
+                    result.City = city;
+                if (!string.IsNullOrEmpty(country))
+                {
+                    //var countryLookup = GetCountryCode(country);
+                    //result.Country = countryLookup.Name;
 
-        //            if (!string.IsNullOrEmpty(province))
-        //                result.Province = GetProvinceCode(province, countryLookup.Id);
-        //        }
-        //        if (!string.IsNullOrEmpty(postalCode))
-        //            result.PostalCode = postalCode;
+                    //if (!string.IsNullOrEmpty(province))
+                    //    result.Province = GetProvinceCode(province, countryLookup.Id);
+                }
+                if (!string.IsNullOrEmpty(postalCode))
+                    result.PostalCode = postalCode;
 
-        //        result.PayAloneFlag = "Y";
-        //    }
-        //}
+                result.PayAloneFlag = "Y";
+            }
+        }
 
-        //if (((OptionSetValue)paymentEntity["vsd_specialhandling"]).Value == 100000001) //DBack
-        //{
-        //    result.PayGroup = "GEN DAY";
-        //    result.SpecialHandling = true;
-        //    result.PayAloneFlag = "Y";
-        //}
+        if (paymentEntity.SpecialHandling == SpecialHandling.Dback)
+        {
+            result.PayGroup = "GEN DAY";
+            result.SpecialHandling = true;
+            result.PayAloneFlag = "Y";
+        }
 
-        //if (result.GLDate.HasValue && result.GLDate.Value.ToLocalTime() < DateTime.Today)
-        //{
-        //    result.GLDate = DateTime.Now;
-        //}
+        if (result.GLDate.HasValue && result.GLDate.Value.ToLocalTime() < DateTime.Today)
+        {
+            result.GLDate = DateTime.Now;
+        }
 
         return result;
     }
