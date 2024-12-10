@@ -16,7 +16,9 @@ public enum ProgramStatusCode
     ProcessingBudgetProposal = 100000009,
 }
 
-public record ProgramQuery : IRequest<IEnumerable<Program>>
+public record FindProgramQuery : BaseProgramQuery, IRequest<Program>;
+public record ProgramQuery : BaseProgramQuery, IRequest<IEnumerable<Program>>;
+public record BaseProgramQuery
 {
     public Guid? Id { get; set; }
     public StateCode? StateCode { get; set; }

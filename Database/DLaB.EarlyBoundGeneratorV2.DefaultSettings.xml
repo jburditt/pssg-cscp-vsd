@@ -34,6 +34,7 @@ vsu</CamelCaseCustomWords>
     <EntitiesWhitelist>account|
 contact|
 systemuser|
+task|
 team|
 transactioncurrency|
 vsd_caspaymenttype|
@@ -48,7 +49,9 @@ vsd_invoicelinedetail|
 vsd_payment|
 vsd_paymentschedule|
 vsd_program|
-vsd_province</EntitiesWhitelist>
+vsd_programtype|
+vsd_province|
+vsd_scheduleg</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />

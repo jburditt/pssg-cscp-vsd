@@ -1,6 +1,6 @@
 ﻿namespace Resources;
 
-public class ScheduleGRepository : BaseRepository<Vsd_ScheduleG, ScheduleG>, IScheduleGRepository
+public class ScheduleGRepository : BaseRepository<Vsd_ScheduleG, ScheduleG>//, IScheduleGRepository
 {
     private readonly DatabaseContext _databaseContext;
 

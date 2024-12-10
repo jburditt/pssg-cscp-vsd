@@ -221,6 +221,7 @@ namespace Database.Model
 			public const string Vsd_ContactLookup2 = "vsd_contactlookup2";
 			public const string Vsd_ContactLookup2Name = "vsd_contactlookup2name";
 			public const string Vsd_ContactLookup2YomiName = "vsd_contactlookup2yominame";
+			public const string Vsd_Contract_Tasks = "Vsd_Contract_Tasks";
 			public const string Vsd_ContractAgreementDate = "vsd_contractagreementdate";
 			public const string Vsd_ContractId = "vsd_contractid";
 			public const string Id = "vsd_contractid";
@@ -327,6 +328,7 @@ namespace Database.Model
 			public const string Vsd_Vsd_Contract_Vsd_Invoice = "Vsd_Vsd_Contract_Vsd_Invoice";
 			public const string Vsd_Vsd_Contract_Vsd_Payment = "Vsd_Vsd_Contract_Vsd_Payment";
 			public const string Vsd_Vsd_Contract_Vsd_Program = "Vsd_Vsd_Contract_Vsd_Program";
+			public const string Vsd_Vsd_Contract_Vsd_ScheduleG_Contract = "Vsd_Vsd_Contract_Vsd_ScheduleG_Contract";
 			public const string ReferencingVsd_Vsd_OldContract_Vsd_ClonedContract = "vsd_vsd_oldcontract_vsd_clonedcontract";
 			public const string Vsd_WorkerCompensationAct = "vsd_workercompensationact";
 			public const string Vsd_WorkerCompensationActName = "vsd_workercompensationactname";
@@ -2916,6 +2918,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N vsd_contract_Tasks
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contract_Tasks")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> Vsd_Contract_Tasks
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("vsd_contract_Tasks", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("vsd_contract_Tasks", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N vsd_vsd_contract_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_contract_vsd_invoice")]
@@ -2966,6 +2986,24 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Program>("vsd_vsd_contract_vsd_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_contract_vsd_scheduleg_Contract
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_contract_vsd_scheduleg_Contract")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_ScheduleG> Vsd_Vsd_Contract_Vsd_ScheduleG_Contract
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_vsd_contract_vsd_scheduleg_Contract", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_vsd_contract_vsd_scheduleg_Contract", null, value);
 			}
 		}
 		

@@ -1,9 +1,9 @@
 ﻿namespace Manager;
 
 public class ContractHandlers : 
-    FindQueryBaseHandlers<IContractRepository, Contract.Contract, FindContractQuery, FindContractResult, ContractQuery, ContractResult>,
-    IRequestHandler<ContractQuery, ContractResult>,
-    IRequestHandler<FindContractQuery, FindContractResult>,
+    FindQueryBaseHandlers<IContractRepository, Contract.Contract, FindContractQuery, ContractQuery>,
+    IRequestHandler<ContractQuery, IEnumerable<Contract.Contract>>,
+    IRequestHandler<FindContractQuery, Contract.Contract>,
     IRequestHandler<IsClonedCommand, bool>,
     IRequestHandler<CloneCommand, Guid?>
 {

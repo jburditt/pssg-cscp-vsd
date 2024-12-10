@@ -304,12 +304,12 @@
                 if (invoiceEntity.ProgramId == null)
                     throw new Exception("Invoice Program Lookup is missing.");
 
-                //defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
+                defaultDistributionAccount = await GenerateDefaultDistributionAccount(invoiceEntity.ProgramId.Value);
             }
             else if (invoiceEntity.CpuInvoiceType == CpuInvoiceType.OneTimePayment)
             {
-                //if (invoiceEntity.ProgramId != null)
-                //    defaultDistributionAccount = GenerateDefaultDistributionAccount(((EntityReference)invoiceEntity["vsd_programid"]).Id);
+                if (invoiceEntity.ProgramId != null)
+                    defaultDistributionAccount = await GenerateDefaultDistributionAccount(invoiceEntity.ProgramId.Value);
 
                 //if (invoiceEntity.Contains("vsd_caspaymenttype"))
                 //    defaultDistributionAccount = GenerateOneTimeDistributionAccount(((EntityReference)invoiceEntity["vsd_caspaymenttype"]).Id);
@@ -579,5 +579,14 @@
         }
 
         return result;
+    }
+
+    private async Task<string> GenerateDefaultDistributionAccount(Guid programId) 
+    {
+        var program = await mediator.Send(new FindProgramQuery { Id = programId });
+        //if (program.ProgramType == null)
+        //    throw new Exception("Program Type lookup is missing.");
+
+        return null;
     }
 }

@@ -30,12 +30,10 @@ public enum ContractType
     TuaVictimServicesVawp = 100000000,
 }
 
-public record FindContractQuery : IRequest<FindContractResult>
+public record FindContractQuery : IRequest<Contract>
 {
     public Guid? Id { get; set; }
 }
-
-public record FindContractResult(Contract? Contract);
 
 public record ContractQuery : IRequest<IEnumerable<Contract>>
 {

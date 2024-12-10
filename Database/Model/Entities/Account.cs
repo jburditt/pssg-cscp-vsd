@@ -679,6 +679,7 @@ namespace Database.Model
 			public const string ReferencingAccount_Master_Account = "account_master_account";
 			public const string ReferencingAccount_Parent_Account = "account_parent_account";
 			public const string Account_Primary_Contact = "account_primary_contact";
+			public const string Account_Tasks = "Account_Tasks";
 			public const string AccountCategoryCode = "accountcategorycode";
 			public const string AccountCategoryCodename = "accountcategorycodename";
 			public const string AccountClassificationCode = "accountclassificationcode";
@@ -920,6 +921,7 @@ namespace Database.Model
 			public const string Vsd_Account_Vsd_Payment_Payee = "Vsd_Account_Vsd_Payment_Payee";
 			public const string Vsd_Account_Vsd_PaymentSchedule_Payee = "Vsd_Account_Vsd_PaymentSchedule_Payee";
 			public const string Vsd_Account_Vsd_Program = "Vsd_Account_Vsd_Program";
+			public const string Vsd_Account_Vsd_ScheduleG_ServiceProvider = "Vsd_Account_Vsd_ScheduleG_ServiceProvider";
 			public const string Vsd_AccountNo = "vsd_accountno";
 			public const string Vsd_BcEId = "vsd_bceid";
 			public const string Vsd_BoardContact_Account = "vsd_boardcontact_account";
@@ -5829,6 +5831,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N Account_Tasks
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("Account_Tasks")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> Account_Tasks
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("Account_Tasks", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("Account_Tasks", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N contact_customer_accounts
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_customer_accounts")]
@@ -5951,6 +5971,24 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Program>("vsd_account_vsd_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_account_vsd_scheduleg_ServiceProvider
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_account_vsd_scheduleg_ServiceProvider")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_ScheduleG> Vsd_Account_Vsd_ScheduleG_ServiceProvider
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_account_vsd_scheduleg_ServiceProvider", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_account_vsd_scheduleg_ServiceProvider", null, value);
 			}
 		}
 		

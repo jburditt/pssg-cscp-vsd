@@ -63,6 +63,17 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Task"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Task> TaskSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Task>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.Team"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.Team> TeamSet
@@ -217,6 +228,17 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_ProgramType"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_ProgramType> Vsd_ProgramTypeSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_ProgramType>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_Province"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<Database.Model.Vsd_Province> Vsd_ProvinceSet
@@ -224,6 +246,17 @@ namespace Database.Model
 			get
 			{
 				return this.CreateQuery<Database.Model.Vsd_Province>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="Database.Model.Vsd_ScheduleG"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<Database.Model.Vsd_ScheduleG> Vsd_ScheduleGSet
+		{
+			get
+			{
+				return this.CreateQuery<Database.Model.Vsd_ScheduleG>();
 			}
 		}
 	}

@@ -344,6 +344,7 @@ namespace Database.Model
 			public const string Vsd_PhoneNumber = "vsd_phonenumber";
 			public const string Vsd_PhoneNumberExtension = "vsd_phonenumberextension";
 			public const string Vsd_PostalCodeZip = "vsd_postalcodezip";
+			public const string Vsd_Program_Tasks = "Vsd_Program_Tasks";
 			public const string Vsd_ProgramAlias = "vsd_programalias";
 			public const string Vsd_ProgramId = "vsd_programid";
 			public const string Id = "vsd_programid";
@@ -380,8 +381,11 @@ namespace Database.Model
 			public const string Vsd_TotalScheduledHours = "vsd_totalscheduledhours";
 			public const string Vsd_Vsd_Contract_Vsd_Program = "vsd_vsd_contract_vsd_program";
 			public const string Vsd_Vsd_Program_Contact = "vsd_vsd_program_contact";
+			public const string Vsd_Vsd_Program_Task = "Vsd_Vsd_Program_Task";
 			public const string Vsd_Vsd_Program_Vsd_Invoice = "Vsd_Vsd_Program_Vsd_Invoice";
 			public const string Vsd_Vsd_Program_Vsd_Payment = "Vsd_Vsd_Program_Vsd_Payment";
+			public const string Vsd_Vsd_Program_Vsd_ScheduleG_Program = "Vsd_Vsd_Program_Vsd_ScheduleG_Program";
+			public const string Vsd_Vsd_ProgramType_Vsd_Program_ProgramType = "vsd_vsd_programtype_vsd_program_ProgramType";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
@@ -3359,6 +3363,42 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N vsd_program_Tasks
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_program_Tasks")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> Vsd_Program_Tasks
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("vsd_program_Tasks", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("vsd_program_Tasks", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_program_task
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_program_task")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> Vsd_Vsd_Program_Task
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("vsd_vsd_program_task", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("vsd_vsd_program_task", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N vsd_vsd_program_vsd_invoice
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_program_vsd_invoice")]
@@ -3391,6 +3431,24 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Payment>("vsd_vsd_program_vsd_payment", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_program_vsd_scheduleg_Program
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_program_vsd_scheduleg_Program")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_ScheduleG> Vsd_Vsd_Program_Vsd_ScheduleG_Program
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_vsd_program_vsd_scheduleg_Program", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_ScheduleG>("vsd_vsd_program_vsd_scheduleg_Program", null, value);
 			}
 		}
 		
@@ -3635,6 +3693,25 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntity<Database.Model.Vsd_Contract>("vsd_vsd_contract_vsd_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_programtype_vsd_program_ProgramType
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_programtype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_programtype_vsd_program_ProgramType")]
+		public Database.Model.Vsd_ProgramType Vsd_Vsd_ProgramType_Vsd_Program_ProgramType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<Database.Model.Vsd_ProgramType>("vsd_vsd_programtype_vsd_program_ProgramType", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<Database.Model.Vsd_ProgramType>("vsd_vsd_programtype_vsd_program_ProgramType", null, value);
 			}
 		}
 		

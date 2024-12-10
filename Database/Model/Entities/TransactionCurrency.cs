@@ -94,6 +94,7 @@ namespace Database.Model
 			public const string TransactionCurrency_Account = "TransactionCurrency_Account";
 			public const string TransactionCurrency_Contact = "TransactionCurrency_Contact";
 			public const string TransactionCurrency_SystemUser = "TransactionCurrency_SystemUser";
+			public const string TransactionCurrency_Task = "TransactionCurrency_Task";
 			public const string TransactionCurrency_Team = "TransactionCurrency_Team";
 			public const string TransactionCurrency_Vsd_Contract = "TransactionCurrency_Vsd_Contract";
 			public const string TransactionCurrency_Vsd_Entitlement = "TransactionCurrency_Vsd_Entitlement";
@@ -103,6 +104,7 @@ namespace Database.Model
 			public const string TransactionCurrency_Vsd_PaymentSchedule = "TransactionCurrency_Vsd_PaymentSchedule";
 			public const string TransactionCurrency_Vsd_Program = "TransactionCurrency_Vsd_Program";
 			public const string TransactionCurrency_Vsd_Province = "TransactionCurrency_Vsd_Province";
+			public const string TransactionCurrency_Vsd_ScheduleG = "TransactionCurrency_Vsd_ScheduleG";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string Id = "transactioncurrencyid";
 			public const string VersionNumber = "versionnumber";
@@ -740,6 +742,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N TransactionCurrency_Task
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_Task")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> TransactionCurrency_Task
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("TransactionCurrency_Task", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("TransactionCurrency_Task", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N TransactionCurrency_Team
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_Team")]
@@ -898,6 +918,24 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Province>("TransactionCurrency_vsd_province", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N TransactionCurrency_vsd_scheduleg
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_vsd_scheduleg")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_ScheduleG> TransactionCurrency_Vsd_ScheduleG
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_ScheduleG>("TransactionCurrency_vsd_scheduleg", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_ScheduleG>("TransactionCurrency_vsd_scheduleg", null, value);
 			}
 		}
 		

@@ -9,7 +9,7 @@ public class ContractRepository : BaseRepository<Vsd_Contract, Contract>//, ICon
         _databaseContext = databaseContext;
     }
 
-    public FindContractResult FirstOrDefault(FindContractQuery contractQuery)
+    public Contract FirstOrDefault(FindContractQuery contractQuery)
     {
         var queryResults = _databaseContext.Vsd_ContractSet
             .WhereIf(contractQuery.Id != null, x => x.Id == contractQuery.Id)
@@ -31,7 +31,7 @@ public class ContractRepository : BaseRepository<Vsd_Contract, Contract>//, ICon
             }
         }
 
-        return new FindContractResult(contract);
+        return contract;
     }
 
     public IEnumerable<Contract> Query(ContractQuery contractQuery)

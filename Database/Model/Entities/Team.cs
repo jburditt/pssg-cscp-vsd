@@ -119,6 +119,7 @@ namespace Database.Model
 			public const string SystemManagedName = "systemmanagedname";
 			public const string Team_Accounts = "Team_Accounts";
 			public const string Team_Contacts = "Team_Contacts";
+			public const string Team_Task = "Team_Task";
 			public const string Team_Vsd_Contract = "Team_Vsd_Contract";
 			public const string Team_Vsd_Entitlement = "Team_Vsd_Entitlement";
 			public const string Team_Vsd_Invoice = "Team_Vsd_Invoice";
@@ -126,6 +127,7 @@ namespace Database.Model
 			public const string Team_Vsd_Payment = "Team_Vsd_Payment";
 			public const string Team_Vsd_PaymentSchedule = "Team_Vsd_PaymentSchedule";
 			public const string Team_Vsd_Program = "Team_Vsd_Program";
+			public const string Team_Vsd_ScheduleG = "Team_Vsd_ScheduleG";
 			public const string TeamId = "teamid";
 			public const string Id = "teamid";
 			public const string TeamMembership_Association = "teammembership_association";
@@ -1039,6 +1041,24 @@ namespace Database.Model
 		}
 		
 		/// <summary>
+		/// 1:N team_task
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_task")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Task> Team_Task
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Task>("team_task", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Task>("team_task", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N team_vsd_contract
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_contract")]
@@ -1161,6 +1181,24 @@ namespace Database.Model
 			set
 			{
 				this.SetRelatedEntities<Database.Model.Vsd_Program>("team_vsd_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N team_vsd_scheduleg
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("team_vsd_scheduleg")]
+		public System.Collections.Generic.IEnumerable<Database.Model.Vsd_ScheduleG> Team_Vsd_ScheduleG
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<Database.Model.Vsd_ScheduleG>("team_vsd_scheduleg", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<Database.Model.Vsd_ScheduleG>("team_vsd_scheduleg", null, value);
 			}
 		}
 		

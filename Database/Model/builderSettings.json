@@ -101,6 +101,7 @@
     "account",
     "contact",
     "systemuser",
+    "task",
     "team",
     "transactioncurrency",
     "vsd_caspaymenttype",
@@ -115,7 +116,9 @@
     "vsd_payment",
     "vsd_paymentschedule",
     "vsd_program",
-    "vsd_province"
+    "vsd_programtype",
+    "vsd_province",
+    "vsd_scheduleg"
   ],
   "entityTypesFolder": "Entities",
   "generateActions": true,
