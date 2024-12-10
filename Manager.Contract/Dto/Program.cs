@@ -35,6 +35,7 @@ public record Program : IDto
     public string? ProvinceState { get; set; }  // business recommended but not required in Dynamics
     public DateTime? BudgetProposalSignatureDate { get; set; }
     public decimal? CpuSubtotal { get; set; }
+    public StaticReference? ProgramType { get; set; }
 
     // References
     public Guid? ContractId { get; set; }

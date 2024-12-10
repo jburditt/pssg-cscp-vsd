@@ -1,10 +1,8 @@
-﻿//using Database;
-using Manager;
+﻿using Manager;
 using Microsoft.Extensions.DependencyInjection;
 using Resources;
 using Shared.Database;
 using Utilities;
-using Xunit.Abstractions;
 
 namespace Gov.Cscp.VictimServices.Public;
 
@@ -25,6 +23,10 @@ public static class ServiceCollectionExtensions
         services.AddTransient<CurrencyHandlers>();
         services.AddTransient<ICurrencyRepository, CurrencyRepository>();
 
+        services.AddTransient<IEntitlementRepository, EntitlementRepository>();
+
+        services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
+
         //services.AddTransient<InvoiceHandlers>();
         services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
@@ -34,16 +36,19 @@ public static class ServiceCollectionExtensions
         //services.AddTransient<PaymentHandlers>();
         services.AddTransient<IPaymentRepository, PaymentRepository>();
 
-        services.AddTransient<IEntitlementRepository, EntitlementRepository>();
-
         services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
         services.AddTransient<IPaymentScheduleService, PaymentScheduleService>();
 
-        services.AddTransient<ITeamRepository, TeamRepository>();
+        services.AddTransient<ProgramHandlers>();
+        services.AddTransient<IProgramRepository, ProgramRepository>();
+
+        services.AddTransient<ProgramTypeHandlers>();
+        services.AddTransient<IProgramTypeRepository, ProgramTypeRepository>();
 
         services.AddTransient<IProvinceRepository, ProvinceRepository>();
 
-        services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
+        services.AddTransient<ITeamRepository, TeamRepository>();
+
 
         services.AddTransient<IMessageRequests, MessageRequests>();
 

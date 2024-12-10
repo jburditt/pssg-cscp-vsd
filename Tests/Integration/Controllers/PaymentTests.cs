@@ -584,9 +584,18 @@
     private async Task<string> GenerateDefaultDistributionAccount(Guid programId) 
     {
         var program = await mediator.Send(new FindProgramQuery { Id = programId });
-        //if (program.ProgramType == null)
-        //    throw new Exception("Program Type lookup is missing.");
+        if (program.ProgramType == null)
+            throw new Exception("Program Type lookup is missing.");
 
-        return null;
+        var programTypeQuery = new FindProgramTypeQuery();
+        programTypeQuery.Id = program.ProgramType.Id;
+        var programType = await mediator.Send(programTypeQuery);
+        ArgumentNullException.ThrowIfNull(programType.ClientCode);
+        ArgumentNullException.ThrowIfNull(programType.ResponsibilityCentre);
+        ArgumentNullException.ThrowIfNull(programType.ServiceLine);
+        ArgumentNullException.ThrowIfNull(programType.Stob);
+        ArgumentNullException.ThrowIfNull(programType.ProjectCode);
+
+        return string.Format("{0}.{1}.{2}.{3}.{4}.000000.0000", programType.ClientCode, programType.ResponsibilityCentre, programType.ServiceLine, programType.Stob, programType.ProjectCode);
     }
 }
