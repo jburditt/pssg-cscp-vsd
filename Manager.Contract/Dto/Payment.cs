@@ -98,3 +98,11 @@ public record Payment : IDto
     // Foreign Objects
     public IEnumerable<Invoice>? Invoices { get; set; }
 }
+
+public class UpdatePaymentCasCommand : IRequest<bool>
+{
+    public Guid Id { get; set; }
+    public string? CasResponse { get; set; }
+    public PaymentStatusCode StatusCode { get; set; }
+    public DateTime Date { get; set; }
+}

@@ -91,6 +91,20 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
         }
     }
 
+    // TODO refactor to use Update(Func<TDto, object> updateExpression)
+    public bool UpdatePaymentCas(UpdatePaymentCasCommand command) 
+    {
+        var entity = new Vsd_Payment();
+        _databaseContext.Attach(entity);
+        entity.Id = command.Id;
+        entity.Vsd_CasResponse = command.CasResponse;
+        entity.StatusCode = (Vsd_Payment_StatusCode)command.StatusCode;
+        entity.Vsd_PaymentDate = command.Date;
+        _databaseContext.UpdateObject(entity);
+        return !_databaseContext
+            .SaveChanges()
+            .HasError;       
+    }
 }
 
 public record PaymentInvoicesEntity(Vsd_Payment Payment, IEnumerable<Vsd_Invoice> Invoices);

@@ -1,6 +1,7 @@
 ﻿public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, ILoggerFactory loggerFactory)
 {
     private readonly ILogger _logger = loggerFactory.CreateLogger<PaymentScheduleTests>();
+    private readonly ICasHttpClient _casHttpClient;
 
     [Fact]
     public async Task Send_Payment_To_CAS()
@@ -46,44 +47,8 @@
                 //messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending); //Sending
 
                 var invoices = await GenerateInvoice(configs, postImageEntity);
-                var jsonRequest = JsonConvert.SerializeObject(invoices);
 
-                //Log.AppendLine("Sending Json: " + jsonRequest.ToString());
-                //httpClient = new HttpClient();
-                //httpClient.DefaultRequestHeaders.Add("clientID", clientId);
-                //httpClient.DefaultRequestHeaders.Add("secret", clientKey);
-                //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //httpClient.BaseAddress = new Uri(url);
-                //httpClient.Timeout = new TimeSpan(1, 0, 0);  // 1 hour timeout 
-
-                //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url + "/api/CASAPTransaction");
-                //request.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
-                //HttpResponseMessage response = httpClient.SendAsync(request).Result;
-
-                //            if (response.StatusCode == HttpStatusCode.OK)
-                //            {
-                //                var httpResponse = response.Content.ReadAsStringAsync().Result;
-
-                //                var jsonReader = System.Runtime.Serialization.Json.JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(httpResponse), new XmlDictionaryReaderQuotas());
-
-                //                var root = XElement.Load(jsonReader);
-                //                if (root.Element("CAS-Returned-Messages") != null)
-                //                {
-                //                    var casReturnedMessages = root.Element("CAS-Returned-Messages");
-                //                    if (casReturnedMessages != null)
-                //                    {
-                //                        if (!(casReturnedMessages.Value.Equals("SUCCEEDED", StringComparison.InvariantCultureIgnoreCase) | casReturnedMessages.Value.Contains("Duplicate Submission")))
-                //                            throw new Exception(casReturnedMessages.Value + "\r\n" + jsonRequest);
-                //                    }
-                //                    else
-                //                        throw new Exception(httpResponse + "\r\n" + jsonRequest);
-                //                }
-                //                else
-                //                    throw new Exception(httpResponse + "\r\n" + jsonRequest);
-                //            }
-                //            else
-                //                throw new Exception(response.StatusCode.ToString() + "\r\n" + jsonRequest);
+                await _casHttpClient.ApTransaction(invoices);
             }
             catch (Exception ex1)
             {
@@ -93,22 +58,20 @@
             }
             finally
             {
-                //var updatePayment = new Payment();
-                //updatePayment.Id = postImageEntity.Id;
-
-                //if (!string.IsNullOrEmpty(userMessage))
-                //    updatePayment.CasResponse = (userMessage.Length >= 2000 ? userMessage.Substring(0, 1998) : userMessage);
-
-                //if (isError)
-                //    updatePayment.StatusCode = PaymentStatusCode.Failed;
-                //else
-                //{
-                //    updatePayment.Date = DateTime.Now;
-                //    updatePayment.StatusCode = PaymentStatusCode.Sent;
-                //}
-
-                // TODO
-                //OrgService.Update(updatePayment);
+                var updatePaymentCommand = new UpdatePaymentCasCommand();
+                updatePaymentCommand.Id = postImageEntity.Id;
+                if (isError)
+                {
+                    updatePaymentCommand.StatusCode = PaymentStatusCode.Failed;
+                }
+                else
+                {
+                    updatePaymentCommand.Date = DateTime.Now;
+                    updatePaymentCommand.StatusCode = PaymentStatusCode.Sent;
+                }
+                if (!string.IsNullOrEmpty(userMessage))
+                    updatePaymentCommand.CasResponse =  userMessage.Length >= 2000 ? userMessage.Substring(0, 1998) : userMessage;
+                await mediator.Send(updatePaymentCommand);
 
                 if (httpClient != null)
                     httpClient.Dispose();
@@ -118,7 +81,7 @@
         }
     }
 
-    private async Task<CasApTransactionInvoice> GenerateInvoice(IEnumerable<Configuration> configs, Payment paymentEntity)
+    private async Task<CasApTransactionInvoices> GenerateInvoice(IEnumerable<Configuration> configs, Payment paymentEntity)
     {
         ArgumentNullException.ThrowIfNull(paymentEntity.Invoices, "Invoice is missing.");
         if (paymentEntity.Invoices.Count() != 1)
@@ -434,7 +397,7 @@
         string batchName = await mediator.Send(new GetKeyValueCommand(configs, "BatchName", "CAS", null));
         string currencyCode = await mediator.Send(new GetKeyValueCommand(configs, "CurrencyCode", "CAS", null));
 
-        var result = new CasApTransactionInvoice
+        var result = new CasApTransactionInvoices
         {
             //Mandatory values
             IsBlockSupplier = isBlockSupplier,

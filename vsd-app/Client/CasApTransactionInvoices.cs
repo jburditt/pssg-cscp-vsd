@@ -1,6 +1,9 @@
-﻿namespace Manager.Contract;
+﻿using System;
+using System.Collections.Generic;
 
-public class CasApTransactionInvoice
+namespace Manager.Contract;
+
+public class CasApTransactionInvoices
 {
     public bool IsBlockSupplier { get; set; }
 
