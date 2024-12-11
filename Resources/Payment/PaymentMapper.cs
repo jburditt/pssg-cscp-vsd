@@ -57,6 +57,7 @@ public class PaymentMapper : Profile
         // NOTE keep this in sync with CreateMap<Vsd_Payment, Payment>() above
         CreateMap<PaymentInvoicesEntity, Payment>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Payment.Id))
+            .ForMember(dest => dest.LineCode, opt => opt.MapFrom(src => (LineCode?)src.Payment.Vsd_LineCode))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Payment.Vsd_Name))
             .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Payment.Vsd_PaymentTotal.Value))
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.Payment.StateCode))
@@ -73,6 +74,7 @@ public class PaymentMapper : Profile
             .ForMember(dest => dest.CasResponse, opt => opt.MapFrom(src => src.Payment.Vsd_CasResponse))
             .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.Payment.Vsd_Case.Id))
             .ForMember(dest => dest.EntitlementId, opt => opt.MapFrom(src => src.Payment.Vsd_EntitlementId.Id))
+            .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.Payment.OwnerId))
             .ForMember(dest => dest.Payee, opt => opt.MapFrom(src => src.Payment.Vsd_Payee))
             .ForMember(dest => dest.TransactionCurrencyId, opt => opt.MapFrom(src => src.Payment.TransactionCurrencyId.Id))
             .ForMember(dest => dest.Invoices, opt => opt.MapFrom(src => src.Invoices));
