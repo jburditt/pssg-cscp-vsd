@@ -13,9 +13,16 @@ public class ProvinceRepository : BaseRepository<Vsd_Province, Province>, IProvi
 
     public Province FirstOrDefault(FindProvinceQuery query)
     {
-        var queryResults = BuildQueryable(query)
+        var entity = BuildQueryable(query)
             .FirstOrDefault();
-        return _mapper.Map<Province>(queryResults);
+        return _mapper.Map<Province>(entity);
+    }
+
+    public Province Single(FindProvinceQuery query)
+    {
+        var entity = BuildQueryable(query)
+            .Single();
+        return _mapper.Map<Province>(entity);
     }
 
     public IEnumerable<Province> Query(ProvinceQuery query)
@@ -28,7 +35,11 @@ public class ProvinceRepository : BaseRepository<Vsd_Province, Province>, IProvi
     private IQueryable<Vsd_Province> BuildQueryable(BaseProvinceQuery query) 
     {
         var queryable = _databaseContext.Vsd_ProvinceSet
-            .WhereIf(query.Id != null, c => c.Id == query.Id);
+            .WhereIf(query.Id != null, c => c.Id == query.Id)
+            .WhereIf(query.Name != null, c => c.Vsd_Name == query.Name)
+            .WhereIf(query.CountryId != null, c => c.Vsd_CountryId.Id == query.CountryId)
+            .WhereIf(query.StateCode != null, c => c.StateCode == (Vsd_Province_StateCode?)query.StateCode)
+            .WhereIf(query.NotNullCode, c => c.Vsd_Code != null);
         return queryable;
     }
 }

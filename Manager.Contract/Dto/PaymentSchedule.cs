@@ -42,8 +42,8 @@ public record PaymentScheduleQuery : IRequest<IEnumerable<PaymentSchedule>>
     public StateCode? StateCode { get; set; }
     public DateTime? BeforeStartDate { get; set; }
     public DateTime? BeforeNextRunDate { get; set; }
-    public bool? NotNullCaseId { get; set; }
-    public bool? NotNullPayeeId { get; set; }
+    public bool NotNullCaseId { get; set; }
+    public bool NotNullPayeeId { get; set; }
 }
 
 public record PaymentScheduleEntitlement(PaymentSchedule PaymentSchedule, Entitlement Entitlement);

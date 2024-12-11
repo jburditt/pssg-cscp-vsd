@@ -505,11 +505,13 @@
                             result.City = city;
                         if (!string.IsNullOrEmpty(country))
                         {
-                            //var countryLookup = GetCountryCode(country);
-                            //result.Country = countryLookup.Name;
+                            var countryLookup = await GetCountryCode(country);
+                            result.Country = countryLookup?.Name;
 
-                            //if (!string.IsNullOrEmpty(province))
-                            //    result.Province = GetProvinceCode(province, countryLookup.Id);
+                            if (!string.IsNullOrEmpty(province))
+                            {
+                                result.Province = (await GetProvinceCode(province, countryLookup.Id)).Code;
+                            }
                         }
                         if (!string.IsNullOrEmpty(postalCode))
                             result.PostalCode = postalCode;
@@ -549,11 +551,13 @@
                     result.City = city;
                 if (!string.IsNullOrEmpty(country))
                 {
-                    //var countryLookup = GetCountryCode(country);
-                    //result.Country = countryLookup.Name;
+                    var countryLookup = await GetCountryCode(country);
+                    result.Country = countryLookup?.Name;
 
-                    //if (!string.IsNullOrEmpty(province))
-                    //    result.Province = GetProvinceCode(province, countryLookup.Id);
+                    if (!string.IsNullOrEmpty(province))
+                    {
+                        result.Province = (await GetProvinceCode(province, countryLookup.Id)).Code;
+                    }
                 }
                 if (!string.IsNullOrEmpty(postalCode))
                     result.PostalCode = postalCode;
@@ -593,5 +597,52 @@
         ArgumentNullException.ThrowIfNull(programType.ProjectCode);
 
         return string.Format("{0}.{1}.{2}.{3}.{4}.000000.0000", programType.ClientCode, programType.ResponsibilityCentre, programType.ServiceLine, programType.Stob, programType.ProjectCode);
+    }
+
+    private async Task<Country> GetCountryCode(string name)
+    {
+        var findCountryQuery = new SingleCountryQuery();
+        findCountryQuery.Name = name;
+        findCountryQuery.StateCode = StateCode.Active;
+        findCountryQuery.NotNullCode = true;
+
+        Country result = null;
+        try
+        {
+            await mediator.Send(findCountryQuery);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(string.Format("Multiple countries found with name '{0}'.", name));
+        }
+
+        if (result == null)
+            throw new Exception(string.Format("Country with name '{0}' not found.", name));
+
+        return result;
+    }
+
+    private async Task<Province> GetProvinceCode(string name, Guid countryId)
+    {
+        var findProvinceQuery = new FindProvinceQuery();
+        findProvinceQuery.Name = name;
+        findProvinceQuery.CountryId = countryId;
+        findProvinceQuery.StateCode = StateCode.Active;
+        findProvinceQuery.NotNullCode = true;
+
+        Province result = null;
+        try
+        {
+            result = await mediator.Send(findProvinceQuery);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(string.Format("Multiple provinces found with name '{0}'.", name));
+        }
+
+        if (result == null)
+            throw new Exception(string.Format("Province with name '{0}' and country with id '{1}' not found.", name, countryId));
+
+        return result;
     }
 }

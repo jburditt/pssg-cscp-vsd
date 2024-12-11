@@ -18,8 +18,8 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
             .WhereIf(query.StateCode != null, c => c.StateCode == (Vsd_PaymentSchedule_StateCode)query.StateCode)
             .WhereIf(query.BeforeStartDate != null, c => c.Vsd_StartDate <= query.BeforeStartDate)
             .WhereIf(query.BeforeNextRunDate != null, c => c.Vsd_NextRUndate <= query.BeforeNextRunDate)
-            .WhereIf(query.NotNullCaseId != null, c => c.Vsd_CaseId != null)
-            .WhereIf(query.NotNullPayeeId != null, c => c.Vsd_Payee != null)
+            .WhereIf(query.NotNullCaseId, c => c.Vsd_CaseId != null)
+            .WhereIf(query.NotNullPayeeId, c => c.Vsd_Payee != null)
             .FirstOrDefault();
         return _mapper.Map<PaymentSchedule>(queryResults);
     }
@@ -40,8 +40,8 @@ public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, Pay
             .WhereIf(query.PaymentScheduleQuery.StateCode != null, c => c.PaymentSchedule.StateCode == (Vsd_PaymentSchedule_StateCode)query.PaymentScheduleQuery.StateCode)
             .WhereIf(query.PaymentScheduleQuery.BeforeStartDate != null, c => c.PaymentSchedule.Vsd_StartDate <= query.PaymentScheduleQuery.BeforeStartDate)
             .WhereIf(query.PaymentScheduleQuery.BeforeNextRunDate != null, c => c.PaymentSchedule.Vsd_NextRUndate <= query.PaymentScheduleQuery.BeforeNextRunDate)
-            .WhereIf(query.PaymentScheduleQuery.NotNullCaseId != null, c => c.PaymentSchedule.Vsd_CaseId != null)
-            .WhereIf(query.PaymentScheduleQuery.NotNullPayeeId != null, c => c.PaymentSchedule.Vsd_Payee != null)
+            .WhereIf(query.PaymentScheduleQuery.NotNullCaseId, c => c.PaymentSchedule.Vsd_CaseId != null)
+            .WhereIf(query.PaymentScheduleQuery.NotNullPayeeId, c => c.PaymentSchedule.Vsd_Payee != null)
             .WhereIf(query.EntitlementQuery?.PaymentScheduleStatus != null, c => c.Entitlement.Vsd_PaymentScheduleStatus == (Vsd_Entitlement_Vsd_PaymentScheduleStatus)query.EntitlementQuery.PaymentScheduleStatus)
             .WhereIf(query.EntitlementQuery?.IsRecurring != null, c => c.Entitlement.Vsd_IsRecurring == query.EntitlementQuery.IsRecurring)
             .WhereIf(query.EntitlementQuery?.StatusCode != null, c => c.Entitlement.StatusCode == (Vsd_Entitlement_StatusCode)query.EntitlementQuery.StatusCode)
