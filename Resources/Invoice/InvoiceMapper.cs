@@ -6,6 +6,7 @@ public class InvoiceMapper : Profile
     {
         CreateMap<Vsd_Invoice, Invoice>()
             .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Vsd_Name))
+            .ForMember(dest => dest.CasPayment, opts => opts.MapFrom(src => src.Vsd_CasPaymentType))
             .ForMember(dest => dest.CpuInvoiceType, opts => opts.MapFrom(src => src.Vsd_Cpu_InvoiceType))
             .ForMember(dest => dest.CpuScheduledPaymentDate, opts => opts.MapFrom(src => src.Vsd_Cpu_ScheduledPaymentDate))
             .ForMember(dest => dest.CurrencyId, opts => opts.MapFrom(src => src.TransactionCurrencyId.Id))
@@ -26,6 +27,7 @@ public class InvoiceMapper : Profile
 
         CreateMap<Invoice, Vsd_Invoice>()
             .ForMember(dest => dest.Vsd_Name, opts => opts.MapFrom(src => src.Name))
+            .ForMember(dest => dest.Vsd_CasPaymentType, opts => opts.MapFrom(src => src.CasPayment))
             .ForMember(dest => dest.Vsd_Cpu_InvoiceType, opts => opts.MapFrom(src => src.CpuInvoiceType))
             .ForMember(dest => dest.Vsd_Cpu_ScheduledPaymentDate, opts => opts.MapFrom(src => src.CpuScheduledPaymentDate))
             .ForMember(dest => dest.TransactionCurrencyId, opts => opts.MapFrom(src => src.CurrencyId != null ? new EntityReference(TransactionCurrency.EntityLogicalName, src.CurrencyId.Value) : null))

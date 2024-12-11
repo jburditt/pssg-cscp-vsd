@@ -307,8 +307,8 @@
                 if (invoiceEntity.ProgramId != null)
                     defaultDistributionAccount = await GenerateDefaultDistributionAccount(invoiceEntity.ProgramId.Value);
 
-                //if (invoiceEntity.Contains("vsd_caspaymenttype"))
-                //    defaultDistributionAccount = GenerateOneTimeDistributionAccount(((EntityReference)invoiceEntity["vsd_caspaymenttype"]).Id);
+                if (invoiceEntity.CasPayment != null)
+                    defaultDistributionAccount = await GenerateOneTimeDistributionAccount(invoiceEntity.CasPayment.Id);
 
                 if (string.IsNullOrEmpty(defaultDistributionAccount))
                     throw new Exception("Invoice Payment Type/Program is missing.");
@@ -318,8 +318,8 @@
         }
         else if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
         {
-            //if (invoiceEntity.Contains("vsd_cvap_stobid"))
-            //    defaultDistributionAccount = GenerateCVAPDistributionAccount(((EntityReference)invoiceEntity["vsd_cvap_stobid"]).Id);
+            if (invoiceEntity.CvapStobId != null)
+                defaultDistributionAccount = await GenerateCVAPDistributionAccount(invoiceEntity.CvapStobId.Value);
 
             if (string.IsNullOrEmpty(defaultDistributionAccount))
                 throw new Exception("CVAP STOB is missing.");

@@ -70,7 +70,7 @@ public record Payment : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public PaymentStatusCode StatusCode { get; set; }
+    public PaymentStatusCode StatusCode { get; set; }   // Dynamics Optional
     public LineCode? LineCode { get; set; }             // Dynamics Optional
     public string? Name { get; set; }                   // Dynamics Optional
     public DateTime Date { get; set; }                  // Dynamics Business Required

@@ -61,6 +61,7 @@ public record Entitlement : IDto
     // Foreign Keys
     public Guid BenefitCategoryId { get; set; }             // Dynamics Business Required
     public Guid? BenefitTypeId { get; set; }                // Dynamics Business Recommended
+    // TODO just use StaticReference instead of the below two fields
     public Guid? BenefitSubTypeId { get; set; }             // Dynamics Optional
-    public string? BenefitSubTypeName { get; set; }
+    public string? BenefitSubTypeName { get; set; }         // Inherently Dynamics Optional
 }

@@ -13,6 +13,6 @@ public record Country : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public string? Name { get; set; }                   
-    public string? Code { get; set; }
+    public required string Name { get; set; }   // Dynamics Business Required   
+    public string? Code { get; set; }           // Dynamics Optional
 }

@@ -1,8 +1,8 @@
 ﻿namespace Resources;
 
-public class ProgramRepositoryMapper : Profile
+public class ProgramMapper : Profile
 {
-    public ProgramRepositoryMapper()
+    public ProgramMapper()
     {
         CreateMap<Vsd_Program, Program>()
             .ForMember(dest => dest.ContractId, opts => opts.MapFrom(src => src.Vsd_ContractId.Id))
@@ -20,8 +20,8 @@ public class ProgramRepositoryMapper : Profile
             .ForMember(dest => dest.Vsd_ProvinceState, opts => opts.MapFrom(src => src.ProvinceState))
             .ForMember(dest => dest.Vsd_Name, opts => opts.MapFrom(src => src.Name))
             // reference keys
-            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => src.OwnerId != null ? new EntityReference("systemuser", src.OwnerId.Value) : null))
-            .ForMember(dest => dest.Vsd_ContractId, opts => opts.MapFrom(src => src.ContractId != null ? new EntityReference(Vsd_Contract.EntityLogicalName, src.ContractId.Value) : null))
+            .ForMember(dest => dest.OwnerId, opts => opts.MapFrom(src => src.OwnerId != null ? new EntityReference("systemuser", src.OwnerId) : null))
+            .ForMember(dest => dest.Vsd_ContractId, opts => opts.MapFrom(src => src.ContractId != null ? new EntityReference(Vsd_Contract.EntityLogicalName, src.ContractId) : null))
             .ForMember(dest => dest.Vsd_ProgramType, opts => opts.MapFrom(src => src.ProgramType));
 
         // TODO this shouldn't be needed, automapper will do this by default

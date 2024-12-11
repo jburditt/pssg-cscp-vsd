@@ -18,5 +18,5 @@ public record Province : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public decimal? TaxRate { get; set; }       // Dynamics Optional
-    public string? Code { get; set; }
+    public string? Code { get; set; }           // Dynamics Optional
 }

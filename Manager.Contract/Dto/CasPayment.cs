@@ -9,9 +9,9 @@ public record CasPayment : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public string? ClientCode { get; set; }
-    public string? ResponsibilityCentre { get; set; }
-    public string? ServiceLine { get; set; }
-    public string? Stob { get; set; }
-    public string? ProjectCode { get; set; }
+    public string? ClientCode { get; set; }             // Dynamics Optional
+    public string? ResponsibilityCentre { get; set; }   // Dynamics Optional
+    public string? ServiceLine { get; set; }            // Dynamics Optional
+    public string? Stob { get; set; }                   // Dynamics Optional
+    public string? ProjectCode { get; set; }            // Dynamics Optional
 }

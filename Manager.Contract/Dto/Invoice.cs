@@ -144,6 +144,7 @@ public record Invoice : IDto
     public Guid? ProcessId { get; set; }                    // Dynamics Optional
     public Guid? PaymentScheduleId { get; set; }            // Dynamics Optional
     public Guid? PaymentId { get; set; }                    // Dynamics Optional
+    public StaticReference? CasPayment { get; set; }        // Dynamics Optional
 
     // Related Entities
     public IEnumerable<InvoiceLineDetail>? InvoiceLineDetails { get; set; }

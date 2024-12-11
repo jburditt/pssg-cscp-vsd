@@ -30,19 +30,20 @@ public record Program : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public ProgramStatusCode? StatusCode { get; set; }
-    public string? Name { get; set; }
-    public string? ProvinceState { get; set; }  // business recommended but not required in Dynamics
-    public DateTime? BudgetProposalSignatureDate { get; set; }
-    public decimal? CpuSubtotal { get; set; }
-    public StaticReference? ProgramType { get; set; }
+    public ProgramStatusCode? StatusCode { get; set; }          // Dynamics Optional
+    public string? Name { get; set; }                           // Dynamics Optional
+    public string? ProvinceState { get; set; }                  // Dynamics Business Recommended
+    public DateTime? BudgetProposalSignatureDate { get; set; }  // Dynamics Optional
+    public decimal? CpuSubtotal { get; set; }                   // Dynamics Optional
+    public required StaticReference ProgramType { get; set; }   // Dynamics Business Required    
 
     // References
-    public Guid? ContractId { get; set; }
-    public Guid? OwnerId { get; set; }
+    public Guid ContractId { get; set; }                        // Dynamics Business Required
+    public Guid OwnerId { get; set; }                           // Dynamics Business Required
 
     // Columns from other tables
-    public string? ContractName { get; set; }
+    // TODO use StaticReference instead of string
+    public required string ContractName { get; set; }           // Dynamics Business Required
 }
 
 public class GetApprovedCommand() : IRequest<IEnumerable<Program>>;

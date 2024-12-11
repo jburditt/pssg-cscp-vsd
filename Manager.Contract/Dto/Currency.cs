@@ -22,6 +22,6 @@ public record Currency : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-    public StatusCode? StatusCode { get; set; }
-    public required string IsoCurrencyCode { get; set; }
+    public StatusCode? StatusCode { get; set; }             // Dynamics Optional
+    public required string IsoCurrencyCode { get; set; }    // Dynamics System Required
 }
