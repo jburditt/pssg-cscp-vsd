@@ -1,6 +1,8 @@
 ﻿namespace Manager;
 
-public class ContactHandlers(IContactRepository repository, IMapper mapper) : FindQueryBaseHandlers<IContactRepository, Contact, FindContactQuery, ContactQuery>(repository)
+public class ContactHandlers(IContactRepository repository, IMapper mapper) : 
+    FindQueryBaseHandlers<IContactRepository, Contact, FindContactQuery, ContactQuery>(repository),
+    IRequestHandler<FindContactQuery, Contact>
 {
 
 }

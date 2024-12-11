@@ -70,6 +70,7 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
             // TODO Invoice Id is empty Guid
             var query = _databaseContext.Vsd_PaymentSet
                 .Join(_databaseContext.Vsd_InvoiceSet, p => p.Id, i => i.Vsd_PaymentId.Id, (p, i) => new { Payment = p, Invoice = i })
+                .WhereIf(paymentQuery.Id != null, p => p.Payment.Vsd_PaymentId == paymentQuery.Id)
                 .WhereIf(paymentQuery.ProgramId != null, p => p.Payment.Vsd_ProgramId.Id == paymentQuery.ProgramId)
                 .WhereIf(paymentQuery.ContractId != null, p => p.Payment.Vsd_ContractId.Id == paymentQuery.ContractId)
                 .WhereIf(paymentQuery.StateCode != null, p => p.Payment.StateCode == (Vsd_Payment_StateCode)paymentQuery.StateCode)
@@ -114,6 +115,7 @@ public static class PaymentExtensions
     public static IQueryable<Vsd_Payment> Where(this IQueryable<Vsd_Payment> query, BasePaymentQuery paymentQuery)
     {
         return query
+            .WhereIf(paymentQuery.Id != null, p => p.Vsd_PaymentId == paymentQuery.Id)
             .WhereIf(paymentQuery.StateCode != null, x => x.StateCode == (Vsd_Payment_StateCode?)paymentQuery.StateCode)
             .WhereIf(paymentQuery.StatusCode != null, x => x.StatusCode == (Vsd_Payment_StatusCode?)paymentQuery.StatusCode)
             .WhereIf(paymentQuery.BeforeDate != null, x => x.Vsd_PaymentDate <= paymentQuery.BeforeDate)

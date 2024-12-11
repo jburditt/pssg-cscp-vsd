@@ -1,6 +1,6 @@
 ﻿namespace Resources;
 
-public class ContractRepository : BaseRepository<Vsd_Contract, Contract>//, IContractRepository
+public class ContractRepository : BaseRepository<Vsd_Contract, Contract>, IContractRepository
 {
     private readonly DatabaseContext _databaseContext;
 

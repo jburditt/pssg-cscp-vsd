@@ -8,16 +8,21 @@ namespace Gov.Cscp.VictimServices.Public;
 
 public static class ServiceCollectionExtensions
 {
+    // TODO rename to AddHandlersAndRepositories
     public static IServiceCollection AddHandlers(this IServiceCollection services)
     {
+        services.AddTransient<AccountHandlers>();
+        services.AddTransient<IAccountRepository, AccountRepository>();
+
         services.AddTransient<ICasPaymentRepository, CasPaymentRepository>();
 
-        //services.AddTransient<ContractHandlers>();
-        //services.AddTransient<IContractRepository, ContractRepository>();
+        services.AddTransient<ContractHandlers>();
+        services.AddTransient<IContractRepository, ContractRepository>();
 
         services.AddTransient<IConfigurationRepository, ConfigurationRepository>();
         services.AddTransient<IConfigurationService, ConfigurationService>();
 
+        services.AddTransient<ContactHandlers>();
         services.AddTransient<IContactRepository, ContactRepository>();
 
         services.AddTransient<CurrencyHandlers>();
@@ -27,13 +32,13 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<IIncomeSupportParameterRepository, IncomeSupportParameterRepository>();
 
-        //services.AddTransient<InvoiceHandlers>();
+        services.AddTransient<InvoiceHandlers>();
         services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
-        //services.AddTransient<InvoiceLineDetailHandlers>();
-        //services.AddTransient<IInvoiceLineDetailRepository, InvoiceLineDetailRepository>();
+        services.AddTransient<InvoiceLineDetailHandlers>();
+        services.AddTransient<IInvoiceLineDetailRepository, InvoiceLineDetailRepository>();
 
-        //services.AddTransient<PaymentHandlers>();
+        services.AddTransient<PaymentHandlers>();
         services.AddTransient<IPaymentRepository, PaymentRepository>();
 
         services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
@@ -48,7 +53,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IProvinceRepository, ProvinceRepository>();
 
         services.AddTransient<ITeamRepository, TeamRepository>();
-
 
         services.AddTransient<IMessageRequests, MessageRequests>();
 
