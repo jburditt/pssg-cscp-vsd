@@ -1,11 +1,11 @@
-﻿public record FindCasPaymentQuery : BaseCasPaymentQuery, IRequest<CasPayment> { }
-public record CasPaymentQuery : BaseCasPaymentQuery, IRequest<IEnumerable<CasPayment>> { }
-public record BaseCasPaymentQuery
+﻿public record FindCvapStobQuery : BaseCvapStobQuery, IRequest<CvapStob> { }
+public record CvapStobQuery : BaseCvapStobQuery, IRequest<IEnumerable<CvapStob>> { }
+public record BaseCvapStobQuery
 {
     public Guid? Id { get; set; }
 }
 
-public record CasPayment : IDto
+public record CvapStob : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }

@@ -1,14 +1,12 @@
 ﻿namespace Resources;
 
-public class CasPaymentRepository : ICasPaymentRepository
+public class CasPaymentRepository : BaseRepository<Vsd_CasPaymentType, CasPayment>, ICasPaymentRepository
 {
     private readonly DatabaseContext _databaseContext;
-    private readonly IMapper _mapper;
 
-    public CasPaymentRepository(DatabaseContext databaseContext, IMapper mapper)
+    public CasPaymentRepository(DatabaseContext databaseContext, IMapper mapper) : base(databaseContext, mapper)
     {
         _databaseContext = databaseContext;
-        _mapper = mapper;
     }
 
     public CasPayment FirstOrDefault(FindCasPaymentQuery query)

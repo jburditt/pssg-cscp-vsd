@@ -599,17 +599,57 @@
         return string.Format("{0}.{1}.{2}.{3}.{4}.000000.0000", programType.ClientCode, programType.ResponsibilityCentre, programType.ServiceLine, programType.Stob, programType.ProjectCode);
     }
 
+    private async Task<string> GenerateOneTimeDistributionAccount(Guid casPaymentId)
+    {
+        var query = new FindCasPaymentQuery();
+        query.Id = casPaymentId;
+        var casPayment = await mediator.Send(query);
+
+        if (casPayment.ClientCode == null)
+            throw new Exception("Client Code is missing.");
+        if (casPayment.ResponsibilityCentre == null)
+            throw new Exception("Responsibility Centre is missing.");
+        if (casPayment.ServiceLine == null)
+            throw new Exception("Service Line is missing.");
+        if (casPayment.Stob == null)
+            throw new Exception("STOB is missing.");
+        if (casPayment.ProjectCode == null)
+            throw new Exception("Project Code is missing.");
+
+        return string.Format("{0}.{1}.{2}.{3}.{4}.000000.0000", casPayment.ClientCode, casPayment.ResponsibilityCentre, casPayment.ServiceLine, casPayment.Stob, casPayment.ProjectCode);
+    }
+
+    private async Task<string> GenerateCVAPDistributionAccount(Guid cvapStobId)
+    {
+        var query = new FindCvapStobQuery();
+        query.Id = cvapStobId;
+        var stobEntity = await mediator.Send(query);
+        
+        if (stobEntity.ClientCode == null)
+            throw new Exception("Client Code is missing.");
+        if (stobEntity.ResponsibilityCentre == null)
+            throw new Exception("Responsibility Centre is missing.");
+        if (stobEntity.ServiceLine == null)
+            throw new Exception("Service Line is missing.");
+        if (stobEntity.Stob == null)
+            throw new Exception("STOB is missing.");
+        if (stobEntity.ProjectCode == null)
+            throw new Exception("Project Code is missing.");
+
+        return string.Format("{0}.{1}.{2}.{3}.{4}.000000.0000", stobEntity.ClientCode, stobEntity.ResponsibilityCentre, stobEntity.ServiceLine, stobEntity.Stob, stobEntity.ProjectCode);
+    }
+
     private async Task<Country> GetCountryCode(string name)
     {
-        var findCountryQuery = new SingleCountryQuery();
-        findCountryQuery.Name = name;
-        findCountryQuery.StateCode = StateCode.Active;
-        findCountryQuery.NotNullCode = true;
+        var singleCountryQuery = new SingleCountryQuery();
+        singleCountryQuery.Name = name;
+        singleCountryQuery.StateCode = StateCode.Active;
+        singleCountryQuery.NotNullCode = true;
 
         Country result = null;
         try
         {
-            await mediator.Send(findCountryQuery);
+            await mediator.Send(singleCountryQuery);
         }
         catch (Exception ex)
         {
@@ -624,16 +664,16 @@
 
     private async Task<Province> GetProvinceCode(string name, Guid countryId)
     {
-        var findProvinceQuery = new FindProvinceQuery();
-        findProvinceQuery.Name = name;
-        findProvinceQuery.CountryId = countryId;
-        findProvinceQuery.StateCode = StateCode.Active;
-        findProvinceQuery.NotNullCode = true;
+        var singleProvinceQuery = new SingleProvinceQuery();
+        singleProvinceQuery.Name = name;
+        singleProvinceQuery.CountryId = countryId;
+        singleProvinceQuery.StateCode = StateCode.Active;
+        singleProvinceQuery.NotNullCode = true;
 
         Province result = null;
         try
         {
-            result = await mediator.Send(findProvinceQuery);
+            result = await mediator.Send(singleProvinceQuery);
         }
         catch (Exception ex)
         {

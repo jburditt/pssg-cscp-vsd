@@ -1,6 +1,7 @@
 ﻿using Manager.Contract;
 
 public record FindProvinceQuery : BaseProvinceQuery, IRequest<Province> { }
+public record SingleProvinceQuery : BaseProvinceQuery, IRequest<Province> { }
 public record ProvinceQuery : BaseProvinceQuery, IRequest<IEnumerable<Province>> { }
 public record BaseProvinceQuery
 {
