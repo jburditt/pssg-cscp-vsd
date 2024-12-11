@@ -5,6 +5,7 @@ public class CurrencyHandlers(ICurrencyRepository repository) : FindQueryBaseHan
     IRequestHandler<FindCurrencyQuery, Currency>,
     IRequestHandler<GetCurrencyLookupCommand, Currency>
 {
+    // TODO refactor to use FirstOrDefault and move the command to the caller
     public async Task<Currency> Handle(GetCurrencyLookupCommand dummy, CancellationToken token)
     {
         // query the database for CAD currency id

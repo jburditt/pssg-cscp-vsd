@@ -20,5 +20,9 @@ public class SharedMapper : Profile
             .ConvertUsing(src => new EntityReference(src.SchemaName, src.Id));
         CreateMap<EntityReference, StaticReference>()
             .ConvertUsing(src => new StaticReference(src.Id, src.LogicalName));
+        CreateMap<StaticReference?, EntityReference>()
+            .ConvertUsing(src => src != null ? new EntityReference(src.SchemaName, src.Id) : null);
+        CreateMap<EntityReference, StaticReference?>()
+            .ConvertUsing(src => src != null ? new StaticReference(src.Id, src.LogicalName) : null);
     }
 }

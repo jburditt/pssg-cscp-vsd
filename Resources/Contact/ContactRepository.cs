@@ -1,22 +1,28 @@
 ﻿namespace Resources;
 
-public class ContactRepository : IContactRepository
+public class ContactRepository : BaseRepository<Database.Model.Contact, Contact>, IContactRepository
 {
     private readonly DatabaseContext _databaseContext;
-    private readonly IMapper _mapper;
 
-    public ContactRepository(DatabaseContext databaseContext, IMapper mapper)
+    public ContactRepository(DatabaseContext databaseContext, IMapper mapper) : base(databaseContext, mapper)
     {
         _databaseContext = databaseContext;
-        _mapper = mapper;
     }
 
     public Contact FirstOrDefault(FindContactQuery query)
     {
-        var queryResults = _databaseContext.ContactSet
+        var entity = _databaseContext.ContactSet
             .Where(query)
             .FirstOrDefault();
-        return _mapper.Map<Contact>(queryResults);
+        return _mapper.Map<Contact>(entity);
+    }
+
+    public IEnumerable<Contact> Query(ContactQuery query)
+    {
+        var entities = _databaseContext.ContactSet
+            .Where(query)
+            .ToList();
+        return _mapper.Map<IEnumerable<Contact>>(entities);
     }
 }
 

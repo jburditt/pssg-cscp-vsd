@@ -1,22 +1,28 @@
 ﻿namespace Resources;
 
-public class AccountRepository : IAccountRepository
+public class AccountRepository : BaseRepository<Database.Model.Account, Account>, IAccountRepository
 {
     private readonly DatabaseContext _databaseContext;
-    private readonly IMapper _mapper;
 
-    public AccountRepository(DatabaseContext databaseContext, IMapper mapper)
+    public AccountRepository(DatabaseContext databaseContext, IMapper mapper) : base(databaseContext, mapper)
     {
         _databaseContext = databaseContext;
-        _mapper = mapper;
     }
 
     public Account FirstOrDefault(FindAccountQuery query)
     {
-        var queryResults = _databaseContext.AccountSet
+        var entity = _databaseContext.AccountSet
             .Where(query)
             .FirstOrDefault();
-        return _mapper.Map<Account>(queryResults);
+        return _mapper.Map<Account>(entity);
+    }
+
+    public IEnumerable<Account> Query(AccountQuery query)
+    {
+        var entities = _databaseContext.AccountSet
+            .Where(query)
+            .FirstOrDefault();
+        return _mapper.Map<IEnumerable<Account>>(entities);
     }
 }
 
