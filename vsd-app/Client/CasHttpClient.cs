@@ -28,7 +28,6 @@ public class CasHttpClient : ICasHttpClient
         httpClient.DefaultRequestHeaders.Add("secret", clientKey);
         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         httpClient.BaseAddress = new Uri(url);
-        httpClient.BaseAddress = new Uri("https://wsgw.test.jag.gov.bc.ca");
         httpClient.Timeout = new TimeSpan(1, 0, 0);  // 1 hour timeout 
         _httpClient = httpClient;
     }
@@ -84,7 +83,7 @@ public class CasHttpClient : ICasHttpClient
 //        httpClient.BaseAddress = new Uri(url);
 //        httpClient.Timeout = new TimeSpan(1, 0, 0);  // 1 hour timeout 
 
-        services.AddHttpClient<ICasHttpClient, CasHttpClient>(serviceProvider => new CasHttpClient(httpClient));
-        return services;
-    }
-}
+//        services.AddHttpClient<ICasHttpClient, CasHttpClient>(serviceProvider => new CasHttpClient(httpClient));
+//        return services;
+//    }
+//}

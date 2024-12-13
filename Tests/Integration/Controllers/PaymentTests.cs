@@ -1,4 +1,4 @@
-﻿public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, ILoggerFactory loggerFactory)
+﻿public class PaymentTests(IMediator mediator, IMessageRequests messageRequests, ICasHttpClient casHttpClient, ILoggerFactory loggerFactory)
 {
     private readonly ILogger _logger = loggerFactory.CreateLogger<PaymentScheduleTests>();
 
@@ -47,10 +47,6 @@
                 DefaultDistributionAccount = "010.15106.12120.6038.1501300.000000.0000",
             }
         };
-
-        string clientKey = "EDY_GWeRDC0qLYgUPr7nEA..";
-        string clientId = "yYcBeappRmuNjjoOa_JWkw..";
-        string url = "https://wsgw.dev.jag.gov.bc.ca/victim/api/cas";
 
         //casHttpClient.Initialize(clientId, clientKey, url);
         //await casHttpClient.ApTransaction(invoices);

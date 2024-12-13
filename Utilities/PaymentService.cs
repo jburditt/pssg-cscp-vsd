@@ -1,8 +1,3 @@
-﻿// TODO move to GlobalUsings.cs
-using MediatR;
-using Microsoft.Extensions.Logging;
-using Shared.Contract;
-
 namespace Utilities;
 
 public interface IPaymentService
@@ -10,7 +5,7 @@ public interface IPaymentService
     Task<bool> SendPaymentsToCas();
 }
 
-public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, ILoggerFactory loggerFactory) : IPaymentService
+public class PaymentService(IMediator mediator, IMessageRequests messageRequests, ICasHttpClient casHttpClient, ILoggerFactory loggerFactory) : IPaymentService
 {
     private readonly ILogger<PaymentService> _logger = loggerFactory.CreateLogger<PaymentService>();
 
@@ -32,10 +27,9 @@ public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, IL
 
         var paymentQuery = new PaymentQuery();
         paymentQuery.IncludeChildren = true;
-        //paymentQuery.StateCode = StateCode.Active;
-        //paymentQuery.StatusCode = PaymentStatusCode.Waiting;
-        //paymentQuery.BeforeDate = DateTime.Now;
-        paymentQuery.Id = new Guid("12e4cbf6-e1d9-eb11-b821-005056830319");
+        paymentQuery.StateCode = StateCode.Active;
+        paymentQuery.StatusCode = PaymentStatusCode.Waiting;
+        paymentQuery.BeforeDate = DateTime.Now;
         var payments = await mediator.Send(paymentQuery);
 
         foreach (var postImageEntity in payments)
@@ -55,7 +49,8 @@ public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, IL
                 ArgumentNullException.ThrowIfNull(postImageEntity.Total, "Payment Total is missing on the payment.");
                 ArgumentNullException.ThrowIfNull(postImageEntity.Date, "CAS Payment Date is missing on the payment.");
 
-                //messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending); //Sending
+                // TODO should use Vsd_Payment.EntityLogicalName instead of "vsd_payment"
+                messageRequests.SetState("vsd_payment", postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending);
 
                 var invoices = await GenerateInvoice(configs, postImageEntity);
 
@@ -126,7 +121,7 @@ public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, IL
 
         ArgumentNullException.ThrowIfNull(invoiceEntity.InvoiceDate, "Invoice Date is missing.");
         ArgumentNullException.ThrowIfNull(invoiceEntity.Name, "Invoice Number is missing.");
-        //ArgumentNullException.ThrowIfNull(invoiceEntity.ProgramUnit, "Invoice Program Unit is missing.");
+        ArgumentNullException.ThrowIfNull(invoiceEntity.ProgramUnit, "Invoice Program Unit is missing.");
 
         if (invoiceEntity.MethodOfPayment == MethodOfPayment.Eft)
             methodOfPayment = "GEN EFT";
@@ -208,7 +203,8 @@ public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, IL
         {
             var contactEntity = await mediator.Send(new FindContactQuery { Id = payeeLookup.Id });
 
-            //ArgumentNullException.ThrowIfNull(contactEntity.ContactRole, "Contact Role is missing.");
+            ArgumentNullException.ThrowIfNull(contactEntity.ContactRole, "Contact Role is missing.");
+
             if (string.IsNullOrEmpty(contactEntity.AccountNumber))
             {
                 if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
@@ -300,14 +296,14 @@ public class PaymentService(IMediator mediator, ICasHttpClient casHttpClient, IL
             if (invoiceEntity.CvapStobId != null)
                 defaultDistributionAccount = await GenerateCVAPDistributionAccount(invoiceEntity.CvapStobId.Value);
 
-            //if (string.IsNullOrEmpty(defaultDistributionAccount))
-            //    throw new Exception("CVAP STOB is missing.");
+            if (string.IsNullOrEmpty(defaultDistributionAccount))
+                throw new Exception("CVAP STOB is missing.");
         }
         else
             throw new Exception(string.Format("STOB information is not setup for Program Unit '{0}'.", (ProgramUnit)programUnit));
 
-        //if (string.IsNullOrEmpty(defaultDistributionAccount))
-        //    throw new Exception("Default Distribution Account is missing.");
+        if (string.IsNullOrEmpty(defaultDistributionAccount))
+            throw new Exception("Default Distribution Account is missing.");
 
         var invoiceLineDetailQuery = new InvoiceLineDetailQuery();
         invoiceLineDetailQuery.InvoiceId = invoiceEntity.Id;

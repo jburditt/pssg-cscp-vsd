@@ -11,3 +11,4 @@ global using Newtonsoft.Json;
 global using Resources;
 global using Shared.Contract;
 global using Task = System.Threading.Tasks.Task;
+global using Utilities;
