@@ -106,3 +106,5 @@ public class UpdatePaymentCasCommand : IRequest<bool>
     public PaymentStatusCode StatusCode { get; set; }
     public DateTime Date { get; set; }
 }
+
+public record SendPaymentsToCasCommand : IRequest<bool>;

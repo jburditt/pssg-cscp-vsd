@@ -17,3 +17,5 @@ public record Configuration : IDto
     public string Value { get; set; }
     public ProgramUnit? ProgramUnit { get; set; }
 }
+
+public record GetKeyValueCommand(IEnumerable<Configuration> Configurations, string Key, string? Group, ProgramUnit? ProgramUnit) : IRequest<string>;

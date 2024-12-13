@@ -9,5 +9,3 @@ public class ConfigurationHandlers(IConfigurationRepository repository, IConfigu
         return await Task.FromResult(service.GetKeyValue(command.Configurations, command.Key, command.Group, command.ProgramUnit));
     }
 }
-
-public record GetKeyValueCommand(IEnumerable<Configuration> Configurations, string Key, string? Group, ProgramUnit? ProgramUnit) : IRequest<string>;

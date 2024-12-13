@@ -1,4 +1,5 @@
 ﻿using Manager;
+using Manager.Contract;
 using Microsoft.Extensions.DependencyInjection;
 using Resources;
 using Shared.Database;
@@ -8,11 +9,14 @@ namespace Gov.Cscp.VictimServices.Public;
 
 public static class ServiceCollectionExtensions
 {
-    // TODO rename to AddHandlersAndRepositories
+    // TODO rename to AddHandlersAndRepositories (but it also has MessageRequests, maybe rename to AddServices)
     public static IServiceCollection AddHandlers(this IServiceCollection services)
     {
         services.AddTransient<AccountHandlers>();
         services.AddTransient<IAccountRepository, AccountRepository>();
+
+        services.AddTransient<CvapStobHandlers>();
+        services.AddTransient<ICvapStobRepository, CvapStobRepository>();
 
         services.AddTransient<ICasPaymentRepository, CasPaymentRepository>();
 
@@ -39,6 +43,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IInvoiceLineDetailRepository, InvoiceLineDetailRepository>();
 
         services.AddTransient<PaymentHandlers>();
+        services.AddTransient<IPaymentService, PaymentService>();
         services.AddTransient<IPaymentRepository, PaymentRepository>();
 
         services.AddTransient<IPaymentScheduleRepository, PaymentScheduleRepository>();
@@ -55,6 +60,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ITeamRepository, TeamRepository>();
 
         services.AddTransient<IMessageRequests, MessageRequests>();
+        services.AddSingleton<ICasHttpClient, CasHttpClient>();
 
         return services;
     }
@@ -62,6 +68,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddAutoMapperMappings(this IServiceCollection services)
     {
         // NOTE global and shared mapper should be first, since it has the prefix configurations and shared mappings
+        // TODO consider adding an assembly scan for all mappers
         var mapperTypes = new[] {
             typeof(GlobalMapper), typeof(SharedMapper), typeof(TeamMapper), typeof(PaymentScheduleMapper), typeof(EntitlementMapper), typeof(IncomeSupportParameterMapper), 
             typeof(CurrencyMapper), typeof(PaymentMapper), typeof(AccountMapper), typeof(ContactMapper), typeof(ProgramMapper), typeof(ContractRepositoryMapper),
