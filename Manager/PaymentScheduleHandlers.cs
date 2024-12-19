@@ -4,7 +4,8 @@ public class PaymentScheduleHandlers : BaseHandlers<IPaymentScheduleRepository, 
     IRequestHandler<PaymentScheduleEntitlementQuery, IEnumerable<PaymentScheduleEntitlement>>,
     IRequestHandler<GetPaymentTotalCommand, PaymentTotalResult>,
     IRequestHandler<GetNextRuntimeCommand, DateTime>,
-    IRequestHandler<UpdateCommand<PaymentSchedule>, bool>
+    IRequestHandler<UpdateCommand<PaymentSchedule>, bool>,
+    IRequestHandler<ScheduleCvapPaymentsCommand, bool>
 {
     private readonly IPaymentScheduleService _service;
     private readonly IMapper _mapper;
@@ -33,16 +34,9 @@ public class PaymentScheduleHandlers : BaseHandlers<IPaymentScheduleRepository, 
         var nextPaymentDate = _service.GetNextRuntime(command.PaymentSchedule);
         return await Task.FromResult(nextPaymentDate);
     }
-}
 
-public class GetPaymentTotalCommand : IRequest<PaymentTotalResult> 
-{
-    public required PaymentSchedule PaymentSchedule { get; set; }
-    public required Entitlement Entitlement { get; set; }
-    public decimal MinimumWage { get; set; }
-}
-
-public class GetNextRuntimeCommand : IRequest<DateTime>
-{
-    public required PaymentSchedule PaymentSchedule { get; set; }
+    public async Task<bool> Handle(ScheduleCvapPaymentsCommand command, CancellationToken cancellationToken)
+    {
+        return await _service.ScheduleCvapPayments();
+    }
 }

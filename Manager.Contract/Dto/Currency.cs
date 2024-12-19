@@ -25,3 +25,5 @@ public record Currency : IDto
     public StatusCode? StatusCode { get; set; }             // Dynamics Optional
     public required string IsoCurrencyCode { get; set; }    // Dynamics System Required
 }
+
+public class GetCurrencyLookupCommand : IRequest<Currency> { }

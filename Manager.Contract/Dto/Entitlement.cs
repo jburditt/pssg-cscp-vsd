@@ -65,3 +65,5 @@ public record Entitlement : IDto
     public Guid? BenefitSubTypeId { get; set; }             // Dynamics Optional
     public string? BenefitSubTypeName { get; set; }         // Inherently Dynamics Optional
 }
+
+public record UpdatePaymentScheduleStatus(Guid Id, PaymentScheduleStatus PaymentScheduleStatus) : IRequest<bool> { }

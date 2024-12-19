@@ -44,7 +44,6 @@ public record IncomeSupportParameter : IDto
     public IncomeSupportParameterType Type { get; set; }                // Dynamics Business Required
     public DateTime EffectiveDate { get; set; }                         // Dynamics Business Required
     public YesNo? Validated { get; set; }                               // Dynamics Optional
-
-
 }
 
+public record GetColaCommand(DateTime EffectiveDate, decimal Cap) : IRequest<decimal> { }

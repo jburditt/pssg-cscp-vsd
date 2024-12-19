@@ -76,3 +76,19 @@ public record PaymentSchedule : IDto
     public required DynamicReference Payee { get; set; }    // Dynamics Business Required
     public Guid? PrimaryScheduleId { get; set; }            // Dynamics Optional
 }
+
+public record PaymentTotalResult(decimal Amount, decimal ActualAmount);
+
+public class GetPaymentTotalCommand : IRequest<PaymentTotalResult>
+{
+    public required PaymentSchedule PaymentSchedule { get; set; }
+    public required Entitlement Entitlement { get; set; }
+    public decimal MinimumWage { get; set; }
+}
+
+public class GetNextRuntimeCommand : IRequest<DateTime>
+{
+    public required PaymentSchedule PaymentSchedule { get; set; }
+}
+
+public record ScheduleCvapPaymentsCommand : IRequest<bool>;

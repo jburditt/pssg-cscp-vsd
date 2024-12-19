@@ -22,5 +22,3 @@ public class CurrencyHandlers(ICurrencyRepository repository) : FindQueryBaseHan
         return currency;
     }
 }
-
-public class GetCurrencyLookupCommand : IRequest<Currency> { }

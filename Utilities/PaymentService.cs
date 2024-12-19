@@ -49,8 +49,7 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
                 ArgumentNullException.ThrowIfNull(postImageEntity.Total, "Payment Total is missing on the payment.");
                 ArgumentNullException.ThrowIfNull(postImageEntity.Date, "CAS Payment Date is missing on the payment.");
 
-                // TODO should use Vsd_Payment.EntityLogicalName instead of "vsd_payment"
-                messageRequests.SetState("vsd_payment", postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending);
+                messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending);
 
                 var invoices = await GenerateInvoice(configs, postImageEntity);
 
