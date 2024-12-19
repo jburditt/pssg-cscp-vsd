@@ -8,21 +8,21 @@ namespace Gov.Cscp.VictimServices.Public.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public class PaymentScheduleController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly IMediator _mediator;
 
-        public PaymentController(ILoggerFactory loggerFactory, IMediator mediator)
+        public PaymentScheduleController(ILoggerFactory loggerFactory, IMediator mediator)
         {
-            _logger = loggerFactory.CreateLogger<PaymentController>();
+            _logger = loggerFactory.CreateLogger<PaymentScheduleController>();
             _mediator = mediator;
         }
 
         [HttpGet("send")]
-        public async Task<IActionResult> SendPaymentsToCas()
+        public async Task<IActionResult> ScheduleCvapPayments()
         {
-            var command = new SendPaymentsToCasCommand();
+            var command = new ScheduleCvapPaymentsCommand();
             var isSuccessful = await _mediator.Send(command);
             return Ok(isSuccessful);
         }
