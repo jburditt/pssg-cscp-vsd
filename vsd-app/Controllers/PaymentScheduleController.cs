@@ -19,7 +19,7 @@ namespace Gov.Cscp.VictimServices.Public.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("send")]
+        [HttpPost("schedule-cvap")]
         public async Task<IActionResult> ScheduleCvapPayments()
         {
             var command = new ScheduleCvapPaymentsCommand();

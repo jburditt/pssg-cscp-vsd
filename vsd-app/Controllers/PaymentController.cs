@@ -19,7 +19,7 @@ namespace Gov.Cscp.VictimServices.Public.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("send")]
+        [HttpPost("send")]
         public async Task<IActionResult> SendPaymentsToCas()
         {
             var command = new SendPaymentsToCasCommand();

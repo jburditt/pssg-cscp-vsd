@@ -1,16 +1,18 @@
-namespace Utilities;
+﻿namespace Utilities;
 
 public interface IPaymentService
 {
     Task<bool> SendPaymentsToCas();
 }
 
-public class PaymentService(IMediator mediator, IMessageRequests messageRequests, ICasHttpClient casHttpClient, ILoggerFactory loggerFactory) : IPaymentService
+public class PaymentService(IMediator mediator, IMessageRequests messageRequests, ICasHttpClient casHttpClient, IConfiguration configuration, ILoggerFactory loggerFactory) : IPaymentService
 {
     private readonly ILogger<PaymentService> _logger = loggerFactory.CreateLogger<PaymentService>();
 
     public async Task<bool> SendPaymentsToCas()
     {
+        _logger.LogInformation("Starting to send payments to CAS.");
+
         var startTime = DateTime.Now;
 
         var configurationQuery = new ConfigurationQuery();
@@ -24,13 +26,24 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         var clientId = await mediator.Send(getKeyValueCommand);
         getKeyValueCommand = new GetKeyValueCommand(configs, "InterfaceUrl", "CAS", null);
         var url = await mediator.Send(getKeyValueCommand);
+        _logger.LogInformation($"Client Id: {clientId}, Interface Url: {url}");
 
         var paymentQuery = new PaymentQuery();
         paymentQuery.IncludeChildren = true;
         paymentQuery.StateCode = StateCode.Active;
         paymentQuery.StatusCode = PaymentStatusCode.Waiting;
         paymentQuery.BeforeDate = DateTime.Now;
+        //paymentQuery.Id = new Guid("12e4cbf6-e1d9-eb11-b821-005056830319");
         var payments = await mediator.Send(paymentQuery);
+
+        if (payments != null && payments.Any())
+        {
+            _logger.LogInformation($"Processing {payments.Count()} payments.");
+        }
+        else
+        {
+            _logger.LogInformation("No payments found to process.");
+        }
 
         foreach (var postImageEntity in payments)
         {
@@ -49,12 +62,20 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
                 ArgumentNullException.ThrowIfNull(postImageEntity.Total, "Payment Total is missing on the payment.");
                 ArgumentNullException.ThrowIfNull(postImageEntity.Date, "CAS Payment Date is missing on the payment.");
 
-                messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending);
+
+                if (configuration["TEST_SCHEDULED_JOBS_ENABLED"] == null)
+                {
+                    messageRequests.SetState(Vsd_Payment.EntityLogicalName, postImageEntity.Id, (int)StateCode.Active, (int)PaymentStatusCode.Sending);
+                }
 
                 var invoices = await GenerateInvoice(configs, postImageEntity);
 
-                casHttpClient.Initialize(clientId, clientKey, url);
-                await casHttpClient.ApTransaction(invoices);
+                _logger.LogInformation($"Sending invoices to CAS {invoices.ToJSONString()}");
+                if (configuration["TEST_SCHEDULED_JOBS_ENABLED"] == null)
+                {
+                    casHttpClient.Initialize(clientId, clientKey, url);
+                    await casHttpClient.ApTransaction(invoices);
+                }
             }
             catch (Exception ex1)
             {
@@ -77,7 +98,12 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
                 }
                 if (!string.IsNullOrEmpty(userMessage))
                     updatePaymentCommand.CasResponse = userMessage.Length >= 2000 ? userMessage.Substring(0, 1998) : userMessage;
-                await mediator.Send(updatePaymentCommand);
+
+                _logger.LogInformation($"Updating Payment: {postImageEntity.Name} with status: {updatePaymentCommand.StatusCode}");
+                if (configuration["TEST_SCHEDULED_JOBS_ENABLED"] == null)
+                {
+                    await mediator.Send(updatePaymentCommand);
+                }
 
                 if (httpClient != null)
                     httpClient.Dispose();
@@ -130,11 +156,14 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         var getKeyValueCommand = new GetKeyValueCommand(programUnitConfigs, "GSTDistributionAccount", "CAS", programUnit);
         var gstDistributionAccount = await mediator.Send(getKeyValueCommand);
 
+        _logger.LogInformation($"Payee Lookup: {payeeLookup?.SchemaName}, {payeeLookup?.Id}");
+
         if (payeeLookup.SchemaName.Equals(Database.Model.Account.EntityLogicalName, StringComparison.InvariantCultureIgnoreCase))
         {
             var accountEntity = await mediator.Send(new FindAccountQuery { Id = payeeLookup.Id });
+            _logger.LogInformation($"Payee Account {accountEntity?.Name} found.");
 
-            ArgumentNullException.ThrowIfNull(accountEntity.Name, "Account Name is missing.");
+            ArgumentNullException.ThrowIfNull(accountEntity?.Name, "Account Name is missing.");
             if (string.IsNullOrEmpty(accountEntity.AccountNumber))
             {
                 if (programUnit == ProgramUnit.Cvap || programUnit == ProgramUnit.Vsu || programUnit == ProgramUnit.Rest)
@@ -201,8 +230,9 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         else
         {
             var contactEntity = await mediator.Send(new FindContactQuery { Id = payeeLookup.Id });
+            _logger.LogInformation($"Payee Contact {contactEntity?.FirstName} found.");
 
-            ArgumentNullException.ThrowIfNull(contactEntity.ContactRole, "Contact Role is missing.");
+            ArgumentNullException.ThrowIfNull(contactEntity?.ContactRole, "Contact Role is missing.");
 
             if (string.IsNullOrEmpty(contactEntity.AccountNumber))
             {
@@ -254,6 +284,8 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
 
         #region Invoice Details
 
+        _logger.LogInformation($"Generate invoice line details for {invoiceEntity.Name}");
+
         var invoiceDate = paymentEntity.Date;
         string invoiceNumber = invoiceEntity.Name;
 
@@ -304,6 +336,8 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         if (string.IsNullOrEmpty(defaultDistributionAccount))
             throw new Exception("Default Distribution Account is missing.");
 
+        _logger.LogInformation($"Default distribution account: {defaultDistributionAccount}");
+
         var invoiceLineDetailQuery = new InvoiceLineDetailQuery();
         invoiceLineDetailQuery.InvoiceId = invoiceEntity.Id;
         invoiceLineDetailQuery.StateCode = StateCode.Active;
@@ -314,6 +348,8 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         int j = 0;
         if (invoiceLineDetails != null && invoiceLineDetails.Any())
         {
+            _logger.LogInformation($"Invoice Line Details found: {invoiceLineDetails.Count()}");
+
             foreach (var invoiceLineDetail in invoiceLineDetails)
             {
                 if (invoiceLineDetail.AmountCalculated == null)
@@ -364,6 +400,8 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
         }
         else
         {
+            _logger.LogInformation("No Invoice Line Details found.");
+
             var lineDetail = new CasApTransactionInvoiceLineDetail()
             {
                 InvoiceLineNumber = 1,
@@ -374,6 +412,7 @@ public class PaymentService(IMediator mediator, IMessageRequests messageRequests
             };
             jsonInvoiceLineDetails.Add(lineDetail);
         }
+        //_logger.LogInformation($"Invoice Line Details generated. {jsonInvoiceLineDetails}");
 
         #endregion
 
