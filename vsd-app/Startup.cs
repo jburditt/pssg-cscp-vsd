@@ -24,6 +24,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.Extensions.Hosting;
+using Manager;
+using Database;
 
 namespace Gov.Cscp.VictimServices.Public
 {
@@ -39,6 +41,17 @@ namespace Gov.Cscp.VictimServices.Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services needed for new Dynamics architecture
+            services.AddAutoMapperMappings();
+            services.AddHandlers();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<InvoiceHandlers>());
+            services.AddDatabase(Configuration);
+            services.AddLogging(x =>
+            {
+                x.AddConsole();
+                x.SetMinimumLevel(LogLevel.Information);
+            });
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<TokenHandler>();
 
@@ -184,7 +197,7 @@ namespace Gov.Cscp.VictimServices.Public
             };
 
             app.UseStaticFiles(staticFileOptions);
-            app.UseSpaStaticFiles(staticFileOptions);
+            //app.UseSpaStaticFiles(staticFileOptions);
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseNoCacheHttpHeaders();
             // IMPORTANT: This session call MUST go before UseMvc()

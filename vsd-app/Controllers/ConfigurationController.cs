@@ -26,7 +26,7 @@ namespace Gov.Cscp.VictimServices.Public.Controllers
         {
             try
             {
-                var config = new Configuration
+                var config = new
                 {
                     OutageMessage = configuration.GetValue<string>("CONFIGURATION_OUTAGEINFORMATION_MESSAGE"),
                     OutageStartDate = configuration.GetValue<string>("CONFIGURATION_OUTAGEINFORMATION_STARTDATE"),
@@ -48,10 +48,3 @@ namespace Gov.Cscp.VictimServices.Public.Controllers
         }
     }
 }
-
-public class Configuration
-{
-    public string OutageMessage { get; set; }
-    public string OutageStartDate { get; set; }
-    public string OutageEndDate { get; set; }
-};
