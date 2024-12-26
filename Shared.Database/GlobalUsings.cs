@@ -1,4 +1,5 @@
 ﻿global using AutoMapper;
+global using AutoMapper.Extensions.ExpressionMapping;
 global using Microsoft.Crm.Sdk.Messages;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ global using Microsoft.Xrm.Sdk.Metadata;
 global using Shared.Contract;
 global using System.Collections.Concurrent;
 global using System.Diagnostics.CodeAnalysis;
+global using System.Linq.Expressions;
 global using System.ServiceModel;
 global using System.Text;
 global using System.Text.Json;

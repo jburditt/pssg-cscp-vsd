@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace Shared.Database;
 
 public abstract class BaseRepository<TEntity, TDto> 
@@ -24,18 +22,19 @@ public abstract class BaseRepository<TEntity, TDto>
         return entity.Id;
     }
 
-    //public IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate)
-    //{
-    //    Expression<Func<TEntity, TDto>> mapper = Mapper.Engine.CreateMapExpression<TEntity, TDto>();
+    public TDto FirstOrDefault(Expression<Func<TDto, bool>> predicates)
+    {
+        var entity = MapExpression(predicates)
+            .FirstOrDefault();
+        return _mapper.Map<TEntity, TDto>(entity);
+    }
 
-    //    Expression<Func<TEntity, bool>> mappedSelector = predicate.Compose(mapper);
-
-    //    var entities = _databaseContext.CreateQuery<TEntity>()
-    //        .Where(mappedSelector)
-    //        .ToList();
-
-    //    return Map(entities);
-    //}
+    public IEnumerable<TDto> Where(Expression<Func<TDto, bool>> predicates)
+    {
+        var entities = MapExpression(predicates)
+            .ToList();
+        return _mapper.Map<IEnumerable<TEntity>, IEnumerable<TDto>>(entities);
+    }
 
     public virtual Guid Upsert(TDto dto)
     {
@@ -57,18 +56,32 @@ public abstract class BaseRepository<TEntity, TDto>
         return entity.Id;
     }
 
-    //public virtual bool Update<TEntity>(Guid id, params Func<TEntity, object>[] properties)
-    //{
-    //    var entity = _databaseContext
-    //        .CreateQuery<TEntity>()
-    //        .FirstOrDefault(x => x.Id == id);
-    //    if (entity == null)
-    //        return false;
-    //    foreach (var lambda in properties)
-    //        lambda.Invoke(entity);
-    //    _databaseContext.SaveChanges();
-    //    return true;
-    //}
+    // WARNING this method does not work, since assignment operators are not allowed in Expression Trees
+    public virtual bool Update(Guid id, params Expression<Func<TDto, object>>[] properties)
+    {
+        var entity = _databaseContext
+            .CreateQuery<TEntity>()
+            .FirstOrDefault(x => x.Id == id);
+        if (entity == null)
+            return false;
+
+        if (!_databaseContext.IsAttached(entity))
+        {
+            _databaseContext.Attach(entity);
+        }
+
+        foreach (var lambda in properties)
+        {
+            var entityExpression = _mapper
+                .MapExpression<Expression<Func<TEntity, object>>>(lambda)
+                .Compile();
+            entityExpression.Invoke(entity);
+        }
+
+        return !_databaseContext
+            .SaveChanges()
+            .HasError;
+    }
 
     public virtual bool Update(TDto dto)
     {
@@ -160,5 +173,13 @@ public abstract class BaseRepository<TEntity, TDto>
     private IEnumerable<TDto> Map(IEnumerable<TEntity> dto)
     {
         return _mapper.Map<IEnumerable<TDto>>(dto);
+    }
+
+    private IQueryable<TEntity> MapExpression(Expression<Func<TDto, bool>> predicates)
+    {
+        var entityPredicateExpression = _mapper.MapExpression<Expression<Func<TEntity, bool>>>(predicates);
+        return _databaseContext
+            .CreateQuery<TEntity>()
+            .Where(entityPredicateExpression);
     }
 }

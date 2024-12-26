@@ -18,4 +18,12 @@
         //var query = new EntitlementQuery { Id = dto.Id };
         //var updatedDto = repository.FirstOrDefault(query);
     }
+
+    [Fact]
+    public async Task Find()
+    {
+        var dtos = repository.Where(x => x.StateCode == StateCode.Active);
+
+        Assert.NotNull(dtos);
+    }
 }

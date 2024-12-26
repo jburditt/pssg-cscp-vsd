@@ -77,6 +77,7 @@ public record Payment : IDto
     public decimal? SubTotal { get; set; }              // Dynamics Optional
     public decimal? Total { get; set; }                 // Dynamics Optional
     public decimal? Gst { get; set; }                   // Dynamics Optional
+    public decimal? ExchangeRate { get; set; }
     public DateTime GlDate { get; set; }                // Dynamics Business Required
     public PaymentTerms? Terms { get; set; }            // Dynamics Optional
     public EftAdvice? EftAdvice { get; set; }           // Dynamics Optional

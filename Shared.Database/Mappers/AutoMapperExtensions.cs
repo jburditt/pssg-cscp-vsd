@@ -27,7 +27,6 @@ public static class AutoMapperExtensions
         if (f != null)
             query = query.Where(f);
 
-        var test = query.ToList();
         //if (includes != null)
         //    query = includes.Select(i => i.Compile()).Aggregate(query, (list, next) => query = next(query));
 
