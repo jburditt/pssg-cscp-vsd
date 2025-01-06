@@ -4,6 +4,12 @@ public class SharedMapper : Profile
 {
     public SharedMapper()
     {
+        RecognizeDestinationPrefixes("Vsd_");
+        RecognizePrefixes("Vsd_");
+
+        RecognizeDestinationPostfixes("Id");
+        RecognizePostfixes("Id");
+        
         CreateMap<Money, decimal>()
             .ConvertUsing(src => src.Value);
         CreateMap<Money, decimal?>()
