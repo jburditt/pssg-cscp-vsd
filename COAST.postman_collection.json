@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "a1cf9a99-8a52-4deb-998a-e3b4e990bf41",
+		"name": "COAST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "730057"
+	},
+	"item": [
+		{
+			"name": "VSD",
+			"item": [
+				{
+					"name": "Payment/send POST",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://coast-restitution-dev.silver.devops.bcgov/api/Payment/send",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"Payment",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentSchedule/schedule-cvap POST",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://coast-restitution-dev.silver.devops.bcgov/api/PaymentSchedule/schedule-cvap",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"PaymentSchedule",
+								"schedule-cvap"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
