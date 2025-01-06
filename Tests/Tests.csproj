@@ -10,6 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Integration\Database\GenerateFakeData.cs" />
+    <Compile Remove="Integration\Database\ProgramRepositoryTests.cs" />
+    <Compile Remove="Integration\Database\SeedDatabase.cs" />
+    <Compile Remove="Integration\Database\SeedDatabaseTests.cs" />
+    <Compile Remove="Unit\AutoMapperValidation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Integration\Database\GenerateFakeData.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
