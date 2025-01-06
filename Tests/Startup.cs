@@ -19,14 +19,14 @@ public class Startup
         services.AddHandlers();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<InvoiceHandlers>());
 
-        //services.AddTransient<FakeHandlers>();
-        //services.AddTransient<IFakeRepository, FakeRepository>();
+        services.AddTransient<FakeHandlers>();
+        services.AddTransient<IFakeRepository, FakeRepository>();
 
-        //services.AddMediatR(cfg =>
-        //{
-        //    cfg.RegisterServicesFromAssemblyContaining<InvoiceHandlers>();
-        //    cfg.RegisterServicesFromAssemblyContaining<FakeHandlers>();
-        //});
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<InvoiceHandlers>();
+            cfg.RegisterServicesFromAssemblyContaining<FakeHandlers>();
+        });
 
         // add dynamics database adapter
         services.AddDatabase(configuration);
