@@ -8,7 +8,7 @@ public class TaskTests(ITaskRepository repository)
     public void Query()
     {
         // Arrange
-        var id = new Guid("f1dfc199-ae8c-ef11-8e06-b07d6486ef10");
+        var id = new Guid("");
 
         // Act
         var query = new TaskQuery();
@@ -25,7 +25,7 @@ public class TaskTests(ITaskRepository repository)
     public void Delete()
     {
         // Arrange
-        var id = new Guid("bb961ae5-a88c-ef11-b84f-005056830319");
+        var id = new Guid("");
 
         // Act
         var result = repository.TryDelete(id);

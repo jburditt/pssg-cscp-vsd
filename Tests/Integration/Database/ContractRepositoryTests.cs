@@ -45,7 +45,7 @@
     public void Delete()
     {
         // Arrange
-        var id = new Guid("0fe87b88-a7d3-eb11-b828-00505683fbf4\r\n");
+        var id = new Guid("");
 
         // Act
         var result = repository.TryDelete(id);

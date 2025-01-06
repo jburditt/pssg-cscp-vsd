@@ -9,7 +9,7 @@
     {
         // Arrange
         var command = new ScheduleGQuery();
-        command.Id = new Guid("343ea08c-ae8c-ef11-8e06-b07d6486ef10");
+        command.Id = new Guid("");
 
         // Act
         var result = scheduleGRepository.Query(command);
