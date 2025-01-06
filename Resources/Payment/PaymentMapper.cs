@@ -7,6 +7,7 @@ public class PaymentMapper : Profile
         // NOTE keep this in sync with CreateMap<PaymentInvoicesEntity, Payment>() below
         CreateMap<Vsd_Payment, Payment>()
             .ForMember(dest => dest.AdviceComments, opt => opt.MapFrom(src => src.Vsd_PaymentAdviceComments))
+            .ForMember(dest => dest.ExchangeRate, opt => opt.MapFrom(src => src.ExchangerAte))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.LineCode, opt => opt.MapFrom(src => (LineCode?)src.Vsd_LineCode))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Vsd_Name))
@@ -32,6 +33,7 @@ public class PaymentMapper : Profile
 
         CreateMap<Payment, Vsd_Payment>()
             .ForMember(dest => dest.Vsd_PaymentAdviceComments, opt => opt.MapFrom(src => src.AdviceComments))
+            .ForMember(dest => dest.ExchangerAte, opt => opt.MapFrom(src => src.ExchangeRate))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Vsd_LineCode, opt => opt.MapFrom(src => (Vsd_Payment_Vsd_LineCode?)src.LineCode))
             .ForMember(dest => dest.Vsd_Name, opt => opt.MapFrom(src => src.Name))

@@ -20,6 +20,8 @@ public class SharedMapper : Profile
             .ConvertUsing(src => src.Id);
         CreateMap<DynamicReference, EntityReference>()
             .ConvertUsing(src => new EntityReference(src.SchemaName, src.Id));
+        CreateMap<DynamicReference?, EntityReference>()
+            .ConvertUsing(src => src != null ? new EntityReference(src.SchemaName, src.Id) : null);
         CreateMap<EntityReference, DynamicReference>()
             .ConvertUsing(src => new DynamicReference(src.Id, src.LogicalName));
         CreateMap<StaticReference, EntityReference>()

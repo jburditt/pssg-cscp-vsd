@@ -39,7 +39,7 @@ public class CasHttpClient : ICasHttpClient
 
         // TODO check defaultDistributionAccount is not null or empty
         var jsonRequest = invoices.ToJSONString();
-        var url = "https://wsgw.dev.jag.gov.bc.ca/victim/api/cas/api/CASAPTransaction";
+        //var url = "https://wsgw.dev.jag.gov.bc.ca/victim/api/cas/api/CASAPTransaction";
         var url = $"{_httpClient.BaseAddress}victim/api/cas/api/CASAPTransaction";
         var httpContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
         var response = await _httpClient.PostAsync(url, httpContent);
