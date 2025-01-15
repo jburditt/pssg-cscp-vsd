@@ -3,12 +3,10 @@
 public class PaymentScheduleRepository : BaseRepository<Vsd_PaymentSchedule, PaymentSchedule>, IPaymentScheduleRepository
 {
     private readonly DatabaseContext _databaseContext;
-    private readonly IIncomeSupportParameterRepository _incomeSupportParameterRepository;
 
-    public PaymentScheduleRepository(DatabaseContext databaseContext, IMapper mapper, IIncomeSupportParameterRepository incomeSupportParameterRepository) : base(databaseContext, mapper)
+    public PaymentScheduleRepository(DatabaseContext databaseContext, IMapper mapper) : base(databaseContext, mapper)
     {
         _databaseContext = databaseContext;
-        _incomeSupportParameterRepository = incomeSupportParameterRepository;
     }
 
     public PaymentSchedule FirstOrDefault(PaymentScheduleQuery query)

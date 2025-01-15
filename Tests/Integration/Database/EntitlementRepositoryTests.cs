@@ -6,8 +6,8 @@
     public void Update()
     {
         // Arrange
-        var dto = new Entitlement();
-        dto.Id = new Guid("aa249bbd-76d0-eb11-b828-00505683fbf4");
+        var dto = new Entitlement() { Case = null };
+        dto.Id = new Guid("");
         dto.PaymentScheduleStatus = PaymentScheduleStatus.Pause;
 
         // Act

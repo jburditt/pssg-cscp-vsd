@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Manager.Contract;
+﻿namespace Manager.Contract;
 
 public class CasApTransactionInvoices
 {
@@ -133,7 +130,6 @@ public class CasApTransactionInvoices
 
     public string ToJSONString()
     {
-        string dateFormat = "dd-MMM-yyyy";
         string amountFormat = "0.00";
 
         List<string> lines = new List<string>();
@@ -148,12 +144,12 @@ public class CasApTransactionInvoices
                 InvoiceType,
                 SupplierNumber,
                 SupplierSiteNumber.ToString("000"),
-                InvoiceDate.ToLocalTime().ToString(dateFormat),
+                ConvertDate(InvoiceDate),
                 InvoiceNumber,
                 InvoiceAmount.ToString(amountFormat),
                 PayGroup,
-                DateInvoiceReceived.ToLocalTime().ToString(dateFormat),
-                DateGoodsReceived.HasValue ? DateGoodsReceived.Value.ToLocalTime().ToString(dateFormat) : "",
+                ConvertDate(DateInvoiceReceived),
+                ConvertDate(DateGoodsReceived),
                 RemittanceCode,
                 (SpecialHandling ? "D" : "N"),
                 NameLine1,
@@ -172,7 +168,7 @@ public class CasApTransactionInvoices
                 RemittanceMessage1,
                 RemittanceMessage2,
                 RemittanceMessage3,
-                GLDate.HasValue ? GLDate.Value.ToLocalTime().ToString(dateFormat) : "",
+                ConvertDate(GLDate),
                 InvoiceBatchName,
                 CurrencyCode,
                 InstitutionNumber,
@@ -189,12 +185,12 @@ public class CasApTransactionInvoices
                 InvoiceType,
                 SupplierNumber,
                 SupplierSiteNumber.ToString("000"),
-                InvoiceDate.ToLocalTime().ToString(dateFormat),
+                ConvertDate(InvoiceDate),
                 InvoiceNumber,
                 InvoiceAmount.ToString(amountFormat),
                 PayGroup,
-                DateInvoiceReceived.ToLocalTime().ToString(dateFormat),
-                DateGoodsReceived.HasValue ? DateGoodsReceived.Value.ToLocalTime().ToString(dateFormat) : "",
+                ConvertDate(DateInvoiceReceived),
+                ConvertDate(DateGoodsReceived),
                 RemittanceCode,
                 (SpecialHandling ? "D" : "N"),
                 NameLine1,
@@ -213,11 +209,20 @@ public class CasApTransactionInvoices
                 RemittanceMessage1,
                 RemittanceMessage2,
                 RemittanceMessage3,
-                GLDate.HasValue ? GLDate.Value.ToLocalTime().ToString(dateFormat) : "",
+                ConvertDate(GLDate),
                 InvoiceBatchName,
                 CurrencyCode,
                 string.Join(",", lines)
                 ).Replace("$!$", "{").Replace("$&$", "}");
         }
+    }
+
+    private string ConvertDate(DateTime? date)
+    {
+        if (date.HasValue)
+        {
+            return date.Value.ToLocalTime().ToString("dd-MMM-yyyy").Replace(".", "");
+        }
+        return "";
     }
 }

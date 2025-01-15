@@ -2,13 +2,13 @@ public class SeedDatabaseTests(SeedDatabase seedDatabase, IProgramRepository pro
 {
     // WARNING!!! these are not real tests, this is a shortcut I used for load testing, do not use
 
-    //[Fact]
-    public void Initialize()
+    [Fact]
+    public void Seed_Fake_Data()
     {
         seedDatabase.Seed();
     }
 
-    //[Fact]
+    [Fact]
     public void Clear_Fake_Data()
     {
         seedDatabase.Clear();

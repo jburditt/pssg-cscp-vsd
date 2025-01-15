@@ -30,6 +30,6 @@ public class Startup
 
         // add dynamics database adapter
         services.AddDatabase(configuration);
-        //services.AddTransient<SeedDatabase>();
+        services.AddTransient<SeedDatabase>();
     }
 }

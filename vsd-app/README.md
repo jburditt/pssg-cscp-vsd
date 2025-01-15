@@ -71,8 +71,10 @@ var queryResults = _databaseContext
 
 ## CAS Integration
 
+[CAS Payment Service](https://github.com/bcgov/cas-payment-interface)
 To request support from Mid-Tier/Finance team, add a ticket in Jira project https://jag.gov.bc.ca/jira/browse/VS
-Add a comment and tag someone from the Mid-Tier/Finance team. On Jan 6, 2025 that person was Bonnie, Lo; but it may change.
+Set the "Work for ISB Teams" field to value "Mid-Tier". 
+Add a comment and tag someone from the Mid-Tier/Finance team. On Jan 6, 2025 that person was Bonnie, Lo or Adrien French; but it may change.
 
 ## DYNAMICS AND SCHEDULED JOBS
 
@@ -89,6 +91,15 @@ But since they both use the same database, and so do the other sister projects V
 - Utilities
 These projects were originally designed to have the Shared.X in the shared repository but now all of them can be shared. So, there is opportunity to consolidate the projects now.
 Consider consolidating Database and Shared.Database, and, Manager.Contract and Shared.Contract
+
+NOTE going forward, do not using AutoMapper mappings for Guid -> EntityReference or EntityReference -> Guid. Instead, use StaticReference or DynamicReference.
+This way, the logical name is also stored, which is useful. StaticReference (both should be renamed) is when there is only one logical name and DynamicReference can have
+multiple logical names e.g. "Account" or "Contact".
+
+## DYNAMICS PLUGINS
+
+There are some errors that are triggered by business logic in Dynamics Plugins. There is a Victim Services repository that has the source code for the plugins.
+You can search the error message in the Victim Services source code or in VS debugger you can find the plugin filename with Error -> View Details -> InnerException -> Detail -> TraceText
 
 ## AUTOMAPPER OPTIMIZATIONS
 

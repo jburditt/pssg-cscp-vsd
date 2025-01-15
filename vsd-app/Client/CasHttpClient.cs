@@ -12,6 +12,8 @@ using Utilities;
 namespace Manager.Contract;
 
 // NOTE Coast has DEV, TEST, and PROD environments while CAS may only have TEST, and PROD (to be confirmed)
+// The KeyValues from the database will authenticate https://wsgw.test.jag.gov.bc.ca but not DEV
+// To get error messages returned from the service, check the pod logs for cas-interface-service
 public class CasHttpClient : ICasHttpClient
 {
     // TODO I remember there are some caveats to HttpClient scope and disposing, which is why the Extension DI register might be better if more HttpClients are added

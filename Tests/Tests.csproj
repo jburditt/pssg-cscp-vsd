@@ -12,8 +12,6 @@
   <ItemGroup>
     <Compile Remove="Integration\Database\GenerateFakeData.cs" />
     <Compile Remove="Integration\Database\ProgramRepositoryTests.cs" />
-    <Compile Remove="Integration\Database\SeedDatabase.cs" />
-    <Compile Remove="Integration\Database\SeedDatabaseTests.cs" />
     <Compile Remove="Unit\AutoMapperValidation.cs" />
   </ItemGroup>
 

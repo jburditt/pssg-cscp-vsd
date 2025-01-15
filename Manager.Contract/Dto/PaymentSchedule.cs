@@ -54,6 +54,7 @@ public record PaymentSchedule : IDto
     public StateCode StateCode { get; set; }
     public PaymentScheduleStatusCode StatusCode { get; set; }   // Dynamics Optional
     public DateTime? FirstRunDate { get; set; }                 // Dynamics Optional
+    public DateTime? StartDate { get; set; }                    // Dynamics Optional       
     public DateTime? NextRunDate { get; set; }                  // Dynamics Optional
     public Frequency? Frequency { get; set; }                   // Dynamics Optional
     public int? XValue { get; set; }                            // Dynamics Optional
@@ -75,6 +76,9 @@ public record PaymentSchedule : IDto
     public required string CaseName { get; set; }           // Inherently Business Required from CaseId
     public required DynamicReference Payee { get; set; }    // Dynamics Business Required
     public Guid? PrimaryScheduleId { get; set; }            // Dynamics Optional
+
+    // Foreign Objects
+    public IEnumerable<Entitlement>? Entitlements { get; set; }
 }
 
 public record PaymentTotalResult(decimal Amount, decimal ActualAmount);
