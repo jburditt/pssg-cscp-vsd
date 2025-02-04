@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-
-public class PaymentScheduleMapperTests(IMapper mapper)
+﻿public class MapperTests(IMapper mapper)
 {
     [Fact]
-    public void Dto_To_Entity()
+    public void PaymentSchedule_Dto_To_Entity()
     {
         var dto = new PaymentSchedule { CaseName = "CaseName", Payee = null };
         dto.Id = new Guid("23fdd752-fbd8-eb11-b828-00505683fbf4");
@@ -33,5 +31,28 @@ public class PaymentScheduleMapperTests(IMapper mapper)
         Assert.Equal(dto.OverPaymentAmount, entity.Vsd_OverpaymentAmount.Value);
         Assert.Equal(dto.OverPaymentEmi, entity.Vsd_OverpayMenteMi.Value);
         Assert.Equal(dto.PercentageDeduction, entity.Vsd_PercentagedEduction);
+    }
+
+    [Fact]
+    public void Invoice_Dto_To_Entity()
+    {
+        var dto = new Invoice { Payee = null, Owner = TestData.Owner };
+        dto.CaseId = TestData.CaseId;
+        dto.CvapStobId = Guid.NewGuid();
+        dto.AuthorizationDate = new DateTime(2001, 1, 1);
+        dto.CvapNumberOfLineItems = CvapNumberOfLineItems._1;
+        dto.CvapPaymentType = CvapPaymentType.PreAdjudication;
+        dto.Origin = Origin.Web;
+        dto.TaxExemption = TaxExemption.GstOnly;
+
+        var entity = mapper.Map<Vsd_Invoice>(dto);
+
+        Assert.Equal(dto.CaseId, entity.Vsd_CaseId.Id);
+        Assert.Equal(dto.CvapStobId, entity.Vsd_Cvap_SToBid.Id);
+        Assert.Equal(dto.AuthorizationDate, entity.Vsd_AuthorizationDate);
+        Assert.Equal(dto.CvapNumberOfLineItems, (CvapNumberOfLineItems)entity.Vsd_Cvap_NumberOfLineItems);
+        Assert.Equal(dto.CvapPaymentType, (CvapPaymentType)entity.Vsd_Cvap_PaymentType);
+        Assert.Equal(dto.Origin, (Origin)entity.Vsd_Origin);
+        Assert.Equal(dto.TaxExemption, (TaxExemption)entity.Vsd_TaxExemption);
     }
 }
