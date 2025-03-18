@@ -6,6 +6,8 @@ public class InvoiceLineDetailMapper : Profile
     {
         CreateMap<Vsd_InvoiceLineDetail, InvoiceLineDetail>()
             .ForMember(dest => dest.Approved, opts => opts.MapFrom(src => src.Vsd_LineItemApproved))
+            .ForMember(dest => dest.CaseId, opts => opts.MapFrom(src => src.Vsd_CaseId.Id))
+            .ForMember(dest => dest.EntitlementId, opts => opts.MapFrom(src => src.Vsd_EntitlementId.Id))
             .ForMember(dest => dest.GstAmount, opts => opts.MapFrom(src => src.Vsd_Gst))
             .ForMember(dest => dest.InvoiceType, opts => opts.MapFrom(src => (InvoiceType?)src.Vsd_InvoiceType))
             .ForMember(dest => dest.AmountSimple, opts => opts.MapFrom(src => src.Vsd_AmountSimple))
@@ -20,6 +22,8 @@ public class InvoiceLineDetailMapper : Profile
 
         CreateMap<InvoiceLineDetail, Vsd_InvoiceLineDetail>()
             .ForMember(dest => dest.Vsd_LineItemApproved, opts => opts.MapFrom(src => src.Approved))
+            .ForMember(dest => dest.Vsd_CaseId, opts => opts.MapFrom(src => src.CaseId != null ? new EntityReference("incident", src.CaseId.Value) : null))
+            .ForMember(dest => dest.Vsd_EntitlementId, opts => opts.MapFrom(src => src.EntitlementId != null ? new EntityReference(Vsd_Entitlement.EntityLogicalName, src.EntitlementId.Value) : null))
             .ForMember(dest => dest.Vsd_Gst, opts => opts.MapFrom(src => src.GstAmount))
             .ForMember(dest => dest.Vsd_InvoiceType, opts => opts.MapFrom(src => (Vsd_InvoiceTypes?)src.InvoiceType))
             .ForMember(dest => dest.Vsd_AmountSimple, opts => opts.MapFrom(src => src.AmountSimple))

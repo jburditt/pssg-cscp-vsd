@@ -16,6 +16,7 @@
         dto.OverPaymentAmount = 1.04m;
         dto.OverPaymentEmi = 1.05m;
         dto.PercentageDeduction = 1.06m;
+        dto.ActualValue = 1.07m;
 
         var entity = mapper.Map<Vsd_PaymentSchedule>(dto);
 
@@ -31,6 +32,7 @@
         Assert.Equal(dto.OverPaymentAmount, entity.Vsd_OverpaymentAmount.Value);
         Assert.Equal(dto.OverPaymentEmi, entity.Vsd_OverpayMenteMi.Value);
         Assert.Equal(dto.PercentageDeduction, entity.Vsd_PercentagedEduction);
+        Assert.Equal(dto.ActualValue, entity.Vsd_ActualValue.Value);
     }
 
     [Fact]
@@ -54,5 +56,33 @@
         Assert.Equal(dto.CvapPaymentType, (CvapPaymentType)entity.Vsd_Cvap_PaymentType);
         Assert.Equal(dto.Origin, (Origin)entity.Vsd_Origin);
         Assert.Equal(dto.TaxExemption, (TaxExemption)entity.Vsd_TaxExemption);
+    }
+
+    [Fact]
+    public void InvoiceLineDetail_Dto_To_Entity()
+    {
+        var dto = new InvoiceLineDetail { Owner = TestData.Owner };
+        dto.GstAmount = null;
+        dto.TaxExemption = TaxExemption.GstOnly;
+
+        var entity = mapper.Map<Vsd_InvoiceLineDetail>(dto);
+
+        Assert.Null(entity.Vsd_Gst);
+        Assert.Equal((int)Vsd_InvoiceLineDetail_Vsd_TaxExemption.GstOnly, (int)dto.TaxExemption);
+    }
+
+    [Fact]
+    public void Payment_Dto_To_Entity()
+    {
+        var dto = new Payment { Payee = null, Owner = TestData.Owner };
+        dto.LineCode = LineCode.Dr;
+        dto.RemittanceMessage2 = "RemittanceMessage2";
+        dto.SpecialHandling = SpecialHandling.Dback;
+
+        var entity = mapper.Map<Vsd_Payment>(dto);
+
+        Assert.Equal((int)dto.LineCode, (int)entity.Vsd_LineCode);
+        Assert.Equal(dto.RemittanceMessage2, entity.Vsd_RemittanceMessage2);
+        Assert.Equal((int)dto.SpecialHandling, (int)entity.Vsd_SpecialHandling);
     }
 }

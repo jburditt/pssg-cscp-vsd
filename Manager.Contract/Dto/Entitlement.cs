@@ -81,6 +81,11 @@ public record Entitlement : IDto
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
     public EntitlementStatusCode StatusCode { get; set; }
+
+    [MaxLength(400)]
+    [Description("The auto generated name of the entitlement.")]
+    public required string Name { get; set; }                           // Dynamics Business Required
+
     public EntitlementStage EntitlementStage { get; set; }              // Dynamics Optional
     // Dynamics Business Required but still NULL in database e.g. https://cscp-vs.dev.jag.gov.bc.ca/api/data/v9.0/vsd_entitlements?$filter=vsd_entitlementid%20eq%20%27{14a5d13d-6e2f-ed11-b834-00505683fbf4}%27
     public DateTime EffectiveDate { get; set; }                         // Dynamics Business Required 

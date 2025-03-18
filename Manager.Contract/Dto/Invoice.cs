@@ -139,7 +139,7 @@ public record Invoice : IDto
     public Guid? ProvinceStateId { get; set; }              // Dynamics Optional
     public Guid? CaseId { get; set; }                       // Dynamics Business Recommended
     public Guid? EntitlementId { get; set; }                // Dynamics Optional
-    public string? EntitlementName { get; set; }            // Inherently Optional from EntitlementId
+    //public string? EntitlementName { get; set; }            // Inherently Optional from EntitlementId
     public Guid? CvapStobId { get; set; }                   // Dynamics Optional
     public Guid? ProcessId { get; set; }                    // Dynamics Optional
     public Guid? PaymentScheduleId { get; set; }            // Dynamics Optional

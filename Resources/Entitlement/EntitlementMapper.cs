@@ -6,6 +6,7 @@ public class EntitlementMapper : Profile
     {
         CreateMap<Vsd_Entitlement, Entitlement>()
             .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Vsd_EntitlementId))
+            .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Vsd_Name))
             .ForMember(dest => dest.StateCode, opts => opts.MapFrom(src => (StateCode?)src.StateCode))
             .ForMember(dest => dest.StatusCode, opts => opts.MapFrom(src => (EntitlementStatusCode?)src.StatusCode))
             .ForMember(dest => dest.EntitlementStage, opts => opts.MapFrom(src => (EntitlementStage?)src.Vsd_EntitlementStage))
@@ -21,10 +22,11 @@ public class EntitlementMapper : Profile
             .ForMember(dest => dest.IsRecurring, opts => opts.MapFrom(src => src.Vsd_IsRecurring))
             .ForMember(dest => dest.Case, opts => opts.MapFrom(src => src.Vsd_CaseId))
             .ForMember(dest => dest.ApplicantType, opts => opts.MapFrom(src => src.Vsd_ApplicantType))
-            .ForMember(dest => dest.PaymentScheduleStatus, opts => opts.MapFrom(src => src.Vsd_PaymentScheduleStatus));
+            .ForMember(dest => dest.PaymentScheduleStatus, opts => opts.MapFrom(src => (PaymentScheduleStatus?)src.Vsd_PaymentScheduleStatus));
 
         CreateMap<Entitlement, Vsd_Entitlement>()
             .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Vsd_Name, opts => opts.MapFrom(src => src.Name))
             .ForMember(dest => dest.StateCode, opts => opts.MapFrom(src => (Vsd_Entitlement_StateCode)src.StateCode))
             .ForMember(dest => dest.StatusCode, opts => opts.MapFrom(src => (Vsd_Entitlement_StatusCode?)src.StatusCode))
             .ForMember(dest => dest.Vsd_EntitlementStage, opts => opts.MapFrom(src => (Vsd_Entitlement_Vsd_EntitlementStage?)src.EntitlementStage))
@@ -43,6 +45,6 @@ public class EntitlementMapper : Profile
             .ForMember(dest => dest.Vsd_IsRecurring, opts => opts.MapFrom(src => src.IsRecurring))
             .ForMember(dest => dest.Vsd_CaseId, opts => opts.MapFrom(src => src.Case))
             .ForMember(dest => dest.Vsd_ApplicantType, opts => opts.MapFrom(src => src.ApplicantType))
-            .ForMember(dest => dest.Vsd_PaymentScheduleStatus, opts => opts.MapFrom(src => src.PaymentScheduleStatus));
+            .ForMember(dest => dest.Vsd_PaymentScheduleStatus, opts => opts.MapFrom(src => (Vsd_Entitlement_Vsd_PaymentScheduleStatus?)src.PaymentScheduleStatus));
     }
 }
