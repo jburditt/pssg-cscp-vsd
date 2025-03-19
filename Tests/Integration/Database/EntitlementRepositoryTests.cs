@@ -6,7 +6,7 @@
     public void Update()
     {
         // Arrange
-        var dto = new Entitlement() { Case = null };
+        var dto = new Entitlement() { Case = null, Name = "ENT-2025Jan15-01662" };
         dto.Id = new Guid("");
         dto.PaymentScheduleStatus = PaymentScheduleStatus.Pause;
 

@@ -63,6 +63,7 @@
                 new Entitlement
                 {
                     Id = new Guid("26df878f-b0bb-408b-b829-427053fcd0f0"),
+                    Name = "ENT-2025Jan15-01662",
                     StateCode = StateCode.Active,
                     StatusCode = EntitlementStatusCode.Approved,
                     EntitlementStage = EntitlementStage.ReadyForCc,

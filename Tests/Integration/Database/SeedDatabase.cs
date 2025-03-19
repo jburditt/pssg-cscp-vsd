@@ -104,6 +104,29 @@
                     {
                         var existingEntitlement = databaseContext.Vsd_EntitlementSet.FirstOrDefault(x => x.Id == entitlement.Id);
                         var entitlementEntity = mapper.Map<Vsd_Entitlement>(entitlement);
+
+                        // check for "duplicates", the fields vsd_caseid, vsd_benefitcategoryid, vsd_benefitsubtypeid, vsd_benefittypeid, and vsd_other together
+                        // cannot match another vsd_entitlement. Otherwise, you will get "Duplicate entitlement" error
+
+                        // NOTE not completed but will usually work
+                        var caseIds = databaseContext.CreateQuery("incident").Select(x => x.Id).ToList();
+                        var entitlementIds = databaseContext.Vsd_EntitlementSet.Select(x => x.Vsd_CaseId.Id).ToList();
+                        foreach (var entitlementId in entitlementIds)
+                        {
+                            caseIds.Remove(entitlementId);
+                        }
+                        entitlementEntity.Vsd_CaseId = new EntityReference("incident", caseIds.First());
+
+                        // Dynamics will not allow you to upsert an entitlement with Status "Approved". Change to status "" and then manually update to "Approved" in Dynamics
+                        if (entitlementEntity.StatusCode == Vsd_Entitlement_StatusCode.Approved)
+                        {
+                            entitlementEntity.StatusCode = Vsd_Entitlement_StatusCode.Requested;
+                        }
+
+                        // these fields are needed for testing payment schedule
+                        entitlementEntity.Vsd_PaymentScheduleStatus = Vsd_Entitlement_Vsd_PaymentScheduleStatus.Active;
+                        entitlementEntity.Vsd_IsRecurring = true;
+
                         if (existingEntitlement != null)
                         {
                             databaseContext.Detach(existingEntitlement);
@@ -112,21 +135,7 @@
                         }
                         else
                         {
-                            //entitlementEntity.Vsd_EntitlementId = paymentSchedule.ToEntityReference();
                             databaseContext.AddRelatedObject(paymentScheduleEntity, Vsd_Entitlement.Fields.Vsd_Vsd_Entitlement_Vsd_PaymentSchedule.ToLower(), entitlementEntity);
-
-                            // Dynamics will not allow inser
-                            //if (entitlement.StatusCode == EntitlementStatusCode.Approved)
-                            //{
-                            //    entitlementEntity.StatusCode = Vsd_Entitlement_StatusCode.Requested;
-                            //    databaseContext.AddObject(entitlementEntity);
-                            //    entitlementEntity.StatusCode = Vsd_Entitlement_StatusCode.Approved;
-                            //    databaseContext.UpdateObject(paymentScheduleEntity);
-                            //}
-                            //else
-                            //{
-                            //    databaseContext.AddObject(mapper.Map<Vsd_Entitlement>(paymentSchedule));
-                            //}
                         }
                         Console.WriteLine($"Inserted entitlement with id {entitlement.Id}");
                     }

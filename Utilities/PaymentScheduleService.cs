@@ -141,7 +141,18 @@ public class PaymentScheduleService(
             getPaymentTotalCommand.MinimumWage = minimumWage.Value;
             var paymentAmounts = await mediator.Send(getPaymentTotalCommand);
 
-            var payment = new Payment() { Owner = null };
+            var configurationQuery = new ConfigurationQuery();
+            configurationQuery.StateCode = StateCode.Active;
+            configurationQuery.Group = "Default";
+            configurationQuery.Key = "CSCPUserId";
+            var cscpUserId = (await mediator.Send(configurationQuery))
+                .First()
+                .Value;
+
+            var payment = new Payment()
+            {
+                Owner = new DynamicReference(new Guid(cscpUserId), SystemUser.EntityLogicalName)
+            };
             payment.Date = DateTime.Now;
             if (entitlement.TaxExemptFlag ?? false)
             {
@@ -172,7 +183,8 @@ public class PaymentScheduleService(
             //VS-5752
             payment.RemittanceMessage1 = paymentSchedule.CaseName;
             // TODO
-            payment.RemittanceMessage2 = invoice.EntitlementName;   // e.g. "Income Support-Long term-Minimum Wage"
+            //payment.RemittanceMessage2 = invoice.EntitlementName;   // e.g. "Income Support-Long term-Minimum Wage"
+            payment.RemittanceMessage2 = paymentScheduleEntitlement.Entitlement.Name;
             payment.RemittanceMessage3 = "Crime Victim Assistance Program";
             _logger.LogInformation($"Payment created {JsonConvert.SerializeObject(payment)}.");
 

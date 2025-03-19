@@ -5,6 +5,7 @@ public class InvoiceMapper : Profile
     public InvoiceMapper()
     {
         CreateMap<Vsd_Invoice, Invoice>()
+            .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Vsd_InvoiceId))
             .ForMember(dest => dest.AuthorizationDate, opts => opts.MapFrom(src => src.Vsd_AuthorizationDate))
             .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Vsd_Name))
             .ForMember(dest => dest.CaseId, opts => opts.MapFrom(src => src.Vsd_CaseId.Id))
@@ -33,6 +34,7 @@ public class InvoiceMapper : Profile
             .ForMember(dest => dest.Validator, opts => opts.MapFrom(src => src.Vsd_User3));
 
         CreateMap<Invoice, Vsd_Invoice>()
+            .ForMember(dest => dest.Vsd_InvoiceId, opts => opts.MapFrom(src => src.Id))
             .ForMember(dest => dest.Vsd_AuthorizationDate, opts => opts.MapFrom(src => src.AuthorizationDate))
             .ForMember(dest => dest.Vsd_Name, opts => opts.MapFrom(src => src.Name))
             .ForMember(dest => dest.Vsd_CaseId, opts => opts.MapFrom(src => src.CaseId != null ? new EntityReference("incident", src.CaseId.Value) : null))

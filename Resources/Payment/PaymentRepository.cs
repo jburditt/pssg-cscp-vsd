@@ -60,6 +60,8 @@ public class PaymentRepository : BaseRepository<Vsd_Payment, Payment>, IPaymentR
             //.Select(x => new PaymentComposite(x.Payment, x.Invoice))
             .FirstOrDefault();
 
+        _databaseContext.Detach(queryResults);
+
         return _mapper.Map<Payment>(queryResults);
     }
 

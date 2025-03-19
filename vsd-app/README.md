@@ -96,6 +96,14 @@ NOTE going forward, do not using AutoMapper mappings for Guid -> EntityReference
 This way, the logical name is also stored, which is useful. StaticReference (both should be renamed) is when there is only one logical name and DynamicReference can have
 multiple logical names e.g. "Account" or "Contact".
 
+### TESTING OLD SCHEDULE JOBS
+
+Run the tests in Victim Services solution, see ScheduleJobTests.cs
+
+### TESTING NEW SCHEDULE JOBS
+
+Run the tests in this solution, see PaymentScheduleTests.cs, PaymentTests.cs, etc
+
 ## DYNAMICS PLUGINS
 
 There are some errors that are triggered by business logic in Dynamics Plugins. There is a Victim Services repository that has the source code for the plugins.
