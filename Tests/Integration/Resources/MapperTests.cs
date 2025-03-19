@@ -1,0 +1,88 @@
+﻿public class MapperTests(IMapper mapper)
+{
+    [Fact]
+    public void PaymentSchedule_Dto_To_Entity()
+    {
+        var dto = new PaymentSchedule { CaseName = "CaseName", Payee = null };
+        dto.Id = new Guid("23fdd752-fbd8-eb11-b828-00505683fbf4");
+        dto.FirstRunDate = new DateTime(2001, 1, 1);
+        dto.NextRunDate = new DateTime(2002, 2, 2);
+        dto.Frequency = Frequency.Annually;
+        dto.XValue = 1;
+        dto.ShareValue = 1.01m;
+        dto.ShareOptions = ShareOptions.AllocatedToCurrentSchedule_100000001;
+        dto.CppDeduction = 1.02m;
+        dto.OtherDeduction = 1.03m;
+        dto.OverPaymentAmount = 1.04m;
+        dto.OverPaymentEmi = 1.05m;
+        dto.PercentageDeduction = 1.06m;
+        dto.ActualValue = 1.07m;
+
+        var entity = mapper.Map<Vsd_PaymentSchedule>(dto);
+
+        Assert.Equal(dto.Id, entity.Id);
+        Assert.Equal(dto.FirstRunDate, entity.Vsd_FirstRunDate);
+        Assert.Equal(dto.NextRunDate, entity.Vsd_NextRUndate);
+        Assert.Equal(dto.Frequency, (Frequency)entity.Vsd_Frequency);
+        Assert.Equal(dto.XValue, entity.Vsd_XValue);
+        Assert.Equal(dto.ShareValue, entity.Vsd_ShareValue);
+        Assert.Equal(dto.ShareOptions, (ShareOptions)entity.Vsd_ShareOptions);
+        Assert.Equal(dto.CppDeduction, entity.Vsd_CPpDeduction.Value);
+        Assert.Equal(dto.OtherDeduction, entity.Vsd_OtherDeduction.Value);
+        Assert.Equal(dto.OverPaymentAmount, entity.Vsd_OverpaymentAmount.Value);
+        Assert.Equal(dto.OverPaymentEmi, entity.Vsd_OverpayMenteMi.Value);
+        Assert.Equal(dto.PercentageDeduction, entity.Vsd_PercentagedEduction);
+        Assert.Equal(dto.ActualValue, entity.Vsd_ActualValue.Value);
+    }
+
+    [Fact]
+    public void Invoice_Dto_To_Entity()
+    {
+        var dto = new Invoice { Payee = null, Owner = TestData.Owner };
+        dto.CaseId = TestData.CaseId;
+        dto.CvapStobId = Guid.NewGuid();
+        dto.AuthorizationDate = new DateTime(2001, 1, 1);
+        dto.CvapNumberOfLineItems = CvapNumberOfLineItems._1;
+        dto.CvapPaymentType = CvapPaymentType.PreAdjudication;
+        dto.Origin = Origin.Web;
+        dto.TaxExemption = TaxExemption.GstOnly;
+
+        var entity = mapper.Map<Vsd_Invoice>(dto);
+
+        Assert.Equal(dto.CaseId, entity.Vsd_CaseId.Id);
+        Assert.Equal(dto.CvapStobId, entity.Vsd_Cvap_SToBid.Id);
+        Assert.Equal(dto.AuthorizationDate, entity.Vsd_AuthorizationDate);
+        Assert.Equal(dto.CvapNumberOfLineItems, (CvapNumberOfLineItems)entity.Vsd_Cvap_NumberOfLineItems);
+        Assert.Equal(dto.CvapPaymentType, (CvapPaymentType)entity.Vsd_Cvap_PaymentType);
+        Assert.Equal(dto.Origin, (Origin)entity.Vsd_Origin);
+        Assert.Equal(dto.TaxExemption, (TaxExemption)entity.Vsd_TaxExemption);
+    }
+
+    [Fact]
+    public void InvoiceLineDetail_Dto_To_Entity()
+    {
+        var dto = new InvoiceLineDetail { Owner = TestData.Owner };
+        dto.GstAmount = null;
+        dto.TaxExemption = TaxExemption.GstOnly;
+
+        var entity = mapper.Map<Vsd_InvoiceLineDetail>(dto);
+
+        Assert.Null(entity.Vsd_Gst);
+        Assert.Equal((int)Vsd_InvoiceLineDetail_Vsd_TaxExemption.GstOnly, (int)dto.TaxExemption);
+    }
+
+    [Fact]
+    public void Payment_Dto_To_Entity()
+    {
+        var dto = new Payment { Payee = null, Owner = TestData.Owner };
+        dto.LineCode = LineCode.Dr;
+        dto.RemittanceMessage2 = "RemittanceMessage2";
+        dto.SpecialHandling = SpecialHandling.Dback;
+
+        var entity = mapper.Map<Vsd_Payment>(dto);
+
+        Assert.Equal((int)dto.LineCode, (int)entity.Vsd_LineCode);
+        Assert.Equal(dto.RemittanceMessage2, entity.Vsd_RemittanceMessage2);
+        Assert.Equal((int)dto.SpecialHandling, (int)entity.Vsd_SpecialHandling);
+    }
+}
